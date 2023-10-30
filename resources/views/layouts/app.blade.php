@@ -1,15 +1,16 @@
-<div class="min-h-screen bg-gray-100">
-    @include('layouts.navigation')
+{{-- <div class="min-h-screen bg-gray-100"> --}}
+    @unless(request()->is('dashboard'))
+        @include('layouts.partials.header')
+    @endunless
+    
+    @if(request()->is('dashboard'))
+        @include('layouts.navigation')
+    @endif
 
-    <!-- Page Heading -->
-    <header class="bg-white shadow">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            {{ $header }}
-        </div>
-    </header>
+        {{ $slot }} 
 
-    <!-- Page Content -->
-    <main>
-        {{ $slot }}
-    </main>
-</div>
+        
+    @if(request()->is('dashboard'))
+        @include('layouts.partials.footer')
+    @endif
+{{-- </div> --}}

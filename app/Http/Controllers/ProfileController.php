@@ -6,6 +6,7 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use ProtoneMedia\Splade\Facades\Toast;
 
 class ProfileController extends Controller
 {
@@ -33,6 +34,12 @@ class ProfileController extends Controller
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
+
+        Toast::title('Success!')
+        ->message('Your profile has been updated.')
+        ->success()
+        ->rightTop()
+        ->autoDismiss(3);
 
         $request->user()->save();
 

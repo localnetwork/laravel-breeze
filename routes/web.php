@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TreeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,7 +29,10 @@ Route::middleware('splade')->group(function () {
     Route::spladeUploads();
 
     Route::get('/', function () {
-        return view('welcome');
+        return view('index');
+    });
+    Route::get('/about', function () {
+        return view('about');
     });
 
     Route::middleware('auth')->group(function () {
@@ -39,7 +43,21 @@ Route::middleware('splade')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+        Route::delete('/admin/trees/{tree}', [TreeController::class, 'destroy'])->name('admin.trees.destroy');
+         
+        Route::get('/admin/trees/create', [TreeController::class, 'create'])->name('admin.trees.create');
+        Route::post('/admin/trees', [TreeController::class, 'store'])->name('admin.trees.store'); 
+
+        Route::get('/admin/trees', 'App\Http\Controllers\TreeController@index')->name('admin.trees.index');
+        
+        Route::get('/admin/trees/{tree}', [TreeController::class, 'edit'])->name('admin.trees.edit'); 
+        Route::put('/admin/trees/{tree}', [TreeController::class, 'update'])->name('admin.trees.update'); 
+        
     });
+
+    
+    
 
     Route::get('/check-database-connection', function () {
         try {
@@ -47,7 +65,7 @@ Route::middleware('splade')->group(function () {
             return 'Database connection is successful.';
         } catch (\Exception $e) {
             return 'Database connection failed: ' . $e->getMessage();
-        }
+        } 
     }); 
 
     require __DIR__.'/auth.php';

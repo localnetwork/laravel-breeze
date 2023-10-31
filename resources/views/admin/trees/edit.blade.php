@@ -1,4 +1,4 @@
-<x-app-layout>
+{{-- <x-app-layout>
     <div class="container">
         <h1>Edit Tree {{ $tree->name }}</h1>
         <x-splade-form  :default="$tree" method="put" :action="route('admin.trees.update', $tree->id)" class="mt-6 space-y-6" preserve-scroll>
@@ -14,4 +14,4 @@
             </div>
         </x-splade-form>
     </div>
-</x-app-layout>
+</x-app-layout> --}}

@@ -11,7 +11,7 @@ $menuItems = [
 ]; 
 @endphp
 
-<header class="header py-[20px] bg-white sticky top-0 z-[222]">
+<header class="header py-[20px] bg-white  z-[222]">
     <div class="container mx-auto">
         <div class="row justify-between items-center mx-[-15px]">
             <div class="nav-logo">
@@ -21,11 +21,7 @@ $menuItems = [
             </div>  
             <div class="nav-menu"> 
                 <div class="flex gap-[15px]">
-                    @foreach($menuItems as $item)
-                        <div class="">
-                            <Link href="{{ $item['link'] }}">{{ $item['title'] }}</Link>
-                        </div>
-                    @endforeach
+                    
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-{{-- <x-app-layout>
+<x-app-layout>
     
     <div class="container">
         <h1 class="text-xl mb-[20px] font-medium text-gray-900">Trees Management</h1>
@@ -81,4 +81,4 @@
 
 
     
-</x-app-layout> --}}
+</x-app-layout>

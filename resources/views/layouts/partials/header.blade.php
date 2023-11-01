@@ -21,7 +21,11 @@ $menuItems = [
             </div>  
             <div class="nav-menu"> 
                 <div class="flex gap-[15px]">
-                    
+                    @foreach($menuItems as $index => $item)
+                        <div key="{{$index}}" class="">
+                            <Link href="{{ $item['link'] }}">{{ $item['title'] }}</Link>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>

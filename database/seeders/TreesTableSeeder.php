@@ -12,7 +12,7 @@ class TreesTableSeeder extends Seeder
     public function run()
     {
         Tree::factory()
-            ->count(10) // Change the count to the desired number of random trees
+            ->count(20) // Change the count to the desired number of random trees
             ->create();
     }
 } 

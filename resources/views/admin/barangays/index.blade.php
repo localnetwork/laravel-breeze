@@ -1,0 +1,58 @@
+<x-app-layout>
+    
+    <div class="container">
+        <h1 class="text-xl mb-[20px] font-medium text-gray-900">Management - Barangays</h1>
+        <Link href="#createModal" class="inline-block mb-3 border rounded-md shadow-sm font-bold py-2 px-4 focus:outline-none focus:ring focus:ring-opacity-50 bg-indigo-500 text-white border-transparent hover:bg-indigo-700 focus:border-indigo-300 focus:ring-indigo-200">Add barangay</Link> 
+        <x-splade-table :for="$barangays" pagination-scroll="head"> 
+            @cell('action', $barangay)
+                <x-splade-link class="items-center block px-4 py-2 text-left text-sm leading-5 text-white border rounded-md shadow-sm bg-indigo-500 font-medium hover:bg-indigo-700 focus:border-indigo-300 focus:ring-indigo-200 focus:outline-none focus:bg-indigo-700 transition duration-150 ease-in-out" href="#editModal-{{  $barangay->id }}" method="PUT" data="{{ $barangay }}">EDIT</x-splade-link> 
+
+                <x-splade-link
+                class="items-center block px-4 py-2 text-left text-sm leading-5 text-[red] ml-[5px] hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" 
+                href="{{ route('admin.barangays.destroy', $barangay) }}"
+                confirm="Are you sure want to delete {{ $barangay->name }}?"
+                confirm-button="Yes, delete it."
+                cancel-button="Cancel"
+                method="DELETE" 
+                :data="['_method'=>'DELETE']"
+                > DELETE </x-splade-link>
+
+                <x-splade-modal name="editModal-{{  $barangay->id }}" id="editModal-{{  $barangay->id }}" :close-button="true" max-width="xl" close-explicitly>
+                    <div class="container">
+                        <h2 class="text-lg font-medium text-gray-900">Edit {{ $barangay->name }}</h2>
+                            {{  $barangay->id }}
+                
+                        <x-splade-form method="put" :default="$barangay" :action="route('admin.barangays.update', $barangay->id)" class="mt-6 space-y-6" preserve-scroll>
+                            
+                            <x-splade-input  type="text" label="Name" name="name" id="name" class="form-control" />
+                
+                            <div class="flex items-center gap-4">
+                                <x-splade-submit :label="__('Save')" />
+                            </div>
+                        </x-splade-form>
+                    </div>
+                </x-splade-modal>   
+            @endcell
+        </x-splade-table>
+    </div>
+
+
+    <x-splade-modal name="createModal" id="createModal" :close-button="true" max-width="xl" close-explicitly>
+        <div class="container">
+            <h2 class="text-lg font-medium text-gray-900">Add a barangay</h2>
+    
+            <x-splade-form method="POST" :action="route('admin.barangays.store')" class="mt-6 space-y-6" preserve-scroll>
+            
+                <x-splade-input type="text" label="Name" name="name" id="name" class="form-control" />
+   
+                <div class="flex items-center gap-4">
+                    <x-splade-submit :label="__('Add')" />
+        
+                    @if (session('status') === 'barangay-updated')
+                        <p class="text-sm text-gray-600">{{ __('Saved.') }}</p>
+                    @endif
+                </div>
+            </x-splade-form>
+        </div>  
+    </x-splade-modal> 
+ </x-app-layout>

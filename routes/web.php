@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TreeController;
+use App\Http\Controllers\BarangayController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,7 +36,7 @@ Route::middleware('splade')->group(function () {
         return view('about');
     });
 
-    Route::middleware('auth')->group(function () {
+    Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', function () {
             return view('dashboard');
         })->middleware(['verified'])->name('dashboard');
@@ -43,9 +44,13 @@ Route::middleware('splade')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        
+    });
 
+    // Check if the user role is 1.
+    Route::middleware('checkRole:1')->group(function () {
         Route::delete('/admin/trees/{tree}', [TreeController::class, 'destroy'])->name('admin.trees.destroy');
-         
+            
         Route::get('/admin/trees/create', [TreeController::class, 'create'])->name('admin.trees.create');
         Route::post('/admin/trees', [TreeController::class, 'store'])->name('admin.trees.store'); 
 
@@ -53,13 +58,23 @@ Route::middleware('splade')->group(function () {
         
         Route::get('/admin/trees/{tree}', [TreeController::class, 'edit'])->name('admin.trees.edit'); 
         Route::put('/admin/trees/{tree}', [TreeController::class, 'update'])->name('admin.trees.update'); 
+
+
+
+        Route::delete('/admin/barangays/{tree}', [BarangayController::class, 'destroy'])->name('admin.barangays.destroy');
+
+        Route::get('/admin/barangays/create', [BarangayController::class, 'create'])->name('admin.barangays.create');
+        Route::post('/admin/barangays', [BarangayController::class, 'store'])->name('admin.barangays.store'); 
+
+        Route::get('/admin/barangays', 'App\Http\Controllers\BarangayController@index')->name('admin.barangays.index');
         
+        Route::get('/admin/barangays/{barangay}', [BarangayController::class, 'edit'])->name('admin.barangays.edit'); 
+        
+        Route::put('/admin/barangays/{barangay}', [BarangayController::class, 'update'])->name('admin.barangays.update'); 
     });
 
-    
-    
 
-    Route::get('/check-database-connection', function () {
+    Route::get('/check-database', function () {
         try {
             DB::connection()->getPdo();
             return 'Database connection is successful.';

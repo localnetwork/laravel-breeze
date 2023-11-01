@@ -56,6 +56,7 @@ class TreeController extends Controller
             ->withGlobalSearch(columns: ['id', 'name'])
             ->column('id', sortable: true) 
             ->column('name', sortable: true)
+            ->column('tree_value')
             ->column('updated_at', sortable: true)
             ->column('action')
             ->paginate(15)
@@ -68,7 +69,8 @@ class TreeController extends Controller
     {
         // Validate the request data as needed
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:trees',
+            'tree_value' => 'required|numeric|min:1|max:100', 
         ]);
         
         $tree->update($request->all());
@@ -83,6 +85,7 @@ class TreeController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'tree_value' => 'required|numeric|min:1||max:100',
         ]);
 
         // Create a new tree in the database

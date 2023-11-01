@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trees', function (Blueprint $table) {
+        Schema::create('barangays', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('tree_value')->default(0)->max(100);
+            $table->string('name'); // Add more fields as needed
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trees');
+        Schema::dropIfExists('barangays');
     }
 };

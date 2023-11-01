@@ -1,4 +1,4 @@
-<x-app-layout>
+{{-- <x-app-layout>
     <div class="container">
         <h1>Add a New Tree</h1>
 
@@ -21,4 +21,4 @@
             <button type="submit" class="btn btn-primary">Add Tree</button>
         </form>
     </div> 
-</x-app-layout> 
+</x-app-layout>  --}}

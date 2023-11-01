@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tree extends Model
+class Barangay extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'tree_value']; 
+    protected $fillable = ['name']; 
 }

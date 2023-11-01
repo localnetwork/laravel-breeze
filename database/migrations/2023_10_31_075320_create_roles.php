@@ -9,14 +9,19 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('trees', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('tree_value')->default(0)->max(100);
-            $table->timestamps();
         });
+
+        // Insert predefined roles
+        DB::table('roles')->insert([
+            ['name' => 'administrator'],
+            ['name' => 'sponsor'],
+            ['name' => 'volunteer'],
+        ]);
     }
 
     /**
@@ -24,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trees');
+        Schema::dropIfExists('table_roles');
     }
 };

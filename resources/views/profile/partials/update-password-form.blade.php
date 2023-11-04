@@ -15,7 +15,7 @@
         <x-splade-input id="password_confirmation" name="password_confirmation" type="password" :label="__('Confirm Password')" autocomplete="new-password" />
 
         <div class="flex items-center gap-4">
-            <x-splade-submit :label="__('Save')" />
+            <x-splade-submit class="bg-[#00b14f] text-white min-w-[100px]" :label="__('Save')" />
 
             @if (session('status') === 'password-updated')
                 <p class="text-sm text-gray-600">{{ __('Saved.') }}</p>

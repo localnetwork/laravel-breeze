@@ -51,25 +51,41 @@ class TreeController extends Controller
         ->allowedSorts(['id', 'name', 'updated_at'])
         ->allowedFilters(['id', 'name', $globalSearch]);
     
-    return view('admin.trees.index', [
-        'trees' => SpladeTable::for($trees)
-            ->withGlobalSearch(columns: ['id', 'name'])
-            ->column('id', sortable: true) 
-            ->column('name', sortable: true)
-            ->column('tree_value')
-            ->column('updated_at', sortable: true)
-            ->column('action')
-            ->paginate(15)
-
-    ]); 
+        return view('admin.trees.index', [
+            'trees' => SpladeTable::for($trees)
+                ->withGlobalSearch(columns: ['id', 'name'])
+                ->column('id', sortable: true) 
+                ->column('name', sortable: true)
+                ->column('tree_value')
+                ->column('updated_at', sortable: true)
+                ->column('action')
+                ->paginate(15)
+                ->perPageOptions([15, 50, 100])
+        ]); 
     } 
+
+    public function configure(SpladeTable $table) {
+        $table->withGlobalSearch(columns: ['id', 'name'])
+        ->column('id', sortable: true) 
+        ->column('name', sortable: true)
+        ->column('tree_value')
+        ->column('updated_at', sortable: true)
+        ->column('action')
+        ->export()
+        ->paginate(15)
+        ->bulkAction(
+            label: 'Delete trees',
+            each: fn (Tree $tree) => $projetreect->delete(),
+            confirm: true,
+        );   
+    }
     
 
     public function update(Request $request, Tree $tree)
     {
         // Validate the request data as needed
         $request->validate([
-            'name' => 'required|string|max:255|unique:trees',
+            'name' => 'required|string|max:255',
             'tree_value' => 'required|numeric|min:1|max:100', 
         ]);
         
@@ -84,7 +100,7 @@ class TreeController extends Controller
     public function store(Request $request) 
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|unique:trees|max:255',
             'tree_value' => 'required|numeric|min:1||max:100',
         ]);
 

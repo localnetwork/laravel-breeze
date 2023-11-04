@@ -1,3 +1,7 @@
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/hero-banner.css') }}">
+@endpush
+
 <section class="relative bg-black"><span class="HeroBanner_overlay__zR7s5 absolute top-0 left-0 w-full h-full z-[2]"></span>
     <div class="video-container absolute top-0 left-0 w-full h-full z-[1]">
         <video class="h-full w-full object-cover" autoplay="" loop="" muted="" playsinline="">

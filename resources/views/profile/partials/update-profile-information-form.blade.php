@@ -32,7 +32,7 @@
         @endif
 
         <div class="flex items-center gap-4">
-            <x-splade-submit :label="__('Save')" />
+            <x-splade-submit class="bg-[#00b14f] min-w-[100px] text-white" :label="__('Save')" />
 
             @if (session('status') === 'profile-updated')
                 <p class="text-sm text-gray-600">

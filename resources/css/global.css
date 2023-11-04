@@ -4,6 +4,9 @@
     --secondaryColor: #001e1f;
     --textPrimary: #242a2e;
 }
+body {
+    font-family: var(--fontPrimary);
+}
 .container {
     padding-left: 15px;
     padding-right: 15px;

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TreeController;
 use App\Http\Controllers\BarangayController;
+use App\Http\Controllers\JobController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,7 +34,7 @@ Route::middleware('splade')->group(function () {
         return view('index');
     });
     Route::get('/about', function () {
-        return view('about');
+        return view('pages.about');
     });
 
     Route::middleware(['auth'])->group(function () {
@@ -41,7 +42,8 @@ Route::middleware('splade')->group(function () {
             return view('dashboard');
         })->middleware(['verified'])->name('dashboard');
 
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         
@@ -72,6 +74,19 @@ Route::middleware('splade')->group(function () {
         
         Route::put('/admin/barangays/{barangay}', [BarangayController::class, 'update'])->name('admin.barangays.update'); 
     });
+
+    // Check if the user role is 1.
+    // Route::middleware('checkRole:1')->group(function () {
+        Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
+        Route::get('/jobs/create', [JobController::class, 'create']);
+
+        Route::post('/jobs', [JobController::class, 'store'])->name('jobs.store'); 
+         
+        Route::get('/jobs/{job}', [JobController::class, 'show']);
+        Route::get('/jobs/{job}/edit', [JobController::class, 'edit']);
+        Route::put('/jobs/{job}', [JobController::class, 'update']);
+        Route::delete('/jobs/{job}', [JobController::class, 'destroy']);
+    // });
 
 
     Route::get('/check-database', function () {

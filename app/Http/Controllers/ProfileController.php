@@ -7,9 +7,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use ProtoneMedia\Splade\Facades\Toast;
+use ProtoneMedia\Splade\Facades\SEO;
 
 class ProfileController extends Controller
 {
+    /**
+     * Display the user's profile form.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function index(Request $request)
+    {
+
+        return view('profile.index', [
+            'user' => $request->user(),
+        ]);
+    }
+
+
     /**
      * Display the user's profile form.
      *

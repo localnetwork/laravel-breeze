@@ -7,18 +7,19 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
  
-class UserSeeder extends Seeder
+class RoleSeeder extends Seeder
 {
     /**
      * Run the database seeders.
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-            'name' => 'Diome',
-            'email' => 'admin@gmail.com',
-            'role_id' => 1,
-            'password' => Hash::make('password'),
+        DB::table('roles')->insert([
+            ['name' => 'administrator'],
+            ['name' => 'sponsor'],
+            ['name' => 'volunteer'],
         ]);
     }
 }
+
+

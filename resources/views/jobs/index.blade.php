@@ -3,9 +3,38 @@
     @seoDescription('Become the Splade expert!')
     @seoKeywords('laravel, splade, course')
 
+    @php
+        $items = [
+        [
+            'id' => 1,
+            'name' => 'Product 1',
+            'description' => 'This is product 1.',
+            'price' => 100,
+        ],
+        [
+            'id' => 2,
+            'name' => 'Product 2',
+            'description' => 'This is product 2.',
+            'price' => 200,
+        ],
+        [
+            'id' => 3,
+            'name' => 'Product 3',
+            'description' => 'This is product 3.',
+            'price' => 300,
+        ],
+    ];
+    @endphp
+
+
+
     @include('components.user.user-profile-card')
     <div class="py-12 bg-[#f3f3f3]">
         <div class="container">
+            {{-- <div id="test">
+                <job-list-component :jobs="{{ $jobs }}"></job-list-component>
+            </div> --}}
+            
             <div class="row">
                 <div class="max-w-[25%] w-full flex justify-start flex-co">
                     @include('components.user.user-sidebar')
@@ -14,86 +43,30 @@
                     <Link href="#createModal" class="inline-block mb-3 border rounded-md shadow-sm font-bold py-2 px-4 focus:outline-none focus:ring focus:ring-opacity-50 bg-indigo-500 text-white border-transparent hover:bg-indigo-700 focus:border-indigo-300 focus:ring-indigo-200">Add a task</Link> 
                     <x-splade-table :for="$jobs" pagination-scroll="head"> 
                         @cell('action', $job)
-                        <div class="relative inline-block text-left dropdown-container" data-job-id="{{ $job->id }}">
-                            <button type="button" data-dropdown-id="{{ $job->id }}" onclick="dropDown(this)" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:border-blue-300 active:bg-gray-100 active:text-gray-700" aria-haspopup="listbox" aria-expanded="true">
-                                Select an option
-                            </button>
-                    
-                            <div id="dropdown-menu-{{ $job->id }}" class="dropdown-menu z-[2] w-full origin-top-left absolute left-0 mt-2 hidden rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 dropdown-options" role="listbox" aria-activedescendant="option-0" tabindex="-1" data-job-id="{{ $job->id }}">
-                                <ul class="py-1" role="list" aria-label="Dropdown Options">
-                                    <li class="text-gray-900 cursor-default select-none relative p-4" role="option" onclick="closeDropdownOnClickLi(this)">
-                                        Option 1
-                                    </li>
-                                    <li class="text-gray-900 cursor-default select-none relative p-4" role="option">
-                                        Option 2
-                                    </li>
-                                    <li class="text-gray-900 cursor-default select-none relative p-4" role="option">
-                                        Option 3
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> 
+                        <x-dropdown placement="bottom-end">
+                            <x-slot name="trigger">
+                                <div class="flex items-center text-sm font-medium text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition duration-150 ease-in-out">
+                                   Select an option
+                                    <div class="ml-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </x-slot>
+
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('profile.edit')">
+                                    Delete
+                                </x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown> 
                         @endcell
                     </x-splade-table>
                 </div>
             </div>
         </div>
     </div>
- 
-    <script id="testScript">
-        function dropDown(button) {
-    console.log('clicked!');
-    
-    // Remove existing event listeners
-    document.querySelectorAll('.dropdown-container').forEach((container) => {
-        const button = container.querySelector('button');
-        const options = container.querySelector('.dropdown-options');
-
-        if (button && options) {
-            button.removeEventListener("click", toggleDropdown);
-        }
-    });
-
-    // Remove the "hidden" class from all dropdown options
-    document.querySelectorAll('.dropdown-options').forEach((options) => {
-        options.classList.remove("hidden");
-    });
-
-    // Add new event listeners
-    document.querySelectorAll('.dropdown-container').forEach((container) => {
-        const button = container.querySelector('button');
-        const options = container.querySelector('.dropdown-options');
-
-        if (button && options) {
-            button.addEventListener("click", toggleDropdown);
-            // Close the dropdown when clicking outside of it
-            document.addEventListener("click", (event) => {
-                if (!container.contains(event.target)) {
-                    options.classList.add("hidden");
-                }
-            });
-        }
-    });
-}
-
-function toggleDropdown() {
-    console.log('dropdown toggle'); 
-    const options = this.nextElementSibling; // Assuming the options are right after the button
-    if (options) {
-        options.classList.toggle("hidden");
-    }
-} 
-
-// Function to close the dropdown when an <li> is clicked
-    function closeDropdownOnClickLi(liElement) {
-    const dropdownContainer = liElement.closest('.dropdown-container');
-    const dropdownOptions = dropdownContainer.querySelector('.dropdown-options');
-    if (dropdownOptions) {
-        dropdownOptions.classList.add("hidden");
-    }
-} 
-        
-    </script> 
 
 
     <x-splade-modal name="createModal" id="createModal" :close-button="true" max-width="xl" close-explicitly>
@@ -106,14 +79,15 @@ function toggleDropdown() {
                 <x-splade-input label="Quantity" name="quantity" id="quantity" class="form-control" />
                 {{-- <x-splade-select label="Trees" name="trees" :options="$trees" /> --}}
 
-                <x-splade-select label="Select a tree" name="tree" id="tree">
+                <x-splade-select label="Tree" name="tree" id="tree">
+                        <option selected disabled readonly value="">Select an option</option>
                         @foreach ($trees as $tree)
                             <option value="{{ $tree->id }}">{{ $tree->name }}</option>
                         @endforeach
                 </x-splade-select>
 
 
-                <x-splade-textarea label="Job Description" name="job_description" id="job_description" class="form-control min-h-[300px]" autosize />
+                <x-splade-textarea label="Job Description" name="job_description" id="job_description" class="form-control" autosize />
 
                 <div class="flex items-center gap-4">
                     <x-splade-submit :label="__('Add')" />

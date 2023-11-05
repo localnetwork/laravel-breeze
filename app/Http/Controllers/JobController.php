@@ -19,6 +19,23 @@ use Illuminate\Support\Facades\Auth;
 
 
 class JobController extends Controller {
+  
+    public function jobsApi() {
+
+        $jobs = QueryBuilder::for(Job::class)
+            ->defaultSort('-updated_at')
+            ->allowedSorts(['id', 'title', 'updated_at'])
+            ->allowedFilters(['title', 'updated_at']) // Added filter by updated_at 
+            ->where('title', 'like', '%'.request()->get('title').'%') 
+            ->with('tree')
+            ->paginate(3);
+    
+        return response()->json([
+            'jobs' => $jobs,
+        ]);
+    } 
+
+     
     public function index(Request $request)
     {   
         $user =  $request->user(); 

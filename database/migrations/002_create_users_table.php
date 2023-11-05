@@ -16,12 +16,16 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('profile_picture')->nullable(); 
-            $table->unsignedBigInteger('role');
+            $table->unsignedBigInteger('role_id');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+
+            $table->foreign('role_id')->references('id')->on('roles');
         }); 
+
     }
 
     /**
@@ -29,10 +33,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Schema::dropIfExists('users');
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['role']);
-            $table->dropColumn('role');
-        }); 
+
+        Schema::dropIfExists('users');
+
+        
     }
 };

@@ -77,6 +77,10 @@ Route::middleware('splade')->group(function () {
 
     // Check if the user role is 1.
     // Route::middleware('checkRole:1')->group(function () {
+
+
+        Route::get('/api/jobs', [JobController::class, 'jobsApi'])->name('jobs.api');
+
         Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
         Route::get('/jobs/create', [JobController::class, 'create']);
 

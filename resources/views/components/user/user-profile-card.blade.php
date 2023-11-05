@@ -10,7 +10,7 @@
         </div>
         <div>
             <h1 class="font-bold text-[50px]">{{  $user->name }}</h1>
-            <span class="bg-[red] inline-block text-white rounded-[10px] text-[14px] py-[5px] px-[10px]">
+            <span class="bg-[#00b14f] inline-block text-white rounded-[10px] text-[12px] leading-[100%] py-[6px] px-[15px]">
                 @if($user->role == 1 )
                 administrator
                 @elseif($user->role == 2)

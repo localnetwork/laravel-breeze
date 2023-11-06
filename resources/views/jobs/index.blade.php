@@ -29,6 +29,11 @@
 
 
     @include('components.user.user-profile-card')
+
+    <x-splade-rehydrate on="job-added">
+        <JobListComponent /> 
+    </x-splade-rehydrate>
+
     <div class="py-12 bg-[#f3f3f3]">
         <div class="container">
             {{-- <div id="test">
@@ -73,7 +78,7 @@
         <div class="container">
             <h2 class="text-lg font-medium text-gray-900">Add a task</h2>
     
-            <x-splade-form method="POST" :action="route('jobs.store')" class="mt-6 space-y-6" preserve-scroll>
+            <x-splade-form method="POST" :action="route('jobs.store')" class="mt-6 space-y-6" preserve-scroll @success="$splade.emit('job-added')">
             
                 <x-splade-input type="text" label="Title" name="title" id="title" class="form-control" />
                 <x-splade-input label="Quantity" name="quantity" id="quantity" class="form-control" />

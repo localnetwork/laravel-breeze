@@ -14,8 +14,8 @@
                 :key="job.id"
                 class="bg-gray-100 p-2 mb-2 rounded-md"
             >
-                {{ job.title }}
                 {{ job.tree.name }}
+                {{ job.user_id.name }}
             </li>
         </ul>
         <div

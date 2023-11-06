@@ -13,6 +13,9 @@ class Job extends Model {
     {
         return $this->belongsTo(Tree::class, 'id'); // 'tree_id' is the foreign key in the 'jobs' table
     } 
+    public function user_id() {
+        return $this->belongsTo(User::class, 'user_id'); // 'tree_id' is the foreign key in the 'jobs' table
+    }
 
     protected $fillable = [
         'title',

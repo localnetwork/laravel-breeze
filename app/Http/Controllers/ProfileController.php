@@ -11,9 +11,11 @@ use ProtoneMedia\Splade\Facades\SEO;
 
 class ProfileController extends Controller
 {
+    
     /**
      * Display the user's profile form.
      *
+     * 
      * @return \Illuminate\View\View
      */
     public function index(Request $request)

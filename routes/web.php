@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TreeController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\WalletController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,6 +39,10 @@ Route::middleware('splade')->group(function () {
     });
 
     Route::middleware(['auth'])->group(function () {
+
+        Route::get('/wallet', [WalletController::class, 'index']);
+
+        
         Route::get('/dashboard', function () {
             return view('dashboard');
         })->middleware(['verified'])->name('dashboard');
@@ -85,6 +90,7 @@ Route::middleware('splade')->group(function () {
         Route::get('/jobs/create', [JobController::class, 'create']);
 
         Route::post('/jobs', [JobController::class, 'store'])->name('jobs.store'); 
+
          
         Route::get('/jobs/{job}', [JobController::class, 'show']);
         Route::get('/jobs/{job}/edit', [JobController::class, 'edit']);

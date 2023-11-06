@@ -28,6 +28,7 @@ class JobController extends Controller {
             ->allowedFilters(['title', 'updated_at']) // Added filter by updated_at 
             ->where('title', 'like', '%'.request()->get('title').'%') 
             ->with('tree')
+            ->with('user_id')
             ->paginate(3);
     
         return response()->json([
@@ -37,7 +38,7 @@ class JobController extends Controller {
 
      
     public function index(Request $request)
-    {   
+    {       
         $user =  $request->user(); 
         $user_id = $user->id; 
 
@@ -91,25 +92,36 @@ class JobController extends Controller {
         $user =  $request->user(); 
         $user_id = $user->id; 
 
-
-        $this->validate($request, [
-            'title' => 'required',
-            'quantity' => 'required|numeric|min:1',
-            'tree' => 'required', 
-            'job_description' => 'required',
-        ]);
-
-        $job = Job::create([
-            'title' => $request->input('title'),
-            'user_id' => $user_id,
-            'tree' => $request->input('tree'), 
-            'quantity' => $request->input('quantity'),
-            'job_description' => $request->input('job_description'),
-        ]);
-
-        Toast::title('Success')->message('Job added successfully')->success()->rightTop()->autoDismiss(3);
-
-        return Redirect::route('jobs.index')->with('success', 'Job added successfully');
+        if($user->role_id === 1 || $user->role_id === 2) {
+            $this->validate($request, [
+                'title' => 'required',
+                'quantity' => 'required|numeric|min:1',
+                'tree' => 'required', 
+                'job_description' => 'required',
+            ]);
+    
+            $job = Job::create([
+                'title' => $request->input('title'),
+                'user_id' => $user_id,
+                'tree' => $request->input('tree'), 
+                'quantity' => $request->input('quantity'),
+                'job_description' => $request->input('job_description'),
+            ]);
+    
+            Toast::title('Success')->message('Job added successfully')->success()->rightTop()->autoDismiss(3);
+    
+            return Redirect::route('jobs.index');
+        }else {
+    
+            Toast::title('Whoops!')
+                ->message('You are not allowed to do this function')
+                ->warning()
+                ->rightTop()
+                ->autoDismiss(3);
+    
+            return Redirect::route('jobs.index');
+        }
+        
     }
     
 

@@ -30,12 +30,11 @@
 
     @include('components.user.user-profile-card')
 
-    <x-splade-rehydrate on="job-added">
-        <JobListComponent /> 
-    </x-splade-rehydrate>
+    
 
     <div class="py-12 bg-[#f3f3f3]">
         <div class="container">
+            
             {{-- <div id="test">
                 <job-list-component :jobs="{{ $jobs }}"></job-list-component>
             </div> --}}
@@ -46,7 +45,10 @@
                 </div>
                 <div class="max-w-[75%] w-full">
                     <Link href="#createModal" class="inline-block mb-3 border rounded-md shadow-sm font-bold py-2 px-4 focus:outline-none focus:ring focus:ring-opacity-50 bg-indigo-500 text-white border-transparent hover:bg-indigo-700 focus:border-indigo-300 focus:ring-indigo-200">Add a task</Link> 
-                    <x-splade-table :for="$jobs" pagination-scroll="head"> 
+                    <x-splade-rehydrate on="job-added">
+                        <JobListComponent /> 
+                    </x-splade-rehydrate>
+                    {{-- <x-splade-table :for="$jobs" pagination-scroll="head"> 
                         @cell('action', $job)
                         <x-dropdown placement="bottom-end">
                             <x-slot name="trigger">
@@ -67,7 +69,7 @@
                             </x-slot>
                         </x-dropdown> 
                         @endcell
-                    </x-splade-table>
+                    </x-splade-table> --}}
                 </div>
             </div>
         </div>

@@ -5,6 +5,9 @@ use App\Http\Controllers\TreeController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\WalletController;
+use App\Http\Controllers\PointTransactionController;
+use App\Http\Controllers\FilesController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,7 +43,9 @@ Route::middleware('splade')->group(function () {
 
     Route::middleware(['auth'])->group(function () {
 
-        Route::get('/wallet', [WalletController::class, 'index']);
+        Route::get('/wallet', [WalletController::class, 'index'])->name('wallet.index');
+
+        Route::post('/wallet/store', [PointTransactionController::class, 'store'])->name('wallet.store'); 
 
         
         Route::get('/dashboard', function () {
@@ -107,6 +112,9 @@ Route::middleware('splade')->group(function () {
             return 'Database connection failed: ' . $e->getMessage();
         } 
     }); 
+
+
+    Route::post('upload-files', [FilesController::class,'store'])->middleware('optimizeImages'); 
 
     require __DIR__.'/auth.php';
 });

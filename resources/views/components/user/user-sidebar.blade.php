@@ -13,8 +13,8 @@ $menuItems = [
         'link' => '/manage/events'
     ],
     [
-        'title' => 'Wallets',
-        'link' => '/manage/wallets'
+        'title' => 'Wallet',
+        'link' => '/wallet'
     ],
 ]; 
 @endphp

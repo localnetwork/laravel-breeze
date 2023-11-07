@@ -23,3 +23,22 @@ body {
     padding-left: 15px;
     padding-right: 15px;
 }
+
+.dropdown .dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all ease 0.3s;
+    min-width: 150px;
+    right: 0;
+}
+.dropdown.active .dropdown-menu {
+    transform: translateY(0);
+    transition: all ease 0.3s;
+    visibility: inherit;
+    opacity: 1;
+}
+.dropdown-toggle {
+    font-size: 20px;
+    font-weight: 700;
+}

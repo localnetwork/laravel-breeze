@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-md mx-auto p-4">
+    <div class="p-4">
         <h1 class="text-2xl font-bold mb-4">Jobs</h1>
         <input
             v-model="search"
@@ -8,16 +8,30 @@
             class="w-full p-2 border rounded-md mb-4"
         />
         <div v-if="jobs.length < 1">NO RESULT</div>
-        <ul>
-            <li
-                v-for="job in jobs"
-                :key="job.id"
-                class="bg-gray-100 p-2 mb-2 rounded-md"
-            >
-                {{ job.tree.name }}
-                {{ job.user_id.name }}
-            </li>
-        </ul>
+        <div
+            v-for="job in jobs"
+            :key="job.id"
+            class="bg-gray-100 p-2 mb-2 rounded-md flex justify-between"
+        >
+            {{ job.tree.name }}
+            {{ job.user_id.name }}
+
+            <Dropdown :id="job.id" dropdown-title="...">
+                <DropdownItem> TEST </DropdownItem>
+                <DropdownItem>Item 2</DropdownItem>
+                <DropdownDivider />
+                <DropdownItem>Item 3</DropdownItem>
+            </Dropdown>
+
+            <div @click="open">TEST</div>
+
+            <div v-if="isOpen">
+                <x-splade-modal :isOpen="isOpen" @close="isOpen = false">
+                    <h1>This is a Splade modal</h1>
+                    <button type="button" @click="modal.close">Close</button>
+                </x-splade-modal>
+            </div>
+        </div>
         <div
             class="mt-4 flex justify-between items-center"
             v-if="jobs.length > 0"
@@ -57,13 +71,51 @@
 <script>
 import axios from "axios";
 import { ref, onMounted, computed } from "vue";
+import Dropdown from "./utilities/Dropdown/Dropdown.vue";
+import DropdownItem from "./utilities/Dropdown/DropdownItem.vue";
+import DropdownDivider from "./utilities/Dropdown/DropdownDivider.vue";
 
 export default {
+    methods: {
+        open() {
+            this.isOpen = true;
+        },
+    },
+    data() {
+        return {
+            isOpen: false,
+        };
+    },
+    components: {
+        Dropdown,
+        DropdownItem,
+        DropdownDivider,
+    },
     setup() {
         const jobs = ref([]);
         const search = ref("");
         const page = ref(1);
         const totalPages = ref(1);
+
+        const activeDropdown = ref(null);
+
+        const closeOtherDropdowns = () => {
+            document.querySelectorAll(".dropdown").forEach((dropdown) => {
+                if (dropdown !== event.target) {
+                    dropdown
+                        .querySelector(".dropdown-menu")
+                        .classList.remove("active");
+                }
+            });
+        };
+
+        const openActiveDropdown = () => {
+            if (activeDropdown.value) {
+                activeDropdown.value
+                    .querySelector(".dropdown-menu")
+                    .classList.add("active");
+            }
+        };
 
         const fetchJobs = () => {
             // Make an API request to /api/jobs with pagination
@@ -120,6 +172,9 @@ export default {
             filterJobs,
             totalPageNumbers,
             changePage,
+            activeDropdown,
+            closeOtherDropdowns,
+            openActiveDropdown,
         };
     },
 };

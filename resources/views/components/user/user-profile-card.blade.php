@@ -5,7 +5,7 @@
     <div class="user-info container relative pl-[250px] py-[20px] flex justify-between">
         <div class="user-img absolute left-[70px] bottom-[70px]">
             <Link href="/profile">
-                <img class="rounded-full p-[5px] bg-white h-[150px] w-[150px]" src="https://scontent.fceb1-3.fna.fbcdn.net/v/t39.30808-1/342885172_251828887229207_7402655887074568982_n.jpg?stp=dst-jpg_p200x200&_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeF1_lEglmU5Nw-OHFgT8NUHZhmicf16Wk9mGaJx_XpaT7XNPWxXieT7eZDMErfSAeC6CIYH-_sWl1DCOAlbCXa4&_nc_ohc=3lbVfQB4--IAX_1pdoF&_nc_oc=AQlkEyVAopT2TS4KmeNHfeFpmFdZpbkGcmVAukvUzdqnKLXFCyPTGDPxiFcCc0YTcC4&_nc_ht=scontent.fceb1-3.fna&oh=00_AfD5Vf36l31Rby1Dj1JxMbU99bZP6J6kGEHwjCU2XRN08Q&oe=65493BF7" />
+                <div class="bg-slate-500 h-[150px] w-[150px] rounded-full"></div>
             </Link>
         </div>
         <div>

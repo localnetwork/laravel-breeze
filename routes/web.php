@@ -42,6 +42,10 @@ Route::middleware('splade')->group(function () {
         return view('pages.about');
     });
 
+    Route::get('/apply', function () {
+        return view('pages.apply');
+    });
+
     Route::middleware(['auth'])->group(function () {
 
         Route::get('/wallet', [WalletController::class, 'index'])->name('wallet.index');

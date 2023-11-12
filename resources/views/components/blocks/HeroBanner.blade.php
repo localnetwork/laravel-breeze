@@ -12,7 +12,7 @@
         <h2 class="text-[96px] font-extrabold text-white">Making everyday green, possible.</h2>
         <div class="flex pt-[80px] items-center gap-[20px] font-bold text-[20px]">
             <a class="py-[15px] px-[30px] bg-[var(--primaryColor)] text-white inline-block rounded-[5px] hover:opacity-[.9]" href="/">Be Our Partner</a>
-            <a class="py-[15px] px-[30px] text-white inline-block border-[2px] rounded-[5px]" href="/">Know More About Us</a>
+            <a class="py-[15px] px-[30px] text-white inline-block border-[2px] rounded-[5px]" href="/about">Know More About Us</a>
         </div>
     </div>
 </section>

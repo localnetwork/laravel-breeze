@@ -29,15 +29,15 @@ $menuItems = [
 
     @if (Request::path() == $linkUrl)
         @php
-            $test = 'opacity-[.7] disabled'; 
+            $activeClass = 'opacity-[.7] disabled'; 
         @endphp
     @else
         @php
-            $test = 'not-active'; 
+            $activeClass = 'not-active'; 
         @endphp
     @endif
 
-    <div key="{{$index}}" class="border-b-[1px] mb-[15px] pb-[15px] {{ $test }}">
+    <div key="{{$index}}" class="border-b-[1px] mb-[15px] pb-[15px] {{ $activeClass }}">
             <Link class="text-[#111827] text-[20px] font-bold {{ Request::is($item['link']) ? 'active' : '' }}" href="{{ $item['link'] }}">{{ $item['title'] }}</Link>
         </div>
     @endforeach

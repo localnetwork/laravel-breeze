@@ -12,13 +12,19 @@ class PointTransaction extends Model
     protected $fillable = [
         'user_id',
         'amount',
+        'payment_method', 
         'type',
         'status',
         'proof',
     ];
 
-    public function user()
+    public function user_id()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function payment_method()
+    {
+        return $this->belongsTo(PaymentMethod::class);
     }
 }

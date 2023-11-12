@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PaymentMethod;  
+
+
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
 use Illuminate\Support\Facades\Storage; 
@@ -19,6 +23,8 @@ class PointTransactionController extends Controller
         if($user->role_id === 1 || $user->role_id === 2) {
             $this->validate($request, [
                 'amount' => 'required|numeric|min:1',
+                'proof' => 'required|image|mimes:jpeg,jpg,png,webp', 
+                'payment_method' => 'required', 
             ]);
 
             if($request->hasFile('proof')) {
@@ -29,12 +35,13 @@ class PointTransactionController extends Controller
                 'user_id' => $user_id,
                 'amount' => $request->input('amount'), 
                 'proof' => $path, 
+                'payment_method' => $request->input('payment_method'), 
                 'type' => 'topup',
                 'status' => 'pending', 
             ]);
-            
+        
     
-            Toast::title('Success')->message('Transaction has been created pending for approval.')->success()->rightTop()->autoDismiss(3);
+            Toast::title('Success')->message('Transaction has been received and pending for approval.')->success()->rightTop()->autoDismiss(5);
     
             return Redirect::route('wallet.index');
         }else {

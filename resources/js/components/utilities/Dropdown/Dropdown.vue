@@ -10,7 +10,7 @@
         >
             {{ dropdownTitle }}
         </button>
-        <ul class="dropdown-menu absolute top-[100%] w-full bg-white z-[20]">
+        <ul class="dropdown-menu">
             <slot />
         </ul>
     </div>

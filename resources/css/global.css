@@ -29,8 +29,32 @@ body {
     visibility: hidden;
     transform: translateY(-10px);
     transition: all ease 0.3s;
-    min-width: 150px;
+    position: absolute;
+    top: 100%;
     right: 0;
+    border-radius: 10px;
+    box-shadow: rgb(0 0 0 / 20%) 0px 12px 28px 0px,
+        rgb(0 0 0 / 10%) 0px 2px 4px 0px;
+    min-width: 150px;
+    z-index: 999;
+    background-color: #fff;
+}
+.dropdown-item {
+    padding: 5px 7px;
+}
+.dropdown-item button,
+.dropdown a {
+    padding: 15px;
+    user-select: none;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border-radius: 5px;
+}
+.dropdown-item button:hover,
+.dropdown a:hover {
+    background-color: #f3f3f3;
 }
 .dropdown.active .dropdown-menu {
     transform: translateY(0);
@@ -41,4 +65,77 @@ body {
 .dropdown-toggle {
     font-size: 20px;
     font-weight: 700;
+    user-select: none;
+    outline: none;
+    cursor: pointer;
+}
+.alert {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    padding: 15px 50px 15px 15px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+.alert button {
+    position: absolute;
+}
+.alert-success {
+    border-radius: 5px;
+    background: white;
+    color: #4caf50;
+    border: 1px solid #f3f3f3;
+    border-bottom: 5px solid #4caf50;
+}
+.filepond--credits {
+    display: none;
+}
+
+body > #app > div {
+    display: flex;
+    flex-flow: column;
+    min-height: 100vh;
+}
+#main {
+    margin-bottom: auto;
+}
+
+.payment-methods input:checked ~ span label {
+    border: 1px solid #00b14f !important;
+    background-color: #f4fff9 !important;
+    color: #242a2e;
+    position: relative;
+}
+.payment-methods .payment-item > label {
+    width: 100%;
+    display: block;
+}
+.payment-methods .payment-item > label span {
+    display: block;
+    margin: 0;
+}
+.payment-methods input {
+    display: none;
+}
+.payment-methods input:checked ~ span label .footer-info {
+    display: block;
+}
+.payment-methods label label:hover {
+    background-color: #00b14f;
+    color: #fff;
+}
+.payment-methods input:checked ~ span label::before {
+    content: "selected";
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    font-size: 8px;
+    color: #fff;
+    background-color: var(--primaryColor);
+    padding: 5px 15px;
+    border-radius: 15px;
+}
+
+.payment-methods .footer-info {
+    display: none;
+    border-top: 1px solid #ddd;
 }

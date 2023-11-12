@@ -13,9 +13,9 @@ class CheckRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $role): Response
+    public function handle(Request $request, Closure $next, $role_id): Response
     {
-        if (auth()->check() && auth()->user()->role == $role) {
+        if (auth()->check() && auth()->user()->role_id == $role_id) {
             return $next($request);
         }
     

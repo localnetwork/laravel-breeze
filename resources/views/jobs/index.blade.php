@@ -3,31 +3,6 @@
     @seoDescription('Become the Splade expert!')
     @seoKeywords('laravel, splade, course')
 
-    @php
-        $items = [
-        [
-            'id' => 1,
-            'name' => 'Product 1',
-            'description' => 'This is product 1.',
-            'price' => 100,
-        ],
-        [
-            'id' => 2,
-            'name' => 'Product 2',
-            'description' => 'This is product 2.',
-            'price' => 200,
-        ],
-        [
-            'id' => 3,
-            'name' => 'Product 3',
-            'description' => 'This is product 3.',
-            'price' => 300,
-        ],
-    ];
-    @endphp
-
-
-
     @include('components.user.user-profile-card')
 
     
@@ -38,15 +13,22 @@
             {{-- <div id="test">
                 <job-list-component :jobs="{{ $jobs }}"></job-list-component>
             </div> --}}
+
+
+            
             
             <div class="row">
                 <div class="max-w-[25%] w-full flex justify-start flex-co">
                     @include('components.user.user-sidebar')
                 </div>
                 <div class="max-w-[75%] w-full">
-                    <Link href="#createModal" class="inline-block mb-3 border rounded-md shadow-sm font-bold py-2 px-4 focus:outline-none focus:ring focus:ring-opacity-50 bg-indigo-500 text-white border-transparent hover:bg-indigo-700 focus:border-indigo-300 focus:ring-indigo-200">Add a task</Link> 
+                    <Link href="#createModal" class="inline-block mb-3 border rounded-md shadow-sm font-bold py-2 px-4 focus:outline-none focus:ring focus:ring-opacity-50 bg-[#00b14f] text-white border-transparent hover:bg-[#0b9749] focus:border-indigo-300 focus:ring-indigo-200">Add a job</Link> 
+                    
+                   
+                    {{-- {{ Auth::user() }} --}}
                     <x-splade-rehydrate on="job-added">
                         <JobListComponent /> 
+                        {{-- @include('components.JobListComponent') --}}
                     </x-splade-rehydrate>
                     {{-- <x-splade-table :for="$jobs" pagination-scroll="head"> 
                         @cell('action', $job)
@@ -76,11 +58,18 @@
     </div>
 
 
-    <x-splade-modal name="createModal" id="createModal" :close-button="true" max-width="xl" close-explicitly>
+    <x-splade-modal name="editModal" id="editModal" :close-button="true" max-width="xl" close-explicitly>
         <div class="container">
             <h2 class="text-lg font-medium text-gray-900">Add a task</h2>
     
-            <x-splade-form method="POST" :action="route('jobs.store')" class="mt-6 space-y-6" preserve-scroll @success="$splade.emit('job-added')">
+            <x-splade-form 
+                method="POST" 
+                confirm="Do you want to proceed?"
+                confirm-text="You won't be able to edit this task once created."
+                confirm-button="Yes, please proceed!"
+                cancel-button="Cancel"
+
+                :action="route('jobs.store')" class="mt-6 space-y-6" preserve-scroll @success="$splade.emit('job-added')">
             
                 <x-splade-input type="text" label="Title" name="title" id="title" class="form-control" />
                 <x-splade-input label="Quantity" name="quantity" id="quantity" class="form-control" />
@@ -92,6 +81,43 @@
                             <option value="{{ $tree->id }}">{{ $tree->name }}</option>
                         @endforeach
                 </x-splade-select>
+
+
+
+                <x-splade-textarea label="Job Description" name="job_description" id="job_description" class="form-control" autosize />
+
+                <div class="flex items-center gap-4">
+                    <x-splade-submit :label="__('Add')" />
+                </div>
+            </x-splade-form>
+        </div>  
+    </x-splade-modal> 
+
+
+
+    <x-splade-modal name="createModal" id="createModal" :close-button="true" max-width="xl" close-explicitly>
+        <div class="container">
+            <h2 class="text-lg font-medium text-gray-900">Add a task</h2>
+    
+            <x-splade-form 
+                method="POST" 
+                :action="route('jobs.store')" class="mt-6 space-y-6" preserve-scroll @success="$splade.emit('job-added')">
+            
+                <x-splade-input type="text" label="Title" name="title" id="title" class="form-control" />
+                <x-splade-input label="Quantity" name="quantity" id="quantity" class="form-control" />
+                <x-splade-select label="Tree" name="tree" id="tree">
+                        <option selected disabled readonly value="">Select an option</option>
+                        @foreach ($trees as $tree)
+                            <option value="{{ $tree->id }}">{{ $tree->name }}</option>
+                        @endforeach
+                </x-splade-select> 
+
+                <x-splade-select label="Address" name="address" id="address">
+                    <option selected disabled readonly value="">Select an option</option>
+                    @foreach ($address as $address)
+                        <option value="{{ $address->id }}">{{ $address->name }}</option>
+                    @endforeach
+                </x-splade-select> 
 
 
                 <x-splade-textarea label="Job Description" name="job_description" id="job_description" class="form-control" autosize />

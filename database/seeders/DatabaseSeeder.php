@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             BarangaySeeder::class,
             UserSeeder::class,
             TreesTableSeeder::class,
+            PaymentMethods::class, 
         ]);
     }
 }

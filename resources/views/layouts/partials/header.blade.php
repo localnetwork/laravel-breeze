@@ -11,19 +11,37 @@ $menuItems = [
 ]; 
 @endphp
 
-<header class="header py-[20px] bg-white  z-[222]">
+
+
+<header class="header py-[20px] bg-white">
     <div class="container mx-auto">
         <div class="row justify-between items-center mx-[-15px]">
             <div class="nav-logo">
-                <Link href='/' >
+                <Link href='/'>
                     <div class="h-[70px] w-[70px] rounded-full inline-flex items-center justify-center bg-[#f3f3f3]">Logo</div>
                 </Link>
             </div>  
-            <div class="nav-menu"> 
+            <div class="menu text-[20px] gap-[30px] flex items-center font-bold"> 
                 <div class="flex gap-[15px]">
                     @foreach($menuItems as $index => $item)
-                        <div key="{{$index}}" class="">
-                            <Link href="{{ $item['link'] }}">{{ $item['title'] }}</Link>
+                    @php
+                        if(Request::path() === '/')  {
+                            $linkUrl = $item['link'];
+                        }else {
+                            $linkUrl = ltrim($item['link'], '/');
+                        }
+
+                        if (Request::path() == $linkUrl) {
+                            $activeClass = 'disabled text-[var(--primaryColor)]'; 
+                        }else {
+                            $activeClass = 'not-active'; 
+                        }
+                    @endphp
+
+
+                    
+                        <div key="{{$index}}">
+                            <Link class="{{  $activeClass }} hover:text-[var(--primaryColor)] {{ Request::is($item['link']) ? 'active' : '' }}" href="{{ $item['link'] }}">{{ $item['title'] }}</Link>
                         </div>
                     @endforeach
                 </div>

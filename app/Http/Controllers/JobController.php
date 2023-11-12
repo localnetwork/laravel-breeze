@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Job;
 use App\Models\Tree;  
+use App\Models\Barangay;  
 
 use Illuminate\Http\Request; 
 use Spatie\QueryBuilder\AllowedFilter;  
@@ -17,18 +18,36 @@ use Illuminate\Support\Facades\Redirect;
 use ProtoneMedia\Splade\Facades\Toast;  
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator; 
+
 
 class JobController extends Controller {
-  
-    public function jobsApi() {
 
+    public function messages() //OPTIONAL
+        {
+            return [
+                'quantity.required' => 'Email is required',
+                'job_description.email' => 'Email is not correct'
+            ];
+        } 
+  
+    public function jobsApi(Request $request) {
+        $user =  $request->user(); 
+        $user_id = $user->id; 
+
+      
         $jobs = QueryBuilder::for(Job::class)
             ->defaultSort('-updated_at')
             ->allowedSorts(['id', 'title', 'updated_at'])
-            ->allowedFilters(['title', 'updated_at']) // Added filter by updated_at 
+            ->allowedFilters(['id', 'title'])
             ->where('title', 'like', '%'.request()->get('title').'%') 
+            ->where('tree', 'like', '%'.request()->get('tree').'%') 
+            ->where('address', 'like', '%'.request()->get('address').'%') 
+            ->where('user_id', $user_id)
             ->with('tree')
             ->with('user_id')
+            ->with('address')
             ->paginate(3);
     
         return response()->json([
@@ -75,6 +94,7 @@ class JobController extends Controller {
                 ->paginate(15)
                 ->perPageOptions([15, 50, 100]),
             'trees' => Tree::all(),
+            'address' => Barangay::all(), 
             'user' => $user, 
         ]); 
     }
@@ -97,6 +117,7 @@ class JobController extends Controller {
                 'title' => 'required',
                 'quantity' => 'required|numeric|min:1',
                 'tree' => 'required', 
+                'address' => 'required', 
                 'job_description' => 'required',
             ]);
     
@@ -104,6 +125,7 @@ class JobController extends Controller {
                 'title' => $request->input('title'),
                 'user_id' => $user_id,
                 'tree' => $request->input('tree'), 
+                'address' => $request->input('address'), 
                 'quantity' => $request->input('quantity'),
                 'job_description' => $request->input('job_description'),
             ]);
@@ -137,14 +159,38 @@ class JobController extends Controller {
 
     public function update(Request $request, Job $job)
     {
-        $job->title = $request->input('title');
-        $job->user_id = $request->input('user_id');
-        $job->quantity = $request->input('quantity');
-        $job->job_description = $request->input('job_description');
 
-        $job->save();
+        if ($request->method() !== 'GET') {
+            $validator = \Validator::make($request->all(), [
+                'quantity' => 'required|min:1|numeric',
+                'job_description' => 'required',
+            ]); 
 
-        return redirect()->route('jobs.index');
+            if ($validator->fails()) {
+                $errorMessages = $validator->errors();
+                $response = [
+                    'status'  => false,
+                    'errors' => $errorMessages,
+                ];
+                return response()->json($response, 401); 
+            }
+                
+            $job->update($request->all());  
+            if ($job->save()) {
+                return response()->json([
+                    'message' => 'Job updated successfully',
+                    'data' => $job,
+                ]);
+            } else {
+                return response()->json([
+                    'error' => 'An error occurred while updating the job',
+                ], 500);
+            }
+        } else {
+            return response()->json([
+                'data' => $job,
+            ]);
+        } 
     }
 
     public function destroy(Job $job)

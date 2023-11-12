@@ -16,10 +16,12 @@ return new class extends Migration
             $table->string('title');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('tree');
+            $table->unsignedBigInteger('address');
             $table->integer('quantity');
             $table->text('job_description');
             $table->timestamps();
 
+            $table->foreign('address')->references('id')->on('barangays');
             $table->foreign('tree')->references('id')->on('trees');
             $table->foreign('user_id')->references('id')->on('users');
         }); 

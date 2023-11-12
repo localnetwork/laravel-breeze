@@ -17,9 +17,11 @@ return new class extends Migration
             $table->integer('amount');
             $table->string('status')->default('pending');
             $table->string('proof')->nullable();
+            $table->unsignedBigInteger('payment_method'); 
             $table->string('type');
             $table->timestamps(); 
 
+            $table->foreign('payment_method')->references('id')->on('payment_methods');
             $table->foreign('user_id')->references('id')->on('users');
         }); 
     }

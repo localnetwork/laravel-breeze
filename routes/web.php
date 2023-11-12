@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CurrentUserInfoController;
 use App\Http\Controllers\TreeController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\JobController;
@@ -56,17 +57,23 @@ Route::middleware('splade')->group(function () {
         Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
+        Route::get('/api/user', [CurrentUserInfoController::class, 'index'])->name('user.index');
+        
         
     });
-
+    
     // Check if the user role is 1.
     Route::middleware('checkRole:1')->group(function () {
+        Route::get('/admin/trees', [TreeController::class, 'index'])->name('admin.trees.index');
+
         Route::delete('/admin/trees/{tree}', [TreeController::class, 'destroy'])->name('admin.trees.destroy');
             
         Route::get('/admin/trees/create', [TreeController::class, 'create'])->name('admin.trees.create');
         Route::post('/admin/trees', [TreeController::class, 'store'])->name('admin.trees.store'); 
 
-        Route::get('/admin/trees', 'App\Http\Controllers\TreeController@index')->name('admin.trees.index');
+        
         
         Route::get('/admin/trees/{tree}', [TreeController::class, 'edit'])->name('admin.trees.edit'); 
         Route::put('/admin/trees/{tree}', [TreeController::class, 'update'])->name('admin.trees.update'); 
@@ -90,6 +97,8 @@ Route::middleware('splade')->group(function () {
 
 
         Route::get('/api/jobs', [JobController::class, 'jobsApi'])->name('jobs.api');
+        
+        Route::match(['get', 'patch', 'put'], '/api/jobs/{job}', [JobController::class, 'update'])->name('api.jobs.show');
 
         Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
         Route::get('/jobs/create', [JobController::class, 'create']);

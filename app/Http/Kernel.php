@@ -71,6 +71,5 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         // ...
         'checkRole' => \App\Http\Middleware\CheckRole::class,
-        'optimizeImages' => \Spatie\LaravelImageOptimizer\Middlewares\OptimizeImages::class,
     ];
 }

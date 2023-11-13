@@ -45,10 +45,9 @@ class JobController extends Controller {
             ->where('tree', 'like', '%'.request()->get('tree').'%') 
             ->where('address', 'like', '%'.request()->get('address').'%') 
             ->where('user_id', $user_id)
-            ->with('tree')
-            ->with('user_id')
-            ->with('address')
-            ->paginate(3);
+            ->with(['tree', 'user_id', 'address'])
+            ->paginate(3); 
+
     
         return response()->json([
             'jobs' => $jobs,

@@ -9,16 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Job extends Model {
     use HasFactory;
 
-    public function tree()
-    {
-        return $this->belongsTo(Tree::class, 'id'); // 'tree_id' is the foreign key in the 'jobs' table
-    } 
-    public function user_id() {
-        return $this->belongsTo(User::class, 'user_id'); // 'tree_id' is the foreign key in the 'jobs' table
-    }
-    public function address() {
-        return $this->belongsTo(Barangay::class, 'address'); 
-    }
+    
 
     protected $fillable = [
         'title',
@@ -28,4 +19,16 @@ class Job extends Model {
         'quantity',
         'job_description'
     ];
+
+
+    public function tree()
+    {
+        return $this->belongsTo(Tree::class, 'tree'); 
+    } 
+    public function user_id() {
+        return $this->belongsTo(User::class, 'user_id'); 
+    }
+    public function address() {
+        return $this->belongsTo(Barangay::class, 'address'); 
+    } 
 }

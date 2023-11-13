@@ -9,6 +9,9 @@ use App\Http\Controllers\WalletController;
 use App\Http\Controllers\PointTransactionController;
 use App\Http\Controllers\FilesController;
 
+
+// use App\Http\Middleware\DisableApiCache; 
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -69,6 +72,10 @@ Route::middleware('splade')->group(function () {
     });
     
     // Check if the user role is 1.
+
+    Route::get('/api/trees', [TreeController::class, 'treesApi'])->name('trees.api');
+
+
     Route::middleware('checkRole:1')->group(function () {
         Route::get('/admin/trees', [TreeController::class, 'index'])->name('admin.trees.index');
 
@@ -100,7 +107,7 @@ Route::middleware('splade')->group(function () {
     // Route::middleware('checkRole:1')->group(function () {
 
 
-        Route::get('/api/jobs', [JobController::class, 'jobsApi'])->name('jobs.api');
+        Route::get('/api/jobs', [JobController::class, 'jobsApi'])->name('jobs.api')->middleware('disable.cache');
         
         Route::match(['get', 'patch', 'put'], '/api/jobs/{job}', [JobController::class, 'update'])->name('api.jobs.show');
 

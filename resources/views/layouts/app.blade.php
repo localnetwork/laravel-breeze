@@ -1,11 +1,13 @@
 {{-- <div class="min-h-screen bg-gray-100"> --}}
+    {{-- @if(request()->is('dashboard')) --}}
+        @include('layouts.navigation')
+    {{-- @endif --}}
+
     @unless(request()->is('dashboard'))
         @include('layouts.partials.header')
     @endunless
     
-    @if(request()->is('dashboard'))
-        @include('layouts.navigation')
-    @endif
+    
 
     <main id="main">
         {{ $slot }} 

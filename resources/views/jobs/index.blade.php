@@ -22,7 +22,10 @@
                     @include('components.user.user-sidebar')
                 </div>
                 <div class="max-w-[75%] w-full">
-                    <Link href="#createModal" class="inline-block mb-3 border rounded-md shadow-sm font-bold py-2 px-4 focus:outline-none focus:ring focus:ring-opacity-50 bg-[#00b14f] text-white border-transparent hover:bg-[#0b9749] focus:border-indigo-300 focus:ring-indigo-200">Add a job</Link> 
+                    
+                    <div class="flex items-center gap-x-[15px] mb-[30px]">
+                        <span class="font-bold text-[20px]">Job Listing:</span> <Link href="#createModal" class="py-[5px] px-[30px] text-[#00b14f] inline-block border-[2px] border-[#00b14f] rounded-[5px]">Create a job</Link> 
+                    </div>
                     
                    
                     {{-- {{ Auth::user() }} --}}
@@ -128,4 +131,11 @@
             </x-splade-form>
         </div>  
     </x-splade-modal> 
+
+    <script
+    type="text/javascript"
+    src="https://platform-api.sharethis.com/js/sharethis.js#property=6551ec79043d5c0012cc74ab&product=inline-share-buttons&source=platform"
+    async="async"
+></script>
+
 </x-app-layout>

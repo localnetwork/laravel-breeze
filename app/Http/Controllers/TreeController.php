@@ -21,6 +21,15 @@ use Session;
 class TreeController extends Controller
 {   
 
+    public function treesApi(Request $request, Tree $tree) {
+        if ($request->method() === 'GET') {
+            $trees = Tree::all();
+
+            return response()->json([
+                'trees' => $trees,
+            ]);
+        }       
+    } 
      // Display the form to add a new tree
      public function create(Tree $tree)
      {

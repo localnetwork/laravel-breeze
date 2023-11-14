@@ -23,6 +23,10 @@
                     </Link>
                 </p>
 
+                <x-splade-file  label="Profile Picture" filepond="{ allowDrop: true }" dusk="profile_picture" name="profile_picture" @input="form.profile_picture = $event.target.files[0]" />
+            
+                <x-splade-file label="Cover Photo"  filepond="{ allowDrop: true }" dusk="cover_photo" name="cover_photo" @input="form.cover_photo = $event.target.files[0]" />
+
                 @if (session('status') === 'verification-link-sent')
                     <p class="mt-2 font-medium text-sm text-green-600">
                         {{ __('A new verification link has been sent to your email address.') }}

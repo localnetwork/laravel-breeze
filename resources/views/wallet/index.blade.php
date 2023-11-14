@@ -10,7 +10,7 @@
                     <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full sticky top-[15px]">
                         <div class="flex mb-[50px] flex-wrap justify-between">
                             <h1 class="text-[40px] leading-[32px] font-medium text-gray-900">Add Cordo points</h1>
-                            <a href="#">View Transactions</a>
+                            <Link href="/wallet/transactions">View Transactions</Link>
                         </div>
                         <x-splade-form 
                             confirm

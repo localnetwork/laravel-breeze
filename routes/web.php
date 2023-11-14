@@ -8,6 +8,7 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\PointTransactionController;
 use App\Http\Controllers\FilesController;
+use App\Http\Controllers\ContactFormController;
 
 
 // use App\Http\Middleware\DisableApiCache; 
@@ -45,6 +46,17 @@ Route::middleware('splade')->group(function () {
         return view('pages.about');
     });
 
+
+    Route::get('/contact', function () {
+        return view('pages.contact');
+    });
+
+    // Route to store form data
+    Route::post('/contact', [ContactFormController::class, 'store'])->name('contact.store');
+
+    // Route to display all contact form entries
+    Route::get('/admin/contact', [ContactFormController::class, 'index']);
+
     Route::get('/apply', function () {
         return view('pages.apply');
     });
@@ -52,8 +64,9 @@ Route::middleware('splade')->group(function () {
     Route::middleware(['auth'])->group(function () {
 
         Route::get('/wallet', [WalletController::class, 'index'])->name('wallet.index');
+        Route::get('/wallet/transactions', [WalletController::class, 'walletTransactions'])->name('wallet.transactions');
 
-        Route::post('/wallet/store', [PointTransactionController::class, 'store'])->name('wallet.store'); 
+        Route::post('/wallet/store', [WalletController::class, 'store'])->name('wallet.store'); 
 
         
         Route::get('/dashboard', function () {

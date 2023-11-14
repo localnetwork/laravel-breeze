@@ -109,7 +109,15 @@
                                 </p>
                             </div>
                             <div class="form-item">
-                                <select id="tree" name="tree" v-model="tree">
+                                <label class="w-full mb-[5px] block" for="tree"
+                                    >Select a tree</label
+                                >
+                                <select
+                                    class="flex rounded-md border border-gray-300 shadow-sm border-gray-300 block w-full focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:opacity-50 disabled:bg-gray-50 disabled:cursor-not-allowed rounded-md"
+                                    id="tree"
+                                    name="tree"
+                                    v-model="tree"
+                                >
                                     <option
                                         v-for="(item, index) in trees"
                                         v-bind:value="item.id"

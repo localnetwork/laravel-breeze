@@ -1,3 +1,5 @@
+
+@if(isset(Auth::user()->name))
 <x-splade-toggle>
     <nav class="bg-white border-b border-gray-100">
         <!-- Primary Navigation Menu -->
@@ -101,3 +103,4 @@
         </div>
     </nav>
 </x-splade-toggle>
+@endif

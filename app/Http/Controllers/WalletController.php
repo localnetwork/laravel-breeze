@@ -5,7 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
 
+use Spatie\QueryBuilder\AllowedFilter;  
+use Illuminate\Support\Collection; 
+use ProtoneMedia\Splade\AbstractTable; 
+use ProtoneMedia\Splade\SpladeTable; 
+use Spatie\QueryBuilder\QueryBuilder; 
+
 use App\Models\PaymentMethod;
+use App\Models\PointTransaction;   
 
 class WalletController extends Controller {
     public function index(Request $request) {
@@ -13,6 +20,41 @@ class WalletController extends Controller {
         return view('wallet.index', [
             'user' => $user, 
             'payment_methods' => PaymentMethod::all(), 
+        ]); 
+    }
+
+    public function walletTransactions(Request $request) {
+        $user =  $request->user(); 
+        $user_id = $user->id; 
+
+        $globalSearch = AllowedFilter::callback('global', function ($query, $value) {
+            $query->where(function ($query) use ($value) {
+                Collection::wrap($value)->each(function ($value) use ($query) {
+                    $query
+                        ->orWhere('id', 'LIKE', "%{$value}%")
+                        ->orWhere('status', 'LIKE', "%{$value}%");
+                });
+            });
+        });
+
+         
+        $transactions = QueryBuilder::for(PointTransaction::class)
+        ->defaultSort('-updated_at')
+        ->allowedSorts(['id', 'name', 'status', 'updated_at'])
+        ->allowedFilters(['id', 'name', $globalSearch])
+        ->where('user_id', $user_id);
+        
+        return view('wallet.transactions', [
+            'user' => $user, 
+            'transactions' => $transactions, 
+            'transactions' => SpladeTable::for($transactions)
+                ->withGlobalSearch(columns: ['id', 'name'])
+                ->column('id', sortable: true) 
+                ->column('status', sortable: true)
+                ->column('updated_at', sortable: true)
+                ->column('proof')
+                ->paginate(15)
+                ->perPageOptions([15, 50, 100])
         ]); 
     }
 }  

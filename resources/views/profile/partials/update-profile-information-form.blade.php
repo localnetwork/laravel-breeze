@@ -10,8 +10,15 @@
     </header>
 
     <x-splade-form method="patch" :action="route('profile.update')" :default="$user" class="mt-6 space-y-6" preserve-scroll>
+
         <x-splade-input id="name" name="name" type="text" :label="__('Name')" required autofocus autocomplete="name" />
         <x-splade-input id="email" name="email" type="email" :label="__('Email')" required autocomplete="email" />
+
+        <x-splade-wysiwyg class="hide-editor-toolbar" name="bio" :label="__('Bio')" jodit="{ showXPathInStatusbar: false }" />
+
+        <x-splade-file  label="Profile Picture" name="profile_picture" @input="$user.profile_picture = $event.target.files[0]" />
+        
+        <x-splade-file label="Cover Photo"  filepond="{ allowDrop: true }" name="cover_photo" @input="$user.cover_photo = $event.target.files[0]" />
 
         @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
             <div>

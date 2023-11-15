@@ -13,6 +13,9 @@ use App\Models\PointTransaction;
 use Illuminate\Support\Facades\Redirect;
 use ProtoneMedia\Splade\Facades\Toast; 
 
+use ProtoneMedia\Splade\FileUploads\HandleSpladeFileUploads;  
+
+
 class PointTransactionController extends Controller
 {
     public function store(Request $request)
@@ -27,10 +30,11 @@ class PointTransactionController extends Controller
                 'payment_method' => 'required', 
             ]);
 
-            if($request->hasFile('proof')) {
-                $path = Storage::putFile('point-transactions', $request->file('proof')); 
-            } 
-    
+            if ($request->hasFile('proof')) {
+                // $path = $request->file('proof')->store('public/point-transactions');
+                $path = $request->file('proof')->store('public/point-transactions');
+            }
+
             PointTransaction::create([
                 'user_id' => $user_id,
                 'amount' => $request->input('amount'), 

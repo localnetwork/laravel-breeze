@@ -151,3 +151,8 @@ body > #app > div {
     padding: 0;
     margin: 0 0 15px !important;
 }
+
+.hide-editor-toolbar .jodit-toolbar-editor-collection {
+    display: none;
+    visibility: hidden;
+}

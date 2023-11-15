@@ -23,7 +23,7 @@ class User extends Authenticatable
         'profile_picture',
         'cover_photo', 
         'bio', 
-        'role',
+        'role_id',
         'password',
     ];
 

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use ProtoneMedia\Splade\Facades\Toast;
 use ProtoneMedia\Splade\Facades\SEO;
+use ProtoneMedia\Splade\FileUploads\ExistingFile;
 
 class ProfileController extends Controller
 {
@@ -34,8 +35,14 @@ class ProfileController extends Controller
      */
     public function edit(Request $request)
     {
+        $user = $request->user(); 
+
+        $user_image = $user->profile_picture; 
+        // $image = ExistingFile::fromDisk('public')->get('profile_pictures' . $user_image); 
+        // $image = ExistingFile::fromDisk('public')->get('public/storage/point-transactions' . '1.jpg'); 
         return view('profile.edit', [
             'user' => $request->user(),
+            // 'image' => $image,
         ]);
     }
 
@@ -46,6 +53,7 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request)
     {
+        
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {

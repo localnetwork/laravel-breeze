@@ -1,11 +1,11 @@
 {{-- <div class="min-h-screen bg-gray-100"> --}}
     {{-- @if(request()->is('dashboard')) --}}
-        @include('layouts.navigation')
+        {{-- @include('layouts.navigation') --}}
     {{-- @endif --}}
 
-    @unless(request()->is('dashboard'))
+    {{-- @unless(request()->is('dashboard')) --}}
         @include('layouts.partials.header')
-    @endunless
+    {{-- @endunless --}}
     
     
 

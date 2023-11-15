@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Storage; 
+use ProtoneMedia\Splade\FileUploads\HandleSpladeFileUploads;  
 
 class RegisteredUserController extends Controller
 {
@@ -41,11 +42,18 @@ class RegisteredUserController extends Controller
             'cover_photo' => ['required'],
         ]);
 
+        // if ($request->hasFile('proof')) {
+        //     // $path = $request->file('proof')->store('public/point-transactions');
+        //     $path = $request->file('proof')->store('public/point-transactions');
+        // }
+
         if($request->hasFile('profile_picture')) {
-            $pp_path = Storage::putFile('users', $request->file('profile_picture')); 
+            // $pp_path = Storage::putFile('users', $request->file('profile_picture')); 
+            $pp_path = $request->file('profile_picture')->store('public/profile_pictures');
         }
         if($request->hasFile('cover_photo')) {
-            $cp_path = Storage::putFile('users', $request->file('cover_photo')); 
+            // $cp_path = Storage::putFile('users', $request->file('cover_photo')); 
+            $cp_path = $request->file('cover_photo')->store('public/cover_photos');
         }
 
         $user = User::create([
@@ -53,7 +61,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'profile_picture' => $pp_path, 
             'cover_photo' => $cp_path, 
-            'role_id' => $request->input('role_id'), 
+            'role_id' => $request->role_id, 
             'bio' => $request->bio, 
             'password' => Hash::make($request->password),
         ]);

@@ -66,7 +66,7 @@ Route::middleware('splade')->group(function () {
         Route::get('/wallet', [WalletController::class, 'index'])->name('wallet.index');
         Route::get('/wallet/transactions', [WalletController::class, 'walletTransactions'])->name('wallet.transactions');
 
-        Route::post('/wallet/store', [WalletController::class, 'store'])->name('wallet.store'); 
+        Route::post('/wallet/store', [PointTransactionController::class, 'store'])->name('wallet.store'); 
 
         
         Route::get('/dashboard', function () {
@@ -101,8 +101,6 @@ Route::middleware('splade')->group(function () {
         
         Route::get('/admin/trees/{tree}', [TreeController::class, 'edit'])->name('admin.trees.edit'); 
         Route::put('/admin/trees/{tree}', [TreeController::class, 'update'])->name('admin.trees.update'); 
-
-
 
         Route::delete('/admin/barangays/{tree}', [BarangayController::class, 'destroy'])->name('admin.barangays.destroy');
 

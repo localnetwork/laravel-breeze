@@ -11,6 +11,9 @@
 
 
             <x-splade-input id="name" type="text" name="name" :label="__('Name')" autofocus />
+            <x-splade-input id="short_name" type="text" name="short_name" :label="__('Short Name')" />
+            <x-splade-wysiwyg class="hide-editor-toolbar" name="bio" label="Bio" jodit="{ showXPathInStatusbar: false }" />
+
             <x-splade-input id="email" type="email" name="email" :label="__('Email')" />
 
             

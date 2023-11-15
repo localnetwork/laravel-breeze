@@ -1,12 +1,29 @@
+@php
+    use ProtoneMedia\Splade\FileUploads\ExistingFile;     
+    // $img = ExistingFile::fromDisk('public')->get('point-transactions/1.webp'); 
+@endphp
 <div class="cover">
-    <div class="container bg-[#f3f3f3] w-full h-[350px] rounded-[10px]">
+    {{-- <img src="{{ $img->previewUrl }}" /> --}}
+    <div class="container bg-[#f3f3f3] w-full h-[350px] rounded-[10px] overflow-hidden p-0 relative">
+        <span class="bg-[#000] opacity-[.2] absolute w-full h-full"></span>
+        
+        @if($user->cover_photo)
+            {{  ExistingFile::fromDisk('public')->get($user->cover_photo) }}
+            {{-- <img class="h-full w-full object-cover" width="100" height="100" src="{{ asset('storage/cover_photos/' . basename($user->cover_photo)) }}"> --}}
+        @endif
 
     </div>
     <div class="user-info container relative pl-[250px] py-[20px] flex justify-between">
         <div class="user-img absolute left-[70px] bottom-[70px]">
             <Link href="/profile">
-                <div class="bg-slate-500 h-[150px] w-[150px] rounded-full"></div>
+                <div class="bg-slate-500 h-[150px] w-[150px] rounded-full overflow-hidden border-[5px] border-color-white">
+                    @if($user->profile_picture)
+                        <img class="h-full w-full object-cover" width="100" height="100" src="{{ asset('storage/profile_pictures/' . basename($user->profile_picture)) }}">
+                    @endif
+                </div>
             </Link>
+            {{-- {{  $user->profile_picture }} --}}
+            
         </div>
         <div>
             <h1 class="font-bold text-[50px]">{{  $user->name }}</h1>

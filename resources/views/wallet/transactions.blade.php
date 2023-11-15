@@ -12,10 +12,12 @@
                             <h1 class="text-[40px] leading-[32px] font-medium text-gray-900">My Purchases</h1>
                             <Link href="/wallet">Go back to wallet</Link>
                         </div>
-                        <x-splade-table :for="$transactions">
+                        
+                        <x-splade-table 
+                            :for="$transactions">
+
                             @cell('proof', $transaction)
-                                {{-- {{  dd($transaction) }} --}}
-                                {{ URL::asset('/storage/' . $transaction->proof) }}
+                                <img width="100" height="100" src="{{ asset('storage/point-transactions/' . basename($transaction->proof)) }}">
                             @endcell
                             <x-slot:empty-state>
                                 <p>No recorded transactions at the moment.</p>

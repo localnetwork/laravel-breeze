@@ -54,17 +54,46 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request)
     {
         
-        $request->user()->fill($request->validated());
+        
+        if($request->hasFile('profile_picture')) {
+            // $pp_path = Storage::putFile('images', $request->file('profile_picture')); 
+            $pp_path = Storage::putFile('public', $request->file('profile_picture'));
+        }else {
+            $pp_path = null; 
+        }
+        if($request->hasFile('cover_photo')) { 
+            $cp_path = Storage::putFile('public', $request->file('cover_photo')); 
+            // $cp_path = $request->file('cover_photo')->store('public/cover_photos');
+        }else {
+            $cp_path = null; 
+        }
+
+            
+        $request->user()->fill($request->validated()); 
+        $request->user()->fill(
+            [
+                'name' => $request->name,
+                'short_name' => $request->short_name,
+                'email' => $request->email,
+                'profile_picture' => $pp_path, 
+                'cover_photo' => $cp_path, 
+                'bio' => $request->bio, 
+            ]
+        );
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
+
+        
 
         Toast::title('Success!')
         ->message('Your profile has been updated.')
         ->success()
         ->rightTop()
         ->autoDismiss(3);
+
+        
 
         $request->user()->save();
 

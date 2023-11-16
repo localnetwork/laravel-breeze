@@ -2,9 +2,9 @@
     <x-auth-card>
         <x-splade-form action="{{ route('register') }}" class="space-y-4">
 
-            <x-splade-group class="account-type" id="role_id" name="role_id" label="Account Type" inline>
+            <x-splade-group validation-key="role_id" class="account-type" id="role_id" name="role_id" label="Account Type" inline required>
                 <x-splade-radio name="role_id" value="2" label="Sponsor">
-                    TEST
+                    Sponsor
                 </x-splade-radio>
                 <x-splade-radio name="role_id" value="3" label="Volunteer" />
             </x-splade-group>

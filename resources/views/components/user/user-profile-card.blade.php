@@ -1,14 +1,14 @@
 @php
     use ProtoneMedia\Splade\FileUploads\ExistingFile;     
-    // $img = ExistingFile::fromDisk('public')->get('point-transactions/1.webp'); 
+    // $img = ExistingFile::fromDisk('public')->get('users/1.webp'); 
 @endphp
 <div class="cover">
-    {{-- <img src="{{ $img->previewUrl }}" /> --}}
+    
     <div class="container bg-[#f3f3f3] w-full h-[350px] rounded-[10px] overflow-hidden p-0 relative">
         <span class="bg-[#000] opacity-[.2] absolute w-full h-full"></span>
-        
         @if($user->cover_photo)
-            {{  ExistingFile::fromDisk('public')->get($user->cover_photo) }}
+
+        <img class="h-full w-full object-cover" width="100" height="100" src="{{ ExistingFile::fromDisk('public')->get(basename($user->cover_photo))->previewUrl }}" />
             {{-- <img class="h-full w-full object-cover" width="100" height="100" src="{{ asset('storage/cover_photos/' . basename($user->cover_photo)) }}"> --}}
         @endif
 
@@ -27,6 +27,9 @@
         </div>
         <div>
             <h1 class="font-bold text-[50px]">{{  $user->name }}</h1>
+            @if($user->short_name)
+                {{ $user->short_name }}
+            @endif
             <span class="bg-[#00b14f] inline-block text-white rounded-[10px] text-[12px] leading-[100%] py-[6px] px-[15px]">
                 @if($user->role == 1 )
                 administrator

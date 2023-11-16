@@ -34,13 +34,19 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role_id' => ['required'], 
             'profile_picture' => ['required'],
+            'short_name' => ['required', 'unique:'.User::class], 
             'cover_photo' => ['required'],
-        ]);
+            ],
+            [
+                'role_id.required' => 'Account Type is required.'
+            ]
+        );
 
         // if ($request->hasFile('proof')) {
         //     // $path = $request->file('proof')->store('public/point-transactions');
@@ -48,16 +54,18 @@ class RegisteredUserController extends Controller
         // }
 
         if($request->hasFile('profile_picture')) {
-            // $pp_path = Storage::putFile('users', $request->file('profile_picture')); 
-            $pp_path = $request->file('profile_picture')->store('public/profile_pictures');
-        }
-        if($request->hasFile('cover_photo')) {
-            // $cp_path = Storage::putFile('users', $request->file('cover_photo')); 
-            $cp_path = $request->file('cover_photo')->store('public/cover_photos');
-        }
+            // $pp_path = Storage::putFile('images', $request->file('profile_picture')); 
+            $pp_path = Storage::putFile('public', $request->file('profile_picture'));
+            // $pp_path = $request->file('profile_picture')->store('public/profile_pictures');
+        } 
+        if($request->hasFile('cover_photo')) { 
+            $cp_path = Storage::putFile('public', $request->file('cover_photo')); 
+            // $cp_path = $request->file('cover_photo')->store('public/cover_photos');
+        } 
 
         $user = User::create([
             'name' => $request->name,
+            'short_name' => $request->short_name,
             'email' => $request->email,
             'profile_picture' => $pp_path, 
             'cover_photo' => $cp_path, 

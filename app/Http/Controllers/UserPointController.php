@@ -3,39 +3,48 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\UserPoint;   
+use ProtoneMedia\Splade\Facades\Toast; 
+use App\Rules\EnoughPointsRule; 
 
 class UserPointController extends Controller
 {
-    public function addPoints(Request $request)
-    {
-        $user = $request->user();
+   
+    public function addPoints($points, $user_id) {
+        // Try to find a record with the given user_id
+        $userPoint = UserPoint::where('user_id', $user_id)->first();
 
-        $user->points += $request->points;
-        $user->save();
+        // If a record doesn't exist, create a new one
+        if (!$userPoint) {
+            UserPoint::create([
+                'user_id' => $user_id,
+                'points' => $points,
+            ]);
+        } else {
+            // If a record exists, update the points
+            $userPoint->update([
+                'points' => $userPoint->points + $points,
+            ]);
+        }
 
-        return response()->json([
-            'success' => true,
-        ]);
+        Toast::title('Success')->message('Points added successfully!')->success()->rightTop()->autoDismiss(5);
+        return back(); 
     }
 
-    public function subtractPoints(Request $request)
-    {
-        $user = $request->user();
+    public function subtractPoints($points, $user_id) {
+        // Try to find a record with the given user_id
+        $userPoint = UserPoint::where('user_id', $user_id)->first();
 
-        $user->points -= $request->points;
-        $user->save();
+        if(!$userPoint || $userPoint->points < $points) {
+            Toast::title('Warning')->message("You don't have enough points to complete this transaction.")->warning()->rightTop()->autoDismiss(5);
+            return back(); 
+        }else {
+            $userPoint->update([
+                'points' => $userPoint->points - $points,
+            ]);
 
-        return response()->json([
-            'success' => true,
-        ]);
-    }
-
-    public function getBalance(Request $request)
-    {
-        $user = $request->user();
-
-        return response()->json([
-            'balance' => $user->points,
-        ]);
+            Toast::title('Success')->message('Points deducted successfully!')->success()->rightTop()->autoDismiss(5);
+            return back(); 
+        } 
     }
 }

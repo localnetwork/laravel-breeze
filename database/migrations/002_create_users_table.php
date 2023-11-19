@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('short_name')->unique()->nullable();
+            $table->unsignedBigInteger('address')->nullable();
             $table->string('profile_picture')->nullable(); 
             $table->string('cover_photo')->nullable(); 
             $table->unsignedBigInteger('role_id');
@@ -24,6 +25,8 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('address')->references('id')->on('barangays');
 
 
             $table->foreign('role_id')->references('id')->on('roles');

@@ -61,57 +61,26 @@
     </div>
 
 
-    <x-splade-modal name="editModal" id="editModal" :close-button="true" max-width="xl" close-explicitly>
-        <div class="container">
-            <h2 class="text-lg font-medium text-gray-900">Add a task</h2>
-    
-            <x-splade-form 
-                method="POST" 
-                confirm="Do you want to proceed?"
-                confirm-text="You won't be able to edit this task once created."
-                confirm-button="Yes, please proceed!"
-                cancel-button="Cancel"
-
-                :action="route('jobs.store')" class="mt-6 space-y-6" preserve-scroll @success="$splade.emit('job-added')">
-            
-                <x-splade-input type="text" label="Title" name="title" id="title" class="form-control" />
-                <x-splade-input label="Quantity" name="quantity" id="quantity" class="form-control" />
-                {{-- <x-splade-select label="Trees" name="trees" :options="$trees" /> --}}
-
-                <x-splade-select label="Tree" name="tree" id="tree">
-                        <option selected disabled readonly value="">Select an option</option>
-                        @foreach ($trees as $tree)
-                            <option value="{{ $tree->id }}">{{ $tree->name }}</option>
-                        @endforeach
-                </x-splade-select>
-
-
-
-                <x-splade-textarea label="Job Description" name="job_description" id="job_description" class="form-control" autosize />
-
-                <div class="flex items-center gap-4">
-                    <x-splade-submit :label="__('Add')" />
-                </div>
-            </x-splade-form>
-        </div>  
-    </x-splade-modal> 
 
 
 
     <x-splade-modal name="createModal" id="createModal" :close-button="true" max-width="xl" close-explicitly>
         <div class="container">
             <h2 class="text-lg font-medium text-gray-900">Add a task</h2>
-    
+
+            Current Cordo Points: {{ number_format($user_points) }}
+
+            <span class="warning-message mt-[15px] text-[red] hidden">
+
+            </span>
             <x-splade-form 
                 method="POST" 
                 :action="route('jobs.store')" class="mt-6 space-y-6" preserve-scroll @success="$splade.emit('job-added')">
-            
-                <x-splade-input type="text" label="Title" name="title" id="title" class="form-control" />
-                <x-splade-input label="Quantity" name="quantity" id="quantity" class="form-control" />
-                <x-splade-select label="Tree" name="tree" id="tree">
+                <x-splade-input type="number" label="Quantity" name="quantity" id="quantity" class="form-control" onchange="handleSelectChange()" oninput="handleSelectChange()" />
+                <x-splade-select label="Tree" name="tree" id="tree" onchange="handleSelectChange()">
                         <option selected disabled readonly value="">Select an option</option>
                         @foreach ($trees as $tree)
-                            <option value="{{ $tree->id }}">{{ $tree->name }}</option>
+                            <option tree_value="{{ $tree->tree_value }}" value="{{ $tree->id }}">{{ $tree->name }}</option>
                         @endforeach
                 </x-splade-select> 
 
@@ -120,22 +89,48 @@
                     @foreach ($address as $address)
                         <option value="{{ $address->id }}">{{ $address->name }}</option>
                     @endforeach
-                </x-splade-select> 
-
-
-                <x-splade-textarea label="Job Description" name="job_description" id="job_description" class="form-control" autosize />
+                </x-splade-select>
+                {{-- <x-splade-textarea label="Job Description" name="job_description" id="job_description" class="form-control" autosize /> --}}
 
                 <div class="flex items-center gap-4">
                     <x-splade-submit :label="__('Add')" />
                 </div>
+
+                
             </x-splade-form>
         </div>  
     </x-splade-modal> 
 
-    <script
-    type="text/javascript"
-    src="https://platform-api.sharethis.com/js/sharethis.js#property=6551ec79043d5c0012cc74ab&product=inline-share-buttons&source=platform"
-    async="async"
-></script>
+    <script>
+        function handleSelectChange() {
+            const currentPoints = {{ $user_points }}; 
+            const warningMsg = document.querySelector('.warning-message');
+            console.log('onChangeee'); 
+            var quantityElement = document.getElementById('quantity');
+            var selectElement = document.getElementById('tree');
+    
+            var selectedOption = selectElement.options[selectElement.selectedIndex];
+    
+            var selectedValue = selectedOption.value;
+            var selectedTreeValue = selectedOption.getAttribute('tree_value');
 
+            if (!isNaN(quantityElement.value) && quantityElement.value !== '' && selectedTreeValue !== null) {
+                const total = selectedTreeValue * quantityElement.value; 
+                if(total > currentPoints) {
+                    console.log(total); 
+                    warningMsg.classList.add('block'); 
+                    warningMsg.classList.remove('hidden'); 
+                    warningMsg.innerHTML = "You don't have enough points. <br /> Estimated Total cost is: " + total.toLocaleString() + '.'; 
+                }else {
+                    warningMsg.classList.remove('block'); 
+                    warningMsg.classList.add('hidden'); 
+                }
+            }else {
+                warningMsg.classList.remove('block'); 
+                warningMsg.classList.add('hidden');  
+            }
+        }
+    </script>
 </x-app-layout>
+
+

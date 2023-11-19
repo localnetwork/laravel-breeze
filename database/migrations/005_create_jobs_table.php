@@ -13,12 +13,12 @@ return new class extends Migration
     {   
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            // $table->string('title');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('tree');
             $table->unsignedBigInteger('address');
             $table->integer('quantity');
-            $table->text('job_description');
+            // $table->text('job_description');
             $table->timestamps();
 
             $table->foreign('address')->references('id')->on('barangays');

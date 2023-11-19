@@ -2,10 +2,10 @@
     
     <div class="container">
         <h1 class="text-xl mb-[20px] font-medium text-gray-900">Management - Trees</h1>
-        <Link href="#treeModal" class="inline-block mb-3 border rounded-md shadow-sm font-bold py-2 px-4 focus:outline-none focus:ring focus:ring-opacity-50 bg-indigo-500 text-white border-transparent hover:bg-indigo-700 focus:border-indigo-300 focus:ring-indigo-200">Create tree</Link> 
+        <Link href="#treeModal" class="inline-block mb-3 border rounded-md shadow-sm font-bold py-2 px-4 focus:outline-none focus:ring focus:ring-opacity-50 bg-[var(--primaryColor)] hover:bg-[#009945] text-white border-transparent  focus:border-indigo-300 focus:ring-indigo-200">Add tree</Link> 
         <x-splade-table :for="$trees" pagination-scroll="head"> 
             @cell('action', $tree)
-                <x-splade-link class="items-center block px-4 py-2 text-left text-sm leading-5 text-white border rounded-md shadow-sm bg-indigo-500 font-medium hover:bg-indigo-700 focus:border-indigo-300 focus:ring-indigo-200 focus:outline-none focus:bg-indigo-700 transition duration-150 ease-in-out" href="#editModal-{{  $tree->id }}" method="PUT" data="{{ $tree }}" :data="['tree' => 'Untitled Template']">EDIT</x-splade-link> 
+                <x-splade-link class="items-center block px-4 py-2 text-left text-sm leading-5 text-white border rounded-md shadow-sm bg-[var(--primaryColor)] hover:bg-[#009945] font-medium focus:border-indigo-300 focus:ring-indigo-200 focus:outline-none focus:bg-indigo-700 transition duration-150 ease-in-out" href="#editModal-{{  $tree->id }}" method="PUT" data="{{ $tree }}" :data="['tree' => 'Untitled Template']">EDIT</x-splade-link> 
 
                 <x-splade-link
                 class="items-center block px-4 py-2 text-left text-sm leading-5 text-[red] ml-[5px] hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" 

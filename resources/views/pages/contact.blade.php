@@ -16,7 +16,7 @@
             <x-splade-textarea label="Message" name="message" id="message" autosize />
 
             <div class="flex items-center gap-4">
-                <x-splade-submit :label="__('Submit')" />
+                <x-splade-submit class="w-full min-w-[250px] max-w-[250px] inline-flex justify-center items-center bg-[#00b14f] !rounded-[50px] font-semibold text-[20px] text-white !p-[12px] inline-block" :label="__('Submit')" />
             </div>
         </x-splade-form>
     </div>

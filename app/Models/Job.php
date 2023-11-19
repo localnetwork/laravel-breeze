@@ -12,12 +12,12 @@ class Job extends Model {
     
 
     protected $fillable = [
-        'title',
+        // 'title',
         'user_id',
         'tree', 
         'address', 
         'quantity',
-        'job_description'
+        // 'job_description'
     ];
 
 

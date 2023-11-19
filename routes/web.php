@@ -59,14 +59,18 @@ Route::middleware('splade')->group(function () {
 
     Route::get('/apply', function () {
         return view('pages.apply');
-    });
+    })->middleware('guest');
 
     Route::middleware(['auth'])->group(function () {
+        
 
         Route::get('/wallet', [WalletController::class, 'index'])->name('wallet.index');
         Route::get('/wallet/transactions', [WalletController::class, 'walletTransactions'])->name('wallet.transactions');
 
-        Route::post('/wallet/store', [PointTransactionController::class, 'store'])->name('wallet.store'); 
+        Route::post('/wallet/store', [PointTransactionController::class, 'store'])->name('wallet.store');
+
+        
+        Route::put('/points/approval/{id}', [PointTransactionController::class, 'approved']);
 
         
         Route::get('/dashboard', function () {
@@ -112,7 +116,12 @@ Route::middleware('splade')->group(function () {
         Route::get('/admin/barangays/{barangay}', [BarangayController::class, 'edit'])->name('admin.barangays.edit'); 
         
         Route::put('/admin/barangays/{barangay}', [BarangayController::class, 'update'])->name('admin.barangays.update'); 
+
+        
+        
     });
+
+    Route::get('/admin/points-transactions', [PointTransactionController::class, 'adminPointsTransactions'])->name('admin.points-transactions.index'); 
 
     // Check if the user role is 1.
     // Route::middleware('checkRole:1')->group(function () {

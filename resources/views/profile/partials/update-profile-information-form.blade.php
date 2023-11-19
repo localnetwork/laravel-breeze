@@ -23,13 +23,15 @@
         }
     @endphp
 
-    <x-splade-form method="patch" :default="['name' => $user->name, 'email' => $user->email, 'bio' => $user->bio, 'cover_photo' => $cover_photo]" :action="route('profile.update')"  class="mt-6 space-y-6" preserve-scroll>
-
+    <x-splade-form method="patch" :default="['name' => $user->name, 'short_name' => $user->short_name, 'email' => $user->email, 'bio' => $user->bio, 'cover_photo' => $cover_photo, 'profile_picture' => $profile_picture]" :action="route('profile.update')"  class="mt-6 space-y-6" preserve-scroll>
         <x-splade-input id="name" name="name" type="text" :label="__('Name')" required autofocus autocomplete="name" />
+        <x-splade-input id="short_name" name="short_name" type="text" :label="__('Short Name')" required autofocus/>
+
         <x-splade-input id="email" name="email" type="email" :label="__('Email')" required autocomplete="email" />
-        <x-splade-input id="bio" name="bio" type="text" :label="__('Bioo')" required autocomplete="bio" />
-        {{-- <x-splade-wysiwyg class="hide-editor-toolbar" id="bio" name="bio" :label="__('Bio')" jodit="{ showXPathInStatusbar: false }" /> --}}
+        {{-- <x-splade-input id="bio" name="bio" type="text" :label="__('Bioo')" required autocomplete="bio" /> --}}
+        <x-splade-wysiwyg class="hide-editor-toolbar" id="bio" name="bio" :label="__('Bio')" jodit="{ showXPathInStatusbar: false }" />
         <x-splade-file  label="Profile Picture" filepond="{ allowDrop: true }" dusk="profile_picture" name="profile_picture" @input="form.profile_picture = $event.target.files[0]" />
+        
         <x-splade-file label="Cover Photo"  filepond="{ allowDrop: true }" dusk="cover_photo" name="cover_photo" @input="form.cover_photo = $event.target.files[0]" />
 
         @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())

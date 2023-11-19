@@ -12,6 +12,9 @@
                             <h1 class="text-[40px] leading-[32px] font-medium text-gray-900">Add Cordo points</h1>
                             <Link href="/wallet/transactions">View Transactions</Link>
                         </div>
+                        <div class="w-full text-[20px] mb-[40px]">
+                            Current Cordo Points: {{ number_format($userPoints) }}
+                        </div>
                         <x-splade-form 
                             confirm
                             method="POST" :action="route('wallet.store')" class="mt-6 space-y-6" preserve-scroll>

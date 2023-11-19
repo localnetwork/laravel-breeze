@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\Job;
 use App\Models\Tree;  
 use App\Models\Barangay;  
+use App\Models\UserPoint;  
 
 use Illuminate\Http\Request; 
 use Spatie\QueryBuilder\AllowedFilter;  
@@ -21,17 +22,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator; 
 
+use App\Http\Controllers\UserPointController;
+
 
 class JobController extends Controller {
 
-    public function messages() //OPTIONAL
-        {
-            return [
-                'quantity.required' => 'Email is required',
-                'job_description.email' => 'Email is not correct'
-            ];
-        } 
-  
+    protected $userPointController;
+
+    public function __construct(UserPointController $userPointController)
+    {
+        $this->userPointController = $userPointController;
+    }
+
+
     public function jobsApi(Request $request) {
         $user =  $request->user(); 
         $user_id = $user->id; 
@@ -39,9 +42,9 @@ class JobController extends Controller {
       
         $jobs = QueryBuilder::for(Job::class)
             ->defaultSort('-updated_at')
-            ->allowedSorts(['id', 'title', 'updated_at'])
+            ->allowedSorts(['id', 'updated_at'])
             ->allowedFilters(['id', 'title'])
-            ->where('title', 'like', '%'.request()->get('title').'%') 
+            // ->where('like', '%'.request()->get('title').'%') 
             ->where('tree', 'like', '%'.request()->get('tree').'%') 
             ->where('address', 'like', '%'.request()->get('address').'%') 
             ->where('user_id', $user_id)
@@ -60,6 +63,8 @@ class JobController extends Controller {
         $user =  $request->user(); 
         $user_id = $user->id; 
 
+
+        $userPoint = UserPoint::where('id', $user_id)->first();
         // $jobs = Job::all();
 
         // return view('jobs.index', compact('jobs'));
@@ -67,8 +72,8 @@ class JobController extends Controller {
             $query->where(function ($query) use ($value) {
                 Collection::wrap($value)->each(function ($value) use ($query) {
                     $query
-                        ->orWhere('id', 'LIKE', "%{$value}%")
-                        ->orWhere('title', 'LIKE', "%{$value}%");
+                        ->orWhere('id', 'LIKE', "%{$value}%"); 
+                        // ->orWhere('title', 'LIKE', "%{$value}%");
                 });
             });
         });
@@ -77,15 +82,14 @@ class JobController extends Controller {
 
         $jobs = QueryBuilder::for(Job::class)
         ->defaultSort('-updated_at')
-        ->allowedSorts(['id', 'title', 'updated_at'])
-        ->allowedFilters(['id', 'title', $globalSearch])
+        ->allowedSorts(['id', 'updated_at'])
+        ->allowedFilters(['id', $globalSearch])
         ->where('user_id', $user_id);
     
         return view('jobs.index', [
             'jobs' => SpladeTable::for($jobs)
                 ->withGlobalSearch(columns: ['id', 'title'])
                 ->column('id', sortable: true) 
-                ->column('title', sortable: true)
                 ->column('user_id', sortable: true)
                 ->column('tree', sortable: true)
                 ->column('updated_at', sortable: true)
@@ -95,15 +99,7 @@ class JobController extends Controller {
             'trees' => Tree::all(),
             'address' => Barangay::all(), 
             'user' => $user, 
-        ]); 
-    }
-
-    public function create(Request $request)
-    {
-        $user =  $request->user(); 
-        $user_id = $user->id; 
-        $request->validate([
-            'title' => 'required|string|unique:trees|max:255',
+            'user_points' => $userPoint->points, 
         ]); 
     }
 
@@ -112,28 +108,45 @@ class JobController extends Controller {
         $user_id = $user->id; 
 
         if($user->role_id === 1 || $user->role_id === 2) {
+
             $this->validate($request, [
-                'title' => 'required',
-                'quantity' => 'required|numeric|min:1',
+                // 'title' => 'required',
+                'quantity' => 'required|numeric|min:1|max:100',
                 'tree' => 'required', 
                 'address' => 'required', 
-                'job_description' => 'required',
-            ]);
+                // 'job_description' => 'required',
+            ],
+            [
+                'quantity.max' => '100 trees per transaction.' 
+            ]
+            );
+            $userPoint = UserPoint::where('id', $user_id)->first();
+            $tree = Tree::where('id', $request->input('tree'))->first();
+
+            $amount = $tree->tree_value * $request->input('quantity'); 
+
+             
+            if($userPoint->points >= $amount) {
+                $job = Job::create([
+                    // 'title' => $request->input('title'),
+                    'user_id' => $user_id,
+                    'tree' => $request->input('tree'), 
+                    'address' => $request->input('address'), 
+                    'quantity' => $request->input('quantity'),
+                    // 'job_description' => $request->input('job_description'),
+                ]);
     
-            $job = Job::create([
-                'title' => $request->input('title'),
-                'user_id' => $user_id,
-                'tree' => $request->input('tree'), 
-                'address' => $request->input('address'), 
-                'quantity' => $request->input('quantity'),
-                'job_description' => $request->input('job_description'),
-            ]);
+                $this->userPointController->subtractPoints($amount, $user_id);
+                
+                Toast::title('Success')->message('Job added successfully')->success()->rightTop()->autoDismiss(3);
     
-            Toast::title('Success')->message('Job added successfully')->success()->rightTop()->autoDismiss(3);
-    
+            }else {
+                Toast::title('Whoops!')->message("You don't have enough points to complete this transaction.")->warning()->rightTop()->autoDismiss(3);
+            }
+            
             return Redirect::route('jobs.index');
+            
         }else {
-    
             Toast::title('Whoops!')
                 ->message('You are not allowed to do this function')
                 ->warning()
@@ -162,7 +175,7 @@ class JobController extends Controller {
         if ($request->method() !== 'GET') {
             $validator = \Validator::make($request->all(), [
                 'quantity' => 'required|min:1|numeric',
-                'job_description' => 'required',
+                // 'job_description' => 'required',
             ]); 
 
             if ($validator->fails()) {
@@ -185,6 +198,8 @@ class JobController extends Controller {
                     'error' => 'An error occurred while updating the job',
                 ], 500);
             }
+
+            
         } else {
             return response()->json([
                 'data' => $job,

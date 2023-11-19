@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->integer('amount');
-            $table->string('status')->default('pending');
+            // $table->string('status')->default('pending');
+            $table->enum('status', ['pending', 'approved', 'cancelled'])->default('pending');
             $table->string('proof')->nullable();
             $table->unsignedBigInteger('payment_method'); 
             $table->string('type');

@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Redirect;
 use ProtoneMedia\Splade\Facades\Toast;
 use ProtoneMedia\Splade\Facades\SEO;
 use ProtoneMedia\Splade\FileUploads\ExistingFile;
+use Illuminate\Support\Facades\Storage; 
+
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -53,6 +56,13 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request)
     {
+
+        $request->validate([
+            'profile_picture' => ['required'],
+            'cover_photo' => ['required'],
+            'bio' => ['max:100'],
+            ],
+        );
         
         
         if($request->hasFile('profile_picture')) {
@@ -68,7 +78,6 @@ class ProfileController extends Controller
             $cp_path = null; 
         }
 
-            
         $request->user()->fill($request->validated()); 
         $request->user()->fill(
             [

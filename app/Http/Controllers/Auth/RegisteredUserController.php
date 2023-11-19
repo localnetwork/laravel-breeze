@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Storage; 
 use ProtoneMedia\Splade\FileUploads\HandleSpladeFileUploads;  
+use App\Models\Barangay;   
 
 class RegisteredUserController extends Controller
 {
@@ -22,7 +23,11 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        return view('auth.register');
+        // return view('auth.register');
+
+        return view('auth.register', [
+            'address' => Barangay::all(), 
+        ]); 
     }
 
     /**
@@ -41,10 +46,12 @@ class RegisteredUserController extends Controller
             'role_id' => ['required'], 
             'profile_picture' => ['required'],
             'short_name' => ['required', 'unique:'.User::class], 
+            'address' => ['required'], 
             'cover_photo' => ['required'],
             ],
             [
-                'role_id.required' => 'Account Type is required.'
+                'role_id.required' => 'Please choose an account type.',
+                'short_name.unique' => 'Short name has already taken. Please try another.'
             ]
         );
 
@@ -57,11 +64,15 @@ class RegisteredUserController extends Controller
             // $pp_path = Storage::putFile('images', $request->file('profile_picture')); 
             $pp_path = Storage::putFile('public', $request->file('profile_picture'));
             // $pp_path = $request->file('profile_picture')->store('public/profile_pictures');
-        } 
+        }else {
+
+        }
         if($request->hasFile('cover_photo')) { 
             $cp_path = Storage::putFile('public', $request->file('cover_photo')); 
             // $cp_path = $request->file('cover_photo')->store('public/cover_photos');
-        } 
+        }else {
+            
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -76,6 +87,14 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
         Auth::login($user);
-        return redirect(RouteServiceProvider::HOME);
+        // return redirect(RouteServiceProvider::HOME);
+        $user = Auth::user();
+
+        if ($user->role === 1) {
+            return redirect()->route('dashboard');
+        } else { 
+            // Redirect to the profile
+            return redirect()->route('profile.edit');
+        }
     }
 }

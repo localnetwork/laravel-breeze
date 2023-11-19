@@ -2,6 +2,7 @@
     use ProtoneMedia\Splade\FileUploads\ExistingFile;     
     // $img = ExistingFile::fromDisk('public')->get('users/1.webp'); 
 @endphp
+
 <div class="cover">
     
     <div class="container bg-[#f3f3f3] w-full h-[350px] rounded-[10px] overflow-hidden p-0 relative">
@@ -18,7 +19,9 @@
             <Link href="/profile">
                 <div class="bg-slate-500 h-[150px] w-[150px] rounded-full overflow-hidden border-[5px] border-color-white">
                     @if($user->profile_picture)
-                        <img class="h-full w-full object-cover" width="100" height="100" src="{{ asset('storage/profile_pictures/' . basename($user->profile_picture)) }}">
+
+                    <img class="h-full w-full object-cover" width="100" height="100" src="{{ ExistingFile::fromDisk('public')->get(basename($user->profile_picture))->previewUrl }}" />
+                        {{-- <img class="h-full w-full object-cover" width="100" height="100" src="{{ asset('storage/cover_photos/' . basename($user->cover_photo)) }}"> --}}
                     @endif
                 </div>
             </Link>

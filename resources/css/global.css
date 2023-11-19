@@ -141,18 +141,25 @@ body > #app > div {
 }
 
 .account-type label {
-    background: red;
-    padding: 10px 15px;
-    color: #fff;
     cursor: pointer;
 }
+.account-type > div.flex {
+    gap: 15px;
+}
 .account-type > div > div {
-    width: 100%;
     padding: 0;
-    margin: 0 0 15px !important;
+}
+label > span {
+    color: #344055 !important;
+    font-weight: 700;
 }
 
-.hide-editor-toolbar .jodit-toolbar-editor-collection {
+.hide-editor-toolbar .jodit-toolbar-editor-collection,
+.jodit-status-bar-link {
     display: none;
     visibility: hidden;
+}
+
+.login-content form {
+    width: 100%;
 }

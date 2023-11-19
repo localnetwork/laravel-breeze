@@ -12,6 +12,8 @@ use ProtoneMedia\Splade\SpladeTable;
 use Spatie\QueryBuilder\QueryBuilder; 
 use ProtoneMedia\Splade\SpladeQueryBuilder; 
 
+
+
 use App\Models\PaymentMethod;
 use App\Models\PointTransaction;   
 
@@ -45,7 +47,7 @@ class WalletController extends Controller {
         $transactions = QueryBuilder::for(PointTransaction::class)
         ->defaultSort('-updated_at')
         ->allowedSorts(['id', 'name', 'payment_method', 'status', 'updated_at'])
-        ->allowedFilters(['id', 'name', $globalSearch])
+        ->allowedFilters(['id', 'name', 'status', $globalSearch])
         ->with('payment_method')
         ->where('user_id', $user_id);
         
@@ -54,7 +56,8 @@ class WalletController extends Controller {
             'transactions' => SpladeTable::for($transactions)
                 ->withGlobalSearch(columns: ['id', 'name'])
                 ->column('id', sortable: true) 
-                ->column('status', sortable: true)
+                ->column('status', sortable: true, searchable: true)
+                ->column('amount')
                 ->column('payment_method', sortable: true, label: 'Payment Method')
                 ->column('updated_at', sortable: true)
                 ->column('proof')

@@ -12,12 +12,29 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\PointTransaction;  
 use Illuminate\Support\Facades\Redirect;
 use ProtoneMedia\Splade\Facades\Toast; 
+use Spatie\QueryBuilder\AllowedFilter;  
+use Illuminate\Support\Collection; 
+use ProtoneMedia\Splade\AbstractTable; 
+use ProtoneMedia\Splade\SpladeTable; 
+use Spatie\QueryBuilder\QueryBuilder; 
+use ProtoneMedia\Splade\SpladeQueryBuilder; 
+
+use App\Http\Controllers\UserPointController;
 
 use ProtoneMedia\Splade\FileUploads\HandleSpladeFileUploads;  
 
 
+
 class PointTransactionController extends Controller
 {
+    protected $userPointController;
+
+    public function __construct(UserPointController $userPointController)
+    {
+        $this->userPointController = $userPointController;
+    }
+
+
     public function store(Request $request)
     {
         $user = $request->user();
@@ -43,8 +60,10 @@ class PointTransactionController extends Controller
                 'type' => 'topup',
                 'status' => 'pending', 
             ]);
-        
-    
+
+            
+
+
             Toast::title('Success')->message('Transaction has been received and pending for approval.')->success()->rightTop()->autoDismiss(5);
     
             return Redirect::route('wallet.index');
@@ -58,6 +77,59 @@ class PointTransactionController extends Controller
     
             return Redirect::route('wallet.index');
         }
+
+    }
+
+    public function approved($id) {
+
+        $transaction = PointTransaction::where('id', $id)->first();
+
+        $this->userPointController->addPoints($transaction->amount, $transaction->user_id);
+         
+        PointTransaction::where('id', $id)->update([
+            'status' => 'approved',
+        ]);
+
+        Toast::title('Success')->message('Transaction has been approved.')->success()->rightTop()->autoDismiss(5);
+
+        return back(); 
+        // return redirect()->back()->with('success', 'Transaction approved successfully.');
+    }
+
+    public function adminPointsTransactions(Request $request) {
+        $user =  $request->user(); 
+        $user_id = $user->id; 
+
+        $globalSearch = AllowedFilter::callback('global', function ($query, $value) {
+            $query->where(function ($query) use ($value) {
+                Collection::wrap($value)->each(function ($value) use ($query) {
+                    $query
+                        ->orWhere('id', 'LIKE', "%{$value}%")
+                        ->orWhere('status', 'LIKE', "%{$value}%");
+                });
+            });
+        });
+
+         
+        $transactions = QueryBuilder::for(PointTransaction::class)
+        ->defaultSort('-updated_at')
+        ->allowedSorts(['id', 'name', 'payment_method', 'status', 'updated_at'])
+        ->allowedFilters(['id', 'name', 'status', $globalSearch])
+        ->with('payment_method');
+        
+        return view('admin.points-transactions.index', [
+            'user' => $user, 
+            'transactions' => SpladeTable::for($transactions)
+                ->withGlobalSearch(columns: ['id', 'name'])
+                ->column('id', sortable: true) 
+                ->column('status', sortable: true)
+                ->column('payment_method', sortable: true, label: 'Payment Method')
+                ->column('updated_at', sortable: true)
+                ->column('proof')
+                ->column('actions')
+                ->paginate(15)
+                ->perPageOptions([15, 50, 100])
+        ]); 
 
     }
 

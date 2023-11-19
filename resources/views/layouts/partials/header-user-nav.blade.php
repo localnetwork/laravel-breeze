@@ -2,7 +2,7 @@
     @if(!isset(Auth::user()->name)) 
         <div class="flex gap-x-[15px] items-center">
             <Link class="py-[5px] px-[30px] text-[var(--primaryColor)] inline-block border-[var(--primaryColor)] border-[2px] rounded-[5px]" href="/login">Login</Link>
-            <Link class="py-[5px] inline-block" href="/register">Register</Link>
+            <Link class="py-[5px] inline-block" href="/apply">Register</Link>
         </div>
     @else
         <div class="flex gap-x-[15px] items-center">

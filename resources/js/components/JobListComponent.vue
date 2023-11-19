@@ -44,7 +44,7 @@
                             </ul> -->
                         <form @submit.prevent="handleSubmit(job)">
                             <div class="form-item mb-[15px]">
-                                <label
+                                <!-- <label
                                     class="w-full mb-[5px] block"
                                     for="job_description"
                                     >Job Description:</label
@@ -64,8 +64,8 @@
                                                 ),
                                         }
                                     "
-                                />
-                                <p
+                                /> -->
+                                <!-- <p
                                     class="text-red-600 text-sm mt-2 font-sans"
                                     v-if="
                                         errorKeys &&
@@ -77,7 +77,7 @@
                                             errorKeys.indexOf("job_description")
                                         ]
                                     }}
-                                </p>
+                                </p> -->
                             </div>
                             <div class="form-item mb-[15px]">
                                 <label
@@ -180,7 +180,7 @@
     <input
         v-model="search"
         @input="filterJobs"
-        placeholder="Search by address, title, tree"
+        placeholder="Search by address, tree"
         class="mb-4 flex rounded-md border border-gray-300 shadow-sm border-gray-300 block w-full focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:opacity-50 disabled:bg-gray-50 disabled:cursor-not-allowed rounded-md[object Object]"
     />
     <div v-if="jobs.length < 1">NO RESULT</div>
@@ -209,8 +209,12 @@
                         <span class="text-[#00b14f]">x{{ job.quantity }}</span>
                         {{ job.tree.name }} trees
                     </div>
-                    <div class="text-sm text-gray-500 dark:text-gray-200">
-                        @shortname
+                    <div
+                        class="text-sm text-gray-500 dark:text-gray-200"
+                        v-if="job.user_id.short_name"
+                    >
+                        <!-- @shortname -->
+                        @{{ job.user_id.short_name }}
                     </div>
                     <div
                         class="location flex gap-x-[5px] items-center py-[15px]"
@@ -422,7 +426,7 @@ export default {
             axios
                 .get("/api/jobs", {
                     params: {
-                        title: search.value,
+                        // title: search.value,
                         page: page.value,
                     },
                 })
@@ -458,6 +462,7 @@ export default {
                     // Handle errors
                     console.error("Error fetching data:", error);
                 });
+            console.log(userData);
         };
 
         const filterJobs = () => {
@@ -484,7 +489,6 @@ export default {
             fetchJobs();
         };
         const testClick = () => {
-            console.log("testClick");
             fetchJobs();
             filterJobs();
         };

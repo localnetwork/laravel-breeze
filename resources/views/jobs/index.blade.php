@@ -18,7 +18,7 @@
             
             
             <div class="row">
-                <div class="max-w-[25%] w-full flex justify-start flex-co">
+                <div class="max-w-[25%] w-full flex justify-start flex-col">
                     @include('components.user.user-sidebar')
                 </div>
                 <div class="max-w-[75%] w-full">

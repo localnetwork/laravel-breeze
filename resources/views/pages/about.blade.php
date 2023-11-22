@@ -62,14 +62,15 @@
                 <img class="absolute h-full w-full object-cover" src="/images/about/coLanding-section-04-d.png" width="600" height="600" />
             </div>
         </div>
-
+        @if(!Auth::user())
         <div class="max-w-[90vw] mx-auto py-[80px]">
             <h2 class="text-[3rem] leading-[3.5rem] text-[#242a2e] font-bold mb-[30px]">Join Us</h2>
             <div class="flex gap-x-[50px]">
-                <a href="#" class="max-w-[50%] w-full min-w-[300px] inline-flex justify-center items-center bg-[#00b14f] rounded-[50px] font-semibold text-[25px] text-white p-[32px] inline-block">Be Our Sponsor</a>
-                <a href="#" class="max-w-[50%] w-full min-w-[300px] justify-center inline-flex items-center text-[#005339] rounded-[50px] bg-[#eef9f9] font-semibold text-[25px] p-[32px] ">Be Our Volunteer</a>
+                <Link href="/register?account_type=sponsor" class="max-w-[50%] w-full min-w-[300px] inline-flex justify-center items-center bg-[#00b14f] rounded-[50px] font-semibold text-[25px] text-white p-[32px] inline-block">Be Our Sponsor</Link>
+                <Link href="/register?account_type=volunteer" class="max-w-[50%] w-full min-w-[300px] justify-center inline-flex items-center text-[#005339] rounded-[50px] bg-[#eef9f9] font-semibold text-[25px] p-[32px] ">Be Our Volunteer</Link>
             </div>
         </div>
+        @endif
 
     </div>
     

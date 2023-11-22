@@ -25,6 +25,12 @@
                         {{ __('Profile') }}
                     </x-dropdown-link>
 
+                    @if(isset(Auth::user()->role_id))
+                        <x-dropdown-link href="/dashboard">
+                            {{ __('Dashboard') }}
+                        </x-dropdown-link>
+                    @endif
+
                     <!-- Authentication -->
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

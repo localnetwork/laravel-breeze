@@ -3,7 +3,7 @@
     <div class="py-12 bg-[#f3f3f3]">
         <div class="container">
             <div class="row">
-                <div class="w-full max-w-[25%] w-full flex justify-start flex-co">
+                <div class="w-full max-w-[25%] w-full flex justify-start flex-col">
                     @include('components.user.user-sidebar')
                 </div>
                 <div class="w-full  max-w-[75%]">

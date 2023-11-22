@@ -31,16 +31,16 @@
     <div class="divider my-[50px] max-w-[100vw] mx-auto h-[5px] border-b-[2px] border-color-[#242a2e]"></div>
 
     <div class="max-w-[90vw] mx-auto">
-        <h2 class="text-[#383e43] text-[1.5rem] leading-[2rem] mb-[30px]">For volunteers</h2>
+        <h2 class="text-[#383e43] text-[1.5rem] leading-[2rem] mb-[30px]">For sponsors</h2>
         <div class="items">
             <div class="item pb-[50px] mb-[50px] border-b-[2px] border-color-[#e5e9f0] flex flex-wrap">
                 <div class="content-left max-w-[50%] w-full flex text-[3rem] leading-[3.5rem] font-bold text-[#242a2e]">
                     <span class="mr-[50px]">1</span>
-                    <h3 class="">Instant cash-out</h3>
+                    <h3 class="">Advertise your brand</h3>
                 </div>
                 <div class="max-w-[50%] w-full text-[#383e43] text-[1.25rem] leading-[1.75rem]">
                     <p>
-                        Easily transfer your earnings to your bank account.
+                        Easily advertise your brand by posting jobs.
                     </p>
                 </div>
             </div>
@@ -51,7 +51,45 @@
                 </div>
                 <div class="max-w-[50%] w-full text-[#383e43] text-[1.25rem] leading-[1.75rem]">
                     <p>
-                        Driver-partner support and safety toolkit whenever you need it.
+                        Partner support and safety toolkit whenever you need it.
+                    </p>
+                </div>
+            </div>
+            <div class="item pb-[50px] mb-[50px] border-b-[2px] border-color-[#e5e9f0] flex flex-wrap">
+                <div class="content-left max-w-[50%] w-full flex text-[3rem] leading-[3.5rem] font-bold text-[#242a2e]">
+                    <span class="mr-[50px]">3</span>
+                    <h3 class="">Spending insights</h3>
+                </div>
+                <div class="max-w-[50%] w-full text-[#383e43] text-[1.25rem] leading-[1.75rem]">
+                    <p>
+                        To help you maximise spendings and plan your finances better.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+        <h2 class="text-[#383e43] text-[1.5rem] leading-[2rem] mb-[30px]">For volunteers</h2>
+        <div class="items">
+            <div class="item pb-[50px] mb-[50px] border-b-[2px] border-color-[#e5e9f0] flex flex-wrap">
+                <div class="content-left max-w-[50%] w-full flex text-[3rem] leading-[3.5rem] font-bold text-[#242a2e]">
+                    <span class="mr-[50px]">1</span>
+                    <h3 class="">Cash-out Points</h3>
+                </div>
+                <div class="max-w-[50%] w-full text-[#383e43] text-[1.25rem] leading-[1.75rem]">
+                    <p>
+                        Easily transfer your earnings to your gcash or paymaya.
+                    </p>
+                </div>
+            </div>
+            <div class="item pb-[50px] mb-[50px] border-b-[2px] border-color-[#e5e9f0] flex flex-wrap">
+                <div class="content-left max-w-[50%] w-full flex text-[3rem] leading-[3.5rem] font-bold text-[#242a2e]">
+                    <span class="mr-[50px]">2</span>
+                    <h3 class="">24/7 support</h3>
+                </div>
+                <div class="max-w-[50%] w-full text-[#383e43] text-[1.25rem] leading-[1.75rem]">
+                    <p>
+                        partner support and safety toolkit whenever you need it.
                     </p>
                 </div>
             </div>

@@ -22,6 +22,7 @@ class User extends Authenticatable
         'short_name', 
         'barangays', 
         'email',
+        'address', 
         'profile_picture',
         'cover_photo', 
         'bio', 

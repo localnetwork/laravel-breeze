@@ -11,6 +11,11 @@ $menuItems = [
         'icon' => '/images/icons/tree.svg',
     ],
     [
+        'title' => 'Jobs Transactions',
+        'link' => '/admin/job-transactions',
+        'icon' => '/images/icons/job.svg',
+    ],
+    [
         'title' => 'Barangays',
         'link' => '/admin/barangays',
         'icon' => '/images/icons/building.svg',

@@ -12,6 +12,7 @@ use ProtoneMedia\Splade\FileUploads\ExistingFile;
 use Illuminate\Support\Facades\Storage; 
 
 use App\Models\User;
+use App\Models\Barangay;   
 
 class ProfileController extends Controller
 {
@@ -39,12 +40,12 @@ class ProfileController extends Controller
     public function edit(Request $request)
     {
         $user = $request->user(); 
-
         $user_image = $user->profile_picture; 
         // $image = ExistingFile::fromDisk('public')->get('profile_pictures' . $user_image); 
         // $image = ExistingFile::fromDisk('public')->get('public/storage/point-transactions' . '1.jpg'); 
         return view('profile.edit', [
             'user' => $request->user(),
+            'address' => Barangay::all(), 
             // 'image' => $image,
         ]);
     }
@@ -61,6 +62,7 @@ class ProfileController extends Controller
             'profile_picture' => ['required'],
             'cover_photo' => ['required'],
             'bio' => ['max:100'],
+            'address' => ['required']
             ],
         );
         
@@ -87,6 +89,7 @@ class ProfileController extends Controller
                 'profile_picture' => $pp_path, 
                 'cover_photo' => $cp_path, 
                 'bio' => $request->bio, 
+                'address' => $request->address,
             ]
         );
 
@@ -101,10 +104,7 @@ class ProfileController extends Controller
         ->success()
         ->rightTop()
         ->autoDismiss(3);
-
         
-
-        $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }

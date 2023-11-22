@@ -25,7 +25,7 @@
                         {{ __('Profile') }}
                     </x-dropdown-link>
 
-                    @if(isset(Auth::user()->role_id))
+                    @if(isset(Auth::user()->role_id) && Auth::user()->role_id == 1)
                         <x-dropdown-link href="/dashboard">
                             {{ __('Dashboard') }}
                         </x-dropdown-link>

@@ -29,7 +29,7 @@
                                 <x-splade-modal name="editModal-{{  $barangay->id }}" id="editModal-{{  $barangay->id }}" :close-button="true" max-width="xl" close-explicitly>
                                     <div class="container">
                                         <h2 class="text-lg font-medium text-gray-900">Edit {{ $barangay->name }}</h2>
-                                            {{  $barangay->id }}
+                                            {{-- {{  $barangay->id }} --}}
                                 
                                         <x-splade-form method="put" :default="$barangay" :action="route('admin.barangays.update', $barangay->id)" class="mt-6 space-y-6" preserve-scroll>
                                             

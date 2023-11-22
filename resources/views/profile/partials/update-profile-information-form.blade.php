@@ -22,18 +22,18 @@
             $profile_picture = null; 
         }
     @endphp
-
+    
     <x-splade-form method="patch" :default="['name' => $user->name, 'short_name' => $user->short_name, 'email' => $user->email, 'address' => $user->address, 'bio' => $user->bio, 'cover_photo' => $cover_photo, 'profile_picture' => $profile_picture]" :action="route('profile.update')"  class="mt-6 space-y-6" preserve-scroll>
         <x-splade-input id="name" name="name" type="text" :label="__('Name')" required autofocus autocomplete="name" />
         <x-splade-input id="short_name" name="short_name" type="text" :label="__('Short Name')" required autofocus/>
 
         <x-splade-input id="email" name="email" type="email" :label="__('Email')" required autocomplete="email" />
-        <x-splade-select class="mb-[15px]" label="Address" name="address" id="address">
+        {{-- <x-splade-select class="mb-[15px]" label="Address" name="address" id="address">
                 <option selected disabled readonly value="">Select an option</option>
                 @foreach ($address as $barangay)
                     <option value="{{ $barangay->id }}">{{ $barangay->name }}</option>
                 @endforeach
-        </x-splade-select>
+        </x-splade-select> --}}
         {{-- <x-splade-input id="bio" name="bio" type="text" :label="__('Bioo')" required autocomplete="bio" /> --}}
         <x-splade-wysiwyg class="hide-editor-toolbar" id="bio" name="bio" :label="__('Bio')" jodit="{ showXPathInStatusbar: false }" />
         <x-splade-file  label="Profile Picture" filepond="{ allowDrop: true }" dusk="profile_picture" name="profile_picture" @input="form.profile_picture = $event.target.files[0]" />

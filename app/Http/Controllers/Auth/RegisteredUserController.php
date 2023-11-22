@@ -39,6 +39,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+        
         $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
@@ -77,6 +78,7 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'short_name' => $request->short_name,
+            'address' => $request->address, 
             'email' => $request->email,
             'profile_picture' => $pp_path, 
             'cover_photo' => $cp_path, 

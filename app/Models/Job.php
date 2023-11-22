@@ -17,6 +17,7 @@ class Job extends Model {
         'tree', 
         'address', 
         'quantity',
+        'stocks', 
         // 'job_description'
     ];
 

@@ -9,6 +9,8 @@ use App\Http\Controllers\WalletController;
 use App\Http\Controllers\PointTransactionController;
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\ContactFormController;
+use App\Http\Controllers\VolunteerJobsTakenController;
+
 
 
 // use App\Http\Middleware\DisableApiCache; 
@@ -62,7 +64,6 @@ Route::middleware('splade')->group(function () {
     })->middleware('guest');
 
     Route::middleware(['auth'])->group(function () {
-        
         Route::middleware('checkRole:2,3')->group(function () {
             Route::get('/wallet', [WalletController::class, 'index'])->name('wallet.index');
             Route::get('/wallet/transactions', [WalletController::class, 'walletTransactions'])->name('wallet.transactions');
@@ -70,34 +71,29 @@ Route::middleware('splade')->group(function () {
             Route::post('/wallet/store', [PointTransactionController::class, 'store'])->name('wallet.store');
         });
         
-
-        
-        Route::put('/points/approval/{id}/topup', [PointTransactionController::class, 'approvedTopup']);
-
-        Route::put('/points/approval/{id}/withdrawal', [PointTransactionController::class, 'approvedWithdrawal']);
-
-        
-        Route::get('/dashboard', function () {
-            return view('dashboard');
-        })->middleware(['verified'])->name('dashboard');
-
         Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
         Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-
         Route::get('/api/user', [CurrentUserInfoController::class, 'index'])->name('user.index');
-        
-        
     });
     
-    // Check if the user role is 1.
-
+    // Check if the user role is admin.
     Route::get('/api/trees', [TreeController::class, 'treesApi'])->name('trees.api');
 
 
     Route::middleware('checkRole:1')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('dashboard');
+        })->middleware(['verified'])->name('dashboard');
+
+
+        Route::put('/points/approval/{id}/topup', [PointTransactionController::class, 'approvedTopup']);
+
+        Route::put('/points/approval/{id}/withdrawal', [PointTransactionController::class, 'approvedWithdrawal']);
+
+
         Route::get('/admin/trees', [TreeController::class, 'index'])->name('admin.trees.index');
 
         Route::delete('/admin/trees/{tree}', [TreeController::class, 'destroy'])->name('admin.trees.destroy');
@@ -110,7 +106,7 @@ Route::middleware('splade')->group(function () {
         Route::get('/admin/trees/{tree}', [TreeController::class, 'edit'])->name('admin.trees.edit'); 
         Route::put('/admin/trees/{tree}', [TreeController::class, 'update'])->name('admin.trees.update'); 
 
-        Route::delete('/admin/barangays/{tree}', [BarangayController::class, 'destroy'])->name('admin.barangays.destroy');
+        Route::delete('/admin/barangays/{barangay}', [BarangayController::class, 'destroy'])->name('admin.barangays.destroy');
 
         Route::get('/admin/barangays/create', [BarangayController::class, 'create'])->name('admin.barangays.create');
         Route::post('/admin/barangays', [BarangayController::class, 'store'])->name('admin.barangays.store'); 
@@ -127,7 +123,7 @@ Route::middleware('splade')->group(function () {
 
     
 
-    // Check if the user role is 1.
+    // Check if the user role is sponsor
     Route::middleware('checkRole:2')->group(function () {
 
 
@@ -146,6 +142,13 @@ Route::middleware('splade')->group(function () {
         Route::put('/jobs/{job}', [JobController::class, 'update']);
         Route::delete('/jobs/{job}', [JobController::class, 'destroy']);
     });
+
+
+    // Check if the user role is volunteer
+    Route::middleware('checkRole:3')->group(function () {
+        Route::post('/job/{id}/accept', [VolunteerJobsTaken::class, 'store'])->name('jobstaken.store');
+    });
+
 
 
     Route::get('/check-database', function () {

@@ -58,13 +58,15 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request)
     {
 
+        $user = $request->user(); 
+         
         $request->validate([
             'profile_picture' => ['required'],
             'cover_photo' => ['required'],
             'bio' => ['max:100'],
-            'address' => ['required']
+            // 'address' => ['required']
             ],
-        );
+        ); 
         
         
         if($request->hasFile('profile_picture')) {
@@ -81,21 +83,26 @@ class ProfileController extends Controller
         }
 
         $request->user()->fill($request->validated()); 
+
+        
         $request->user()->fill(
             [
                 'name' => $request->name,
                 'short_name' => $request->short_name,
+                // 'address' => $request->address,
+                // 'address' => $user->address,  
                 'email' => $request->email,
                 'profile_picture' => $pp_path, 
                 'cover_photo' => $cp_path, 
                 'bio' => $request->bio, 
-                'address' => $request->address,
             ]
         );
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
+
+        $request->user()->save(); 
 
         
 

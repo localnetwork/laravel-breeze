@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('taken_by');
             $table->enum('status', ['accepted', 'reviewing', 'completed'])->default('accepted');
             $table->timestamps();
-
+            
             $table->foreign('job_id')->references('id')->on('jobs');
             $table->foreign('taken_by')->references('id')->on('users');
         });

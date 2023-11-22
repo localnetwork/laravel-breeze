@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
             'name' => 'Diome',
             'email' => 'admin@gmail.com',
             'role_id' => 1,
+            'address' => 1, 
             'password' => Hash::make('password'),
         ]);
     }

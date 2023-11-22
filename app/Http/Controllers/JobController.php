@@ -63,8 +63,8 @@ class JobController extends Controller {
         $user =  $request->user(); 
         $user_id = $user->id; 
 
+        $userPoint = UserPoint::where('user_id', $user_id)->first(); 
 
-        $userPoint = UserPoint::where('id', $user_id)->first(); 
         if($userPoint === null) {
             $userPoint = 0; 
         }else {
@@ -126,19 +126,20 @@ class JobController extends Controller {
                 'quantity.max' => '100 trees per transaction.' 
             ]
             );
-            $userPoint = UserPoint::where('id', $user_id)->first();
+            $userPoint = UserPoint::where('user_id', $user_id)->first();
             $tree = Tree::where('id', $request->input('tree'))->first();
 
             $amount = $tree->tree_value * $request->input('quantity'); 
 
              
-            if($userPoint->points >= $amount) {
+            if(isset($userPoint->points) && $userPoint->points >= $amount) {
                 $job = Job::create([
                     // 'title' => $request->input('title'),
                     'user_id' => $user_id,
                     'tree' => $request->input('tree'), 
                     'address' => $request->input('address'), 
                     'quantity' => $request->input('quantity'),
+                    'stocks' => $request->input('quantity'), 
                     // 'job_description' => $request->input('job_description'),
                 ]);
     

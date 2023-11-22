@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('tree');
             $table->unsignedBigInteger('address');
             $table->integer('quantity');
+            $table->integer('stocks');
             // $table->text('job_description');
             $table->timestamps();
 

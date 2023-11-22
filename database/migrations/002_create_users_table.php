@@ -16,9 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('short_name')->unique()->nullable();
-            $table->unsignedBigInteger('address')->nullable();
+            
             $table->string('profile_picture')->nullable(); 
             $table->string('cover_photo')->nullable(); 
+            $table->unsignedBigInteger('address');
             $table->unsignedBigInteger('role_id');
             $table->text('bio')->nullable();
             $table->timestamp('email_verified_at')->nullable();

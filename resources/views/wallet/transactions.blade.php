@@ -9,12 +9,20 @@
                 <div class="w-full max-w-[75%]">
                     <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full sticky top-[15px]">
                         <div class="flex mb-[50px] flex-wrap justify-between">
-                            <h1 class="text-[40px] leading-[32px] font-medium text-gray-900">My Purchases</h1>
+                            <h1 class="text-[40px] leading-[32px] font-medium text-gray-900"><h1 class="text-[40px] leading-[32px] font-medium text-gray-900">{{  isset(Auth::user()->role_id) && Auth::user()->role_id == 2 ? 'My Purchases' : 'My Withdrawals' }}</h1></h1>
                             <Link href="/wallet">Go back to wallet</Link>
                         </div>
                         
                         <x-splade-table 
                             :for="$transactions">
+
+                            @cell('payment_method', $transaction)
+                                @php
+                                    $transaction_paymentMethod = App\Models\PaymentMethod::find($transaction->payment_method);
+                                @endphp
+
+                                {{  $transaction_paymentMethod->title }}
+                            @endcell
 
                             @cell('proof', $transaction)
                                 <img width="100" height="100" src="{{ asset('storage/point-transactions/' . basename($transaction->proof)) }}">

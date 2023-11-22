@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PaymentMethod;  
-
+use App\Rules\EnoughPointsRule;
 
 
 use Illuminate\Http\Request;
@@ -22,6 +22,7 @@ use ProtoneMedia\Splade\SpladeQueryBuilder;
 use App\Http\Controllers\UserPointController;
 
 use ProtoneMedia\Splade\FileUploads\HandleSpladeFileUploads;  
+
 
 
 
@@ -61,26 +62,36 @@ class PointTransactionController extends Controller
                 'status' => 'pending', 
             ]);
 
-            
-
-
             Toast::title('Success')->message('Transaction has been received and pending for approval.')->success()->rightTop()->autoDismiss(5);
     
             return Redirect::route('wallet.index');
         }else {
-    
-            Toast::title('Whoops!')
-                ->message('You are not allowed to do this function')
-                ->warning()
-                ->rightTop()
-                ->autoDismiss(3);
+            $this->validate($request, [
+                'amount' => [
+                    'required',
+                    'numeric',
+                    'min:1',
+                    new EnoughPointsRule($user_id, $request->input('amount'))
+                ],
+                'payment_method' => 'required', 
+            ]);
+            PointTransaction::create([
+                'user_id' => $user_id,
+                'amount' => $request->input('amount'), 
+                'payment_method' => $request->input('payment_method'), 
+                'payment_receiver' => $request->input('payment_receiver'),
+                'type' => 'withdrawal',
+                'status' => 'pending', 
+            ]);
+
+            Toast::title('Success')->message('Transaction has been received, please wait atleast 24 hours for us to review your request.')->success()->rightTop()->autoDismiss(5);
     
             return Redirect::route('wallet.index');
         }
 
     }
 
-    public function approved($id) {
+    public function approvedTopup($id) {
 
         $transaction = PointTransaction::where('id', $id)->first();
 
@@ -96,6 +107,30 @@ class PointTransactionController extends Controller
         // return redirect()->back()->with('success', 'Transaction approved successfully.');
     }
 
+    public function approvedWithdrawal($id) {
+
+        $transaction = PointTransaction::where('id', $id)->first();
+
+        if($transaction->status == 'pending') {
+            $this->userPointController->subtractPoints($transaction->amount, $transaction->user_id);
+         
+            PointTransaction::where('id', $id)->update([
+                'status' => 'approved',
+            ]);
+
+            Toast::title('Success')->message('Transaction has been approved.')->success()->rightTop()->autoDismiss(5);
+
+            return back(); 
+        }else {
+            Toast::title('Whooops!')->message('You are not allowed to do this function.')->warning()->rightTop()->autoDismiss(5);
+
+            return back();
+        }
+
+        
+        // return redirect()->back()->with('success', 'Transaction approved successfully.');
+    }
+
     public function adminPointsTransactions(Request $request) {
         $user =  $request->user(); 
         $user_id = $user->id; 
@@ -105,6 +140,7 @@ class PointTransactionController extends Controller
                 Collection::wrap($value)->each(function ($value) use ($query) {
                     $query
                         ->orWhere('id', 'LIKE', "%{$value}%")
+                        ->orWhere('type', 'LIKE', "%{$value}%")
                         ->orWhere('status', 'LIKE', "%{$value}%");
                 });
             });
@@ -114,8 +150,9 @@ class PointTransactionController extends Controller
         $transactions = QueryBuilder::for(PointTransaction::class)
         ->defaultSort('-updated_at')
         ->allowedSorts(['id', 'name', 'payment_method', 'status', 'updated_at'])
-        ->allowedFilters(['id', 'name', 'status', $globalSearch])
-        ->with('payment_method');
+        ->allowedFilters(['id', 'name', 'type', 'status', $globalSearch])
+        ->with('payment_method')
+        ->with('user_id');
         
         return view('admin.points-transactions.index', [
             'user' => $user, 
@@ -123,6 +160,7 @@ class PointTransactionController extends Controller
                 ->withGlobalSearch(columns: ['id', 'name'])
                 ->column('id', sortable: true) 
                 ->column('status', sortable: true)
+                ->column('type', sortable: true)
                 ->column('payment_method', sortable: true, label: 'Payment Method')
                 ->column('updated_at', sortable: true)
                 ->column('proof')

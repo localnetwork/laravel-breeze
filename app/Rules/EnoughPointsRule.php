@@ -21,9 +21,9 @@ class EnoughPointsRule implements Rule
     public function passes($attribute, $point_value)
     {
         // Check if the user has enough points
-        $userPoints = UserPoint::where('user_id', $this->user_id)->value('points');
-
-        return $userPoints >= $value;
+        $userPoints = UserPoint::where('user_id', '=', $this->user_id)
+        ->value('points');
+        return $userPoints;
     }
 
     public function message()

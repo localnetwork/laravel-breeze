@@ -37,20 +37,11 @@
                             <div class="mb-[30px] step bg-[#f3f3f3] p-[30px] pt-[5px] rounded-[15px] relative">
                                 <span class="border-[5px] border-color-[#f3f3f3] flex items-center justify-center absolute w-[50px] h-[50px] text-[18px] text-white top-[-15px] bg-[#00b14f] rounded-full text-center font-bold">1</span>
                                 <h2 class="text-[#280031] text-[20px] font-bold pl-[60px] mb-[10px]">Provide your profile information.</h2>
-                                
-
-                                
-
-                                @if (request('account_type'))
-                                    <x-splade-input type="hidden" disabled id="account_type" id="account_type" name="account_type" />
-                                @endif 
-
-
                                 <x-splade-group validation-key="role_id" class="account-type mb-[15px]" id="role_id" name="role_id" label="Account Type" inline required>
-                                    <x-splade-radio checked="request('account_type') === 'sponsor'" name="role_id" value="2" label="Sponsor">
+                                    <x-splade-radio  name="role_id" value="2" label="Sponsor">
                                         Sponsor
                                     </x-splade-radio>
-                                    <x-splade-radio checked="request('account_type') === 'volunteer'" name="role_id" value="3" label="Volunteer" />
+                                    <x-splade-radio  name="role_id" value="3" label="Volunteer" />
                                 </x-splade-group>
 
                                     <div class="flex mb-[15px] gap-x-[15px]">

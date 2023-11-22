@@ -34,9 +34,9 @@
                 {{ $user->short_name }}
             @endif
             <span class="bg-[#00b14f] inline-block text-white rounded-[10px] text-[12px] leading-[100%] py-[6px] px-[15px]">
-                @if($user->role == 1 )
+                @if($user->role_id == 1 )
                 administrator
-                @elseif($user->role == 2)
+                @elseif($user->role_id == 2)
                 sponsor
                 @else
                 volunteer

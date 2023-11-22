@@ -3,12 +3,18 @@
         <x-splade-table 
             :for="$transactions">
             @cell('proof', $transaction)
+                @if($transaction->proof)
                 <img width="100" height="100" src="{{ asset('storage/point-transactions/' . basename($transaction->proof)) }}">
+                @endif 
             @endcell
 
             @cell('actions', $transaction)
 
-            @if($transaction == 'pending')
+            @php
+                $transaction_user = App\Models\User::find($transaction->user_id);
+            @endphp
+            
+            @if($transaction->status == 'pending')
             <x-dropdown class="z-[10]" placement="bottom-end">
                 <x-slot name="trigger">
                     <button class="flex items-center text-sm font-medium text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition duration-150 ease-in-out">
@@ -22,12 +28,15 @@
                 </x-slot>
                 
                 <x-slot name="content" class="z-[10]">
-                    @if($transaction->status == 'pending')
-                    <Link confirm method="PUT" href="/points/approval/{{$transaction->id}}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
+                    @if($transaction_user->role_id === 2)
+                    <Link confirm method="PUT" href="/points/approval/{{$transaction->id}}/topup" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
                         Approve
-                    </Link>
+                    </Link> 
+                    @elseif($transaction_user->role_id === 3)
+                    <Link confirm method="PUT" href="/points/approval/{{$transaction->id}}/withdrawal" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
+                        Approve
+                    </Link> 
                     @endif
-
                     <span class="hidden sr-only">Hidden</span>
                 </x-slot>
             </x-dropdown>

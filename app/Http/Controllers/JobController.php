@@ -64,7 +64,13 @@ class JobController extends Controller {
         $user_id = $user->id; 
 
 
-        $userPoint = UserPoint::where('id', $user_id)->first();
+        $userPoint = UserPoint::where('id', $user_id)->first(); 
+        if($userPoint === null) {
+            $userPoint = 0; 
+        }else {
+            $userPoint = $userPoint->points; 
+        }
+
         // $jobs = Job::all();
 
         // return view('jobs.index', compact('jobs'));
@@ -99,7 +105,7 @@ class JobController extends Controller {
             'trees' => Tree::all(),
             'address' => Barangay::all(), 
             'user' => $user, 
-            'user_points' => $userPoint->points, 
+            'user_points' => $userPoint, 
         ]); 
     }
 

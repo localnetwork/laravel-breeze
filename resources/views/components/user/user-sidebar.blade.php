@@ -6,11 +6,13 @@ $menuItems = [
     ],
     [
         'title' => 'Manage Listings',
-        'link' => '/jobs'
+        'link' => '/jobs',
+        'role' => 2, 
     ], 
     [
         'title' => 'Manage Events',
-        'link' => '/manage/events'
+        'link' => '/manage/events',
+        'role' => 2, 
     ],
     [
         'title' => 'Wallet',
@@ -37,8 +39,19 @@ $menuItems = [
         @endphp
     @endif
 
-    <div key="{{$index}}" class="border-b-[1px] mb-[15px] pb-[15px] {{ $activeClass }}">
+
+    @if(isset($item['role']))
+        @if(isset(Auth::user()->role_id) && $item['role'] == Auth::user()->role_id) 
+            <div key="{{$index}}" class="border-b-[1px] mb-[15px] pb-[15px] {{ $activeClass }}">
+                <Link class="text-[#111827] text-[20px] font-bold {{ Request::is($item['link']) ? 'active' : '' }}" href="{{ $item['link'] }}">{{ $item['title'] }}</Link>
+            </div>
+        @else
+            
+        @endif
+    @else
+        <div key="{{$index}}" class="border-b-[1px] mb-[15px] pb-[15px] {{ $activeClass }}">
             <Link class="text-[#111827] text-[20px] font-bold {{ Request::is($item['link']) ? 'active' : '' }}" href="{{ $item['link'] }}">{{ $item['title'] }}</Link>
         </div>
+    @endif
     @endforeach
 </div>

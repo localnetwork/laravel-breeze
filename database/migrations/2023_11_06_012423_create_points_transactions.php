@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('proof')->nullable();
             $table->unsignedBigInteger('payment_method'); 
             $table->string('type');
+            $table->string('payment_receiver')->nullable();
             $table->timestamps(); 
 
             $table->foreign('payment_method')->references('id')->on('payment_methods');

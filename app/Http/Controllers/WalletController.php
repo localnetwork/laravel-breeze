@@ -32,7 +32,6 @@ class WalletController extends Controller {
 
         $user =  $request->user(); 
         $user_id = $user->id; 
-
         $globalSearch = AllowedFilter::callback('global', function ($query, $value) {
             $query->where(function ($query) use ($value) {
                 Collection::wrap($value)->each(function ($value) use ($query) {
@@ -50,20 +49,37 @@ class WalletController extends Controller {
         ->allowedFilters(['id', 'name', 'status', $globalSearch])
         ->with('payment_method')
         ->where('user_id', $user_id);
-        
-        return view('wallet.transactions', [
-            'user' => $user, 
-            'transactions' => SpladeTable::for($transactions)
-                ->withGlobalSearch(columns: ['id', 'name'])
-                ->column('id', sortable: true) 
-                ->column('status', sortable: true, searchable: true)
-                ->column('amount')
-                ->column('payment_method', sortable: true, label: 'Payment Method')
-                ->column('updated_at', sortable: true)
-                ->column('proof')
-                ->paginate(15)
-                ->perPageOptions([15, 50, 100])
-        ]); 
+
+        if($user->role_id === 1) {
+            return view('wallet.transactions', [
+                'user' => $user, 
+                'transactions' => SpladeTable::for($transactions)
+                    ->withGlobalSearch(columns: ['id', 'name'])
+                    ->column('id', sortable: true) 
+                    ->column('status', sortable: true, searchable: true)
+                    ->column('amount')
+                    ->column('type')
+                    ->column('payment_method', sortable: true, label: 'Payment Method')
+                    ->column('updated_at', sortable: true)
+                    ->column('proof')
+                    ->paginate(15)
+                    ->perPageOptions([15, 50, 100])
+            ]); 
+        }else {
+            return view('wallet.transactions', [
+                'user' => $user, 
+                'transactions' => SpladeTable::for($transactions)
+                    ->withGlobalSearch(columns: ['id', 'name'])
+                    ->column('id', sortable: true) 
+                    ->column('status', sortable: true, searchable: true)
+                    ->column('amount')
+                    ->column('type')
+                    ->column('payment_method', sortable: true, label: 'Payment Method')
+                    ->column('updated_at', sortable: true)
+                    ->paginate(15)
+                    ->perPageOptions([15, 50, 100])
+            ]);
+        }
 
     }
 }  

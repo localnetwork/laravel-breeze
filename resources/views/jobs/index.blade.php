@@ -64,13 +64,13 @@
 
 
 
-    <x-splade-modal name="createModal" id="createModal" :close-button="true" max-width="xl" close-explicitly>
+    <x-splade-modal class="createModal" name="createModal" id="createModal" :close-button="true" max-width="xl" close-explicitly>
         <div class="container">
             <h2 class="text-lg font-medium text-gray-900">Add a task</h2>
 
             Current Cordo Points: {{ number_format($user_points) }}
 
-            <span class="warning-message mt-[15px] text-[red] hidden">
+            <span class="warning-message mt-[15px] text-[red] hidden truncate">
 
             </span>
             <x-splade-form 
@@ -95,8 +95,6 @@
                 <div class="flex items-center gap-4">
                     <x-splade-submit :label="__('Add')" />
                 </div>
-
-                
             </x-splade-form>
         </div>  
     </x-splade-modal> 

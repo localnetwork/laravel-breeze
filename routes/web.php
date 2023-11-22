@@ -63,14 +63,18 @@ Route::middleware('splade')->group(function () {
 
     Route::middleware(['auth'])->group(function () {
         
+        Route::middleware('checkRole:2,3')->group(function () {
+            Route::get('/wallet', [WalletController::class, 'index'])->name('wallet.index');
+            Route::get('/wallet/transactions', [WalletController::class, 'walletTransactions'])->name('wallet.transactions');
 
-        Route::get('/wallet', [WalletController::class, 'index'])->name('wallet.index');
-        Route::get('/wallet/transactions', [WalletController::class, 'walletTransactions'])->name('wallet.transactions');
-
-        Route::post('/wallet/store', [PointTransactionController::class, 'store'])->name('wallet.store');
+            Route::post('/wallet/store', [PointTransactionController::class, 'store'])->name('wallet.store');
+        });
+        
 
         
-        Route::put('/points/approval/{id}', [PointTransactionController::class, 'approved']);
+        Route::put('/points/approval/{id}/topup', [PointTransactionController::class, 'approvedTopup']);
+
+        Route::put('/points/approval/{id}/withdrawal', [PointTransactionController::class, 'approvedWithdrawal']);
 
         
         Route::get('/dashboard', function () {
@@ -117,17 +121,17 @@ Route::middleware('splade')->group(function () {
         
         Route::put('/admin/barangays/{barangay}', [BarangayController::class, 'update'])->name('admin.barangays.update'); 
 
-        
+        Route::get('/admin/points-transactions', [PointTransactionController::class, 'adminPointsTransactions'])->name('admin.points-transactions.index'); 
         
     });
 
-    Route::get('/admin/points-transactions', [PointTransactionController::class, 'adminPointsTransactions'])->name('admin.points-transactions.index'); 
+    
 
     // Check if the user role is 1.
-    // Route::middleware('checkRole:1')->group(function () {
+    Route::middleware('checkRole:2')->group(function () {
 
 
-        Route::get('/api/jobs', [JobController::class, 'jobsApi'])->name('jobs.api')->middleware('disable.cache');
+        Route::get('/api/jobs', [JobController::class, 'jobsApi'])->name('jobs.api');
         
         Route::match(['get', 'patch', 'put'], '/api/jobs/{job}', [JobController::class, 'update'])->name('api.jobs.show');
 
@@ -141,7 +145,7 @@ Route::middleware('splade')->group(function () {
         Route::get('/jobs/{job}/edit', [JobController::class, 'edit']);
         Route::put('/jobs/{job}', [JobController::class, 'update']);
         Route::delete('/jobs/{job}', [JobController::class, 'destroy']);
-    // });
+    });
 
 
     Route::get('/check-database', function () {

@@ -14,13 +14,14 @@ class PointTransaction extends Model
         'amount',
         'payment_method', 
         'type',
+        'payment_receiver', 
         'status',
         'proof',
     ];
 
     public function user_id()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function payment_method()

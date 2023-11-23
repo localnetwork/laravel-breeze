@@ -12,7 +12,8 @@ use ProtoneMedia\Splade\FileUploads\ExistingFile;
 use Illuminate\Support\Facades\Storage; 
 
 use App\Models\User;
-use App\Models\Barangay;   
+use App\Models\Barangay;
+use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
@@ -64,7 +65,10 @@ class ProfileController extends Controller
             'profile_picture' => ['required'],
             'cover_photo' => ['required'],
             'bio' => ['max:100'],
-            // 'address' => ['required']
+            'short_name' => ['required', Rule::unique('users', 'short_name')->ignore($user->id)],
+            ],
+            [
+                'short_name.unique' => 'Short name has already taken. Please try another.'
             ],
         ); 
         

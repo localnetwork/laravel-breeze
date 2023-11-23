@@ -13,6 +13,7 @@ use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Storage; 
 use ProtoneMedia\Splade\FileUploads\HandleSpladeFileUploads;  
 use App\Models\Barangay;   
+use Illuminate\Validation\Rule; 
 
 class RegisteredUserController extends Controller
 {
@@ -46,7 +47,8 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role_id' => ['required'], 
             'profile_picture' => ['required'],
-            'short_name' => ['required', 'unique:'.User::class], 
+            // 'short_name' => ['required', 'unique:'.User::class], 
+            'short_name' => ['required', Rule::unique('users', 'short_name')],
             'address' => ['required'], 
             'cover_photo' => ['required'],
             ],

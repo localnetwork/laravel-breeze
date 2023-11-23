@@ -16,7 +16,8 @@ $menuItems = [
     ],
     [
         'title' => 'Wallet',
-        'link' => '/wallet'
+        'link' => '/wallet',
+        'not_role' => 3, 
     ],
 ]; 
 @endphp
@@ -48,6 +49,8 @@ $menuItems = [
         @else
             
         @endif
+    @elseif(isset($item['not_role']) && $item['not_role'] != Auth::user()->role_id)
+            {{-- DO NOT SHOW LINK IF NOT ROLE --}}
     @else
         <div key="{{$index}}" class="border-b-[1px] mb-[15px] pb-[15px] {{ $activeClass }}">
             <Link class="text-[#111827] text-[20px] font-bold {{ Request::is($item['link']) ? 'active' : '' }}" href="{{ $item['link'] }}">{{ $item['title'] }}</Link>

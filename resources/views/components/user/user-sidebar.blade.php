@@ -2,22 +2,23 @@
 $menuItems = [
     [
         'title' => 'Profile',
-        'link' => '/profile'
+        'link' => '/profile',
+        'role' => [1,2,3],
     ],
     [
         'title' => 'Manage Listings',
         'link' => '/jobs',
-        'role' => 2, 
+        'role' => [2], 
     ], 
     [
         'title' => 'Manage Events',
         'link' => '/manage/events',
-        'role' => 2, 
+        'role' => [2], 
     ],
     [
         'title' => 'Wallet',
         'link' => '/wallet',
-        'not_role' => 3, 
+        'role' => [2,3], 
     ],
 ]; 
 @endphp
@@ -28,6 +29,8 @@ $menuItems = [
 
     @php
         $linkUrl = ltrim($item['link'], '/');
+        
+        $newArr = array_values($item['role']);
     @endphp
 
     @if (Request::path() == $linkUrl)
@@ -39,10 +42,10 @@ $menuItems = [
             $activeClass = 'not-active'; 
         @endphp
     @endif
-
-
+    
     @if(isset($item['role']))
-        @if(isset(Auth::user()->role_id) && $item['role'] == Auth::user()->role_id) 
+
+        @if(isset(Auth::user()->role_id) && in_array(Auth::user()->role_id, $newArr)) 
             <div key="{{$index}}" class="border-b-[1px] mb-[15px] pb-[15px] {{ $activeClass }}">
                 <Link class="text-[#111827] text-[20px] font-bold {{ Request::is($item['link']) ? 'active' : '' }}" href="{{ $item['link'] }}">{{ $item['title'] }}</Link>
             </div>

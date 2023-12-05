@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileFeedController;
 use App\Http\Controllers\CurrentUserInfoController;
 use App\Http\Controllers\TreeController;
 use App\Http\Controllers\BarangayController;
@@ -56,8 +57,7 @@ Route::middleware('splade')->group(function () {
     // Route to store form data
     Route::post('/contact', [ContactFormController::class, 'store'])->name('contact.store');
 
-    // Route to display all contact form entries
-    Route::get('/admin/contact', [ContactFormController::class, 'index']);
+    
 
     Route::get('/apply', function () {
         return view('pages.apply');
@@ -71,7 +71,9 @@ Route::middleware('splade')->group(function () {
             Route::post('/wallet/store', [PointTransactionController::class, 'store'])->name('wallet.store');
         });
         
-        Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+        // Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('/api/profile/feed', [ProfileFeedController::class, 'feedsAPi'])->name('profile.api');
+        Route::get('/profile', [ProfileFeedController::class, 'index'])->name('profile.index');
         Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -87,6 +89,9 @@ Route::middleware('splade')->group(function () {
         Route::get('/dashboard', function () {
             return view('dashboard');
         })->middleware(['verified'])->name('dashboard');
+
+        // Route to display all contact form entries
+        Route::get('/admin/contact', [ContactFormController::class, 'index']);
 
 
         Route::put('/points/approval/{id}/topup', [PointTransactionController::class, 'approvedTopup']);

@@ -30,6 +30,11 @@ $menuItems = [
         'link' => '/admin/contact',
         'icon' => '/images/icons/form.svg',
     ],
+    [
+        'title' => 'Users',
+        'link' => '/admin/users',
+        'icon' => '/images/icons/form.svg',
+    ],
 ]; 
 @endphp
 

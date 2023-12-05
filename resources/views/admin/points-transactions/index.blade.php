@@ -18,6 +18,10 @@
                                 @endif 
                             @endcell
 
+                            @cell('amount', $transaction)
+                                {{ number_format($transaction->amount, 2) }}
+                            @endcell
+
                             @cell('actions', $transaction)
 
                             @php

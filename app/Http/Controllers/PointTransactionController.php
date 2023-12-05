@@ -161,6 +161,7 @@ class PointTransactionController extends Controller
                 ->column('id', sortable: true) 
                 ->column('status', sortable: true)
                 ->column('type', sortable: true)
+                ->column('amount', sortable: true)
                 ->column('payment_method', sortable: true, label: 'Payment Method')
                 ->column('updated_at', sortable: true)
                 ->column('proof')

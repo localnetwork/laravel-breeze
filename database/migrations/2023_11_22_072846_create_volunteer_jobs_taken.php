@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('volunteer_jobs_taken', function (Blueprint $table) {
+        Schema::create('volunteer_jobs_takens', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('job_id');
-            $table->unsignedBigInteger('taken_by');
+            $table->unsignedBigInteger('job_id')->nullable();
+            $table->unsignedBigInteger('taken_by')->nullable();
             $table->enum('status', ['accepted', 'reviewing', 'completed'])->default('accepted');
             $table->timestamps();
             
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('volunteer_jobs_taken');
+        Schema::dropIfExists('volunteer_jobs_takens');
     }
 };

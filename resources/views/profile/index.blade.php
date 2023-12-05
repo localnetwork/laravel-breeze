@@ -11,8 +11,9 @@
                     @include('components.user.user-sidebar')
                 </div>
                 <div class="max-w-[75%] w-full flex justify-start flex-col">
+                
                     <x-splade-rehydrate on="volunteer-added">
-                        <VolunteerFeed /> 
+                        <VolunteerFeed userId="{{ $user->id }}"/> 
                     </x-splade-rehydrate>
                 </div>
             </div>

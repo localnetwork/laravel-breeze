@@ -3,13 +3,14 @@
         v-for="item in feed"
         class="w-full relative bg-white mb-[30px] dark:bg-gray-800 rounded-xl shadow-md overflow-hidden"
     >
-        <!-- {{ item.user_id.profile_picture }} -->
         <div class="flex justify-between items-center px-6 py-4">
             <div class="flex space-x-4 w-full">
                 <div
                     class="relative min-w-[50px] w-[50px] overflow-hidden h-[50px] rounded-full bg-slate-200"
                 >
+
                     <img
+                        v-if="item.user_id.profile_picture"
                         class="absolute h-full w-full object-cover"
                         :src="
                             getProfilePictureUrl(item.user_id.profile_picture)
@@ -92,6 +93,7 @@ export default {
     props: {},
     data() {
         return {
+            userId: null, 
             isLoading: true,
             feed: [],
         };
@@ -105,15 +107,40 @@ export default {
         DropdownDivider,
     },
     methods: {
+        getUserInfo() {
+            const res = axios
+                .get(`/api/user`, {
+                })  
+                .then((response) => {
+                    this.userId = response.data.user.id; 
+                })
+                .catch((error) => {
+                    console.error("Error fetching jobs", error);
+                });
+        },
         takeJobModal(item) {
-            console.log(item);
+            const res = axios
+                .post(`/api/job/accept`, {
+                    'jobId': item.id,
+                    'userId': this.userId,
+                })  
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.error("Error fetching jobs", error);
+                });
+            
+
         },
         getProfilePictureUrl(profilePicturePath) {
             const baseUrl = window.location.origin;
-            return `${baseUrl}/${profilePicturePath.replace(
-                "public",
-                "storage"
-            )}`;
+            if(profilePicturePath) {
+                return `${baseUrl}/${profilePicturePath.replace(
+                    "public",
+                    "storage"
+                )}`;
+            }
         },
         getFeed() {
             const res = axios
@@ -134,6 +161,7 @@ export default {
     },
     created() {
         this.getFeed();
+        this.getUserInfo(); 
     },
 };
 </script>

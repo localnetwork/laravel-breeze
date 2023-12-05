@@ -15,45 +15,73 @@ class VolunteerJobsTakenController extends Controller
 {
     //
 
-    public function store(Request $request, $job_id) {
-        // job_id
-        // taken by
-        // status - set accepted
+    public function store(Request $request) {
         $user = $request->user(); 
-        $job = Job::where('id', $job_id)->first();
+        VolunteerJobsTaken::create([
+            'status' => 'accepted', 
+            'job_id' => request('jobId'), 
+            'taken_by' => request('userId'),
+        ]);
+        $req = $request->headers->all();
+        
 
-        $count = VolunteerJobsTaken::where('user_id', $user->id)
+        
+        // $job = Job::where('id', request('jobId'))->first();
+        $job = Job::find(request('jobId'));
+
+        $count = VolunteerJobsTaken::where('taken_by', request('userId'))
             ->where('status', 'accepted')
             ->count();
         
-
-        // Accept job if has stocks.
+        
         if(isset($user) && $user->role_id == 3 && isset($job) && $job->stocks > 0) {
             if($user->address == $job->address) {
                 if($count <= 5) {
                     // Create the Job Taken transaction.
                     VolunteerJobsTaken::create([
                         'status' => 'accepted', 
-                        'job_id' => $job_id, 
-                        'take_by' => $user_id,
+                        'job_id' => $job->id, 
+                        'taken_by' => request('userId'),
                     ]);
                     Job::update([
                         'stocks' => $job->stocks - 1,
                     ]);
-                    Toast::title('Success')->message('You have successfully accepted the job.')->success()->rightTop()->autoDismiss(3);
-                    return back(); 
+                    // Toast::title('Success')->message('You have successfully accepted the job.')->success()->rightTop()->autoDismiss(3);
+                    // return back(); 
+                    return response()->json([
+                        'status' => 200, 
+                        'success' => true,
+                        'message' => 'Job successfully accepted.',
+                    ]); 
+
                 }else {
-                    Toast::title("Whoops! Can't accept the job.")->message('You still have pending tasks. Please complete your pending tasks first.')->warning()->rightTop()->autoDismiss(3);
-                    return back(); 
+                    // Toast::title("Whoops! Can't accept the job.")->message('You still have pending tasks. Please complete your pending tasks first.')->warning()->rightTop()->autoDismiss(3);
+                    // return back(); 
+
+                    return response()->json([
+                        'status' => 422, 
+                        'success' => false,
+                        'message' => 'You still have pending tasks. Please complete your pending tasks first.',
+                    ]); 
                 }
                 
             }else {
-                Toast::title("Whoops! Can't accept the job.")->message('You can accept the job within your area.')->warning()->rightTop()->autoDismiss(3);
-                return back(); 
+                // Toast::title("Whoops! Can't accept the job.")->message('You can accept the job within your area.')->warning()->rightTop()->autoDismiss(3);
+                // return back(); 
+                return response()->json([
+                    'status' => 422, 
+                    'success' => false,
+                    'message' => 'You can only accept the jobs within your area..',
+                ]); 
             }
         }else {
-            Toast::title("Whoops! Can't accept the job.")->message('No more slots available to accept this job.')->warning()->rightTop()->autoDismiss(3);
-            return back(); 
+            // Toast::title("Whoops! Can't accept the job.")->message('No more slots available to accept this job.')->warning()->rightTop()->autoDismiss(3);
+            // return back();
+            return response()->json([
+                'status' => 422, 
+                'success' => false,
+                'message' => 'No more slots available to accept this job.',
+            ]);  
         }
     }
 }

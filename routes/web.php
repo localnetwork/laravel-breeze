@@ -151,10 +151,10 @@ Route::middleware('splade')->group(function () {
 
     // Check if the user role is volunteer
     Route::middleware('checkRole:3')->group(function () {
-        Route::post('/job/{id}/accept', [VolunteerJobsTaken::class, 'store'])->name('jobstaken.store');
+        // Route::post('/api/job/accept', [VolunteerJobsTaken::class, 'store'])->name('jobstaken.store');
+        Route::match(['post', 'get'], '/api/job/accept', [VolunteerJobsTakenController::class, 'store'])->name('jobstaken.store');
     });
-
-
+    // Route::match(['get'], '/api/new-route', [VolunteerJobsTakenController::class, 'store'])->name('jobstaken.store');
 
     Route::get('/check-database', function () {
         try {

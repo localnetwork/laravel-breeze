@@ -3,7 +3,7 @@
     @seoDescription('Become the Splade expert!')
     @seoKeywords('laravel, splade, course')
     <div class="py-12 bg-[#f3f3f3]">
-        <div class="container">
+        <div class="container ">
             <div class="row">
                 <div class="max-w-[25%] w-full flex justify-start flex-col">
                     @include('admin.navigation.admin-sidebar')

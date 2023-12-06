@@ -134,7 +134,7 @@ Route::middleware('splade')->group(function () {
 
         Route::get('/api/jobs', [JobController::class, 'jobsApi'])->name('jobs.api');
         
-        Route::match(['get', 'patch', 'put'], '/api/jobs/{job}', [JobController::class, 'update'])->name('api.jobs.show');
+        // Route::match(['get', 'patch', 'put'], '/api/jobs/{job}', [JobController::class, 'update'])->name('api.jobs.show');
 
         Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
         Route::get('/jobs/create', [JobController::class, 'create']);

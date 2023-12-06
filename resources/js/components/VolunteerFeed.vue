@@ -8,7 +8,6 @@
                 <div
                     class="relative min-w-[50px] w-[50px] overflow-hidden h-[50px] rounded-full bg-slate-200"
                 >
-
                     <img
                         v-if="item.user_id.profile_picture"
                         class="absolute h-full w-full object-cover"
@@ -79,6 +78,17 @@
         </div>
     </div>
 
+    <div
+        class="w-full text-[#6e6e6e] relative bg-white p-[50px] min-h-[200px] flex flex-col items-center justify-center mb-[30px] dark:bg-gray-800 rounded-xl shadow-md overflow-hidden"
+        v-if="!isLoading && feed.length <= 0"
+    >
+        <img
+            class="max-w-[200px] opacity-[.6] mb-[30px]"
+            src="/images/profile/undraw_conference_speaker_re_1rna.svg"
+        />
+        There no job postings to show in your feed at the moment.
+    </div>
+
     <Skeleton v-if="isLoading" />
 </template>
 <script>
@@ -93,7 +103,7 @@ export default {
     props: {},
     data() {
         return {
-            userId: null, 
+            userId: null,
             isLoading: true,
             feed: [],
         };
@@ -107,12 +117,12 @@ export default {
         DropdownDivider,
     },
     methods: {
+        sample() {},
         getUserInfo() {
             const res = axios
-                .get(`/api/user`, {
-                })  
+                .get(`/api/user`, {})
                 .then((response) => {
-                    this.userId = response.data.user.id; 
+                    this.userId = response.data.user.id;
                 })
                 .catch((error) => {
                     console.error("Error fetching jobs", error);
@@ -121,21 +131,25 @@ export default {
         takeJobModal(item) {
             const res = axios
                 .post(`/api/job/accept`, {
-                    'jobId': item.id,
-                    'userId': this.userId,
-                })  
+                    jobId: item.id,
+                    userId: this.userId,
+                })
                 .then((response) => {
-                    console.log(response);
+                    console.log("rrrr", response);
+                    if (response.status === 200) {
+                        this.getFeed();
+                    }
                 })
                 .catch((error) => {
-                    console.error("Error fetching jobs", error);
+                    if (error.response.data.message) {
+                        this.getFeed();
+                        alert(error.response.data.message);
+                    }
                 });
-            
-
         },
         getProfilePictureUrl(profilePicturePath) {
             const baseUrl = window.location.origin;
-            if(profilePicturePath) {
+            if (profilePicturePath) {
                 return `${baseUrl}/${profilePicturePath.replace(
                     "public",
                     "storage"
@@ -161,7 +175,7 @@ export default {
     },
     created() {
         this.getFeed();
-        this.getUserInfo(); 
+        this.getUserInfo();
     },
 };
 </script>

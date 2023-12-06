@@ -5,12 +5,17 @@ import "@protonemedia/laravel-splade/dist/jodit.css";
 
 import { createApp } from "vue/dist/vue.esm-bundler.js";
 
+import Toast, { POSITION } from "vue-toastification";
+import "vue-toastification/dist/index.css";
+
 import JobListComponent from "./components/JobListComponent.vue";
 import VolunteerFeed from "./components/VolunteerFeed.vue";
 import TestVue from "./components/Test.vue";
 import { renderSpladeApp, SpladePlugin } from "@protonemedia/laravel-splade";
 
 const el = document.getElementById("app");
+
+console.log("test");
 
 createApp({
     render: renderSpladeApp({ el }),
@@ -24,4 +29,5 @@ createApp({
             VolunteerFeed,
         },
     })
+    .use(Toast)
     .mount(el);

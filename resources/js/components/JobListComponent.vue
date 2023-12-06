@@ -261,13 +261,13 @@
                 <div class="sharethis-inline-share-buttons"></div>
             </div>
 
-            <div class="absolute top-[15px] right-[15px]">
+            <!-- <div class="absolute top-[15px] right-[15px]">
                 <Dropdown :id="job.id" dropdown-title="...">
                     <DropdownItem>
                         <button @click.emit="showModal(job)">Edit</button>
                     </DropdownItem>
                 </Dropdown>
-            </div>
+            </div> -->
         </div>
     </x-splade-rehydrate>
     <div class="mt-4 flex justify-between items-center" v-if="jobs.length > 0">

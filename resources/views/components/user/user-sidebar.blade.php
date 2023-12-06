@@ -20,6 +20,11 @@ $menuItems = [
         'link' => '/wallet',
         'role' => [2,3], 
     ],
+    [
+        'title' => 'Jobs Taken',
+        'link' => '/jobs/taken',
+        'role' => [3], 
+    ],
 ]; 
 @endphp
 

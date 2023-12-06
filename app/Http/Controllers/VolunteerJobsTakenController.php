@@ -17,11 +17,6 @@ class VolunteerJobsTakenController extends Controller
 
     public function store(Request $request) {
         $user = $request->user(); 
-        VolunteerJobsTaken::create([
-            'status' => 'accepted', 
-            'job_id' => request('jobId'), 
-            'taken_by' => request('userId'),
-        ]);
         $req = $request->headers->all();
         
 
@@ -36,7 +31,7 @@ class VolunteerJobsTakenController extends Controller
         
         if(isset($user) && $user->role_id == 3 && isset($job) && $job->stocks > 0) {
             if($user->address == $job->address) {
-                if($count <= 5) {
+                if($count <= 4) {
                     // Create the Job Taken transaction.
                     VolunteerJobsTaken::create([
                         'status' => 'accepted', 
@@ -62,7 +57,7 @@ class VolunteerJobsTakenController extends Controller
 
                     return response()->json([
                         'success' => false,
-                        'message' => 'You still have pending jobs. Please complete your pending tasks first.',
+                        'message' => 'You still have pending jobs. Please finish your pending jobs first.',
                     ], 422); 
                 }
                 

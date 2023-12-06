@@ -90,8 +90,90 @@
     </div>
 
     <Skeleton v-if="isLoading" />
+
+    <fwb-toast
+        v-if="isShowSuccess"
+        class="fixed top-[15px] pr-[40px] right-[15px] shadow-md border-[1px] border-[#ddd]"
+        type="success"
+    >
+        {{ successMsg }}
+        <button
+            aria-label="Close"
+            class="absolute right-[15px] top-[15px] border-none ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+            type="button"
+            @click="closeToast"
+        >
+            <span class="sr-only">Close</span
+            ><svg
+                class="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    clip-rule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    fill-rule="evenodd"
+                ></path>
+            </svg>
+        </button>
+    </fwb-toast>
+
+    <fwb-toast
+        v-if="isShowError"
+        class="fixed pr-[40px] top-[15px] right-[15px] shadow-md border-[1px] border-[#ddd]"
+        type="danger"
+    >
+        {{ errorMsg }}
+        <button
+            aria-label="Close"
+            class="absolute right-[15px] top-[15px] border-none ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+            type="button"
+            @click="closeToast"
+        >
+            <span class="sr-only">Close</span
+            ><svg
+                class="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    clip-rule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    fill-rule="evenodd"
+                ></path>
+            </svg>
+        </button>
+    </fwb-toast>
+
+    <fwb-modal v-if="isShowModal" @close="closeModal">
+        <template #header>
+            <div class="flex items-center text-lg">
+                Are you sure you want to accept this job?
+            </div>
+        </template>
+        <template #body>
+            <p
+                class="text-base leading-relaxed text-gray-500 dark:text-gray-400"
+            >
+                By accepting this job, you won't be able to undo this action.
+            </p>
+        </template>
+        <template #footer>
+            <div class="flex justify-between">
+                <fwb-button @click="acceptJob()" color="green">
+                    I accept
+                </fwb-button>
+                <fwb-button @click="closeModal" color="alternative">
+                    Decline
+                </fwb-button>
+            </div>
+        </template>
+    </fwb-modal>
 </template>
 <script>
+import { FwbButton, FwbToast, FwbModal } from "flowbite-vue";
 import axios from "axios";
 import { ref, onMounted, computed } from "vue";
 import Skeleton from "./skeletons/FeedSkeleton.vue";
@@ -106,6 +188,12 @@ export default {
             userId: null,
             isLoading: true,
             feed: [],
+            isShowError: false,
+            isShowSuccess: false,
+            isShowModal: false,
+            jobTaken: null,
+            errorMsg: "",
+            successMsg: "",
         };
     },
     watch: {},
@@ -115,9 +203,12 @@ export default {
         DropdownItem,
         Dropdown,
         DropdownDivider,
+        FwbToast,
+        FwbButton,
+        FwbModal,
     },
     methods: {
-        sample() {},
+        showSuccess() {},
         getUserInfo() {
             const res = axios
                 .get(`/api/user`, {})
@@ -128,24 +219,41 @@ export default {
                     console.error("Error fetching jobs", error);
                 });
         },
-        takeJobModal(item) {
+        closeModal() {
+            this.isShowModal = false;
+        },
+        closeToast() {
+            this.isShowError = false;
+            this.isShowSuccess = false;
+            this.successMsg = "";
+            this.errorMsg = "";
+        },
+        acceptJob() {
+            this.isShowModal = false;
             const res = axios
                 .post(`/api/job/accept`, {
-                    jobId: item.id,
+                    jobId: this.jobTaken,
                     userId: this.userId,
                 })
                 .then((response) => {
                     console.log("rrrr", response);
                     if (response.status === 200) {
                         this.getFeed();
+                        this.isShowSuccess = true;
+                        this.successMsg = response.data.message;
                     }
                 })
                 .catch((error) => {
                     if (error.response.data.message) {
                         this.getFeed();
-                        alert(error.response.data.message);
+                        this.errorMsg = error.response.data.message;
+                        this.isShowError = true;
                     }
                 });
+        },
+        takeJobModal(item) {
+            this.isShowModal = true;
+            this.jobTaken = item.id;
         },
         getProfilePictureUrl(profilePicturePath) {
             const baseUrl = window.location.origin;

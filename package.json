@@ -19,10 +19,12 @@
         "vue": "^3.2.36"
     },
     "dependencies": {
+        "flowbite": "^2.2.0",
+        "flowbite-vue": "^0.1.1",
         "next": "^14.0.3",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "vuex": "^4.1.0",
-        "vue-toastification": "^2.0.0-rc.5"
+        "vue-toastification": "^2.0.0-rc.5",
+        "vuex": "^4.1.0"
     }
 }

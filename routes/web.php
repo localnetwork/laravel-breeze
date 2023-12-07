@@ -149,8 +149,13 @@ Route::middleware('splade')->group(function () {
     });
 
 
+    Route::get('/api/jobs/taken', [VolunteerJobsTakenController::class, 'apiJobsTaken']);
+
+    Route::get('/taken/jobs', [VolunteerJobsTakenController::class, 'index'])->name('jobstaken.index');
+
     // Check if the user role is volunteer
     Route::middleware('checkRole:3')->group(function () {
+       
         // Route::post('/api/job/accept', [VolunteerJobsTaken::class, 'store'])->name('jobstaken.store');
         Route::match(['post', 'get'], '/api/job/accept', [VolunteerJobsTakenController::class, 'store'])->name('jobstaken.store');
     });

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder; 
 use Illuminate\Support\Facades\Redirect;
 use ProtoneMedia\Splade\Facades\Toast;  
+use ProtoneMedia\Splade\SpladeTable; 
+use ProtoneMedia\Splade\SpladeQueryBuilder; 
 
 use App\Models\VolunteerJobsTaken;  
 use App\Models\Job;  
@@ -14,7 +16,56 @@ use App\Models\Job;
 class VolunteerJobsTakenController extends Controller
 {
     //
+    public function apiJobsTaken(Request $request) {
+        $transactions = QueryBuilder::for(VolunteerJobsTaken::class)
+        ->defaultSort('-updated_at')
+        ->allowedSorts(['id', 'updated_at'])
+        ->allowedFilters(['id']);
 
+        $user =  $request->user(); 
+        $user_id = $user->id; 
+
+      
+        $transactions = QueryBuilder::for(VolunteerJobsTaken::class)
+            ->defaultSort('-updated_at')
+            ->allowedSorts(['id', 'updated_at'])
+            ->allowedFilters(['id'])
+            ->where('taken_by', $user_id)
+            ->with(['job_id', 'tree', 'address', 'user'])
+            ->paginate(3); 
+    
+            return response()->json([
+                'transactions' => $transactions,
+            ]);
+        // return response()->json([
+        //     'transactions' => $transactions,
+        // ]);
+    }
+
+
+    public function index(Request $request) {
+        $user = $request->user(); 
+        $transactions = QueryBuilder::for(VolunteerJobsTaken::class)
+        ->defaultSort('-updated_at')
+        ->allowedSorts(['id', 'updated_at'])
+        ->allowedFilters(['id']);
+    
+        return view('jobs.taken', [
+            'user' => $user, 
+            'transactions' => SpladeTable::for($transactions)
+                ->withGlobalSearch(columns: ['id'])
+                ->column('id', sortable: true)
+                ->column('job_id')
+                ->column('tree')
+                ->column('address')
+                ->column('status')
+                ->column('updated_at', sortable: true)
+                ->column('action')
+                ->paginate(15)
+                ->perPageOptions([15, 50, 100])
+                
+        ]); 
+    }
     public function store(Request $request) {
         $user = $request->user(); 
         $req = $request->headers->all();

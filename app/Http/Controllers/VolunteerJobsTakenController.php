@@ -31,15 +31,12 @@ class VolunteerJobsTakenController extends Controller
             ->allowedSorts(['id', 'updated_at'])
             ->allowedFilters(['id'])
             ->where('taken_by', $user_id)
-            ->with(['job_id', 'tree', 'address', 'user'])
+            ->with(['job'])
             ->paginate(3); 
     
             return response()->json([
                 'transactions' => $transactions,
             ]);
-        // return response()->json([
-        //     'transactions' => $transactions,
-        // ]);
     }
 
 

@@ -22,7 +22,7 @@ $menuItems = [
     ],
     [
         'title' => 'Jobs Taken',
-        'link' => '/jobs/taken',
+        'link' => '/taken/jobs',
         'role' => [3], 
     ],
 ]; 

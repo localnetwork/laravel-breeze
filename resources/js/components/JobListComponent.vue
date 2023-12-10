@@ -193,12 +193,16 @@
             <!-- {{ job.id }}
             {{ job.tree.name }} -->
             <div class="flex">
-                <div>
+                <div
+                    class="relative min-w-[50px] w-[50px] overflow-hidden h-[50px] rounded-full bg-slate-200"
+                >
                     <img
-                        src="https://cordo-plants.vercel.app/_next/image?url=%2Fimages%2Fcontributors%2Fsponsors%2Fjollibee.png&w=48&q=75"
+                        v-if="job.user_id.profile_picture"
+                        class="absolute h-full w-full object-cover"
+                        :src="getProfilePictureUrl(job.user_id.profile_picture)"
                     />
                 </div>
-                <div>
+                <div class="pl-[15px]">
                     <div class="text-lg font-bold dark:text-white">
                         <!-- {{ job.user_id.name }} -->
                         You've posted a job
@@ -313,6 +317,15 @@ import DropdownDivider from "./utilities/Dropdown/DropdownDivider.vue";
 
 export default {
     methods: {
+        getProfilePictureUrl(profilePicturePath) {
+            const baseUrl = window.location.origin;
+            if (profilePicturePath) {
+                return `${baseUrl}/${profilePicturePath.replace(
+                    "public",
+                    "storage"
+                )}`;
+            }
+        },
         closeToast() {
             this.successMessage = false;
         },

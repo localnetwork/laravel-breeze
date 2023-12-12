@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Tables\Trees;
 use Illuminate\Http\Request;
 
 
@@ -55,21 +56,25 @@ class TreeController extends Controller
         });
 
          
-        $trees = QueryBuilder::for(Tree::class)
-        ->defaultSort('-updated_at')
-        ->allowedSorts(['id', 'name', 'updated_at'])
-        ->allowedFilters(['id', 'name', $globalSearch]);
+        // $trees = QueryBuilder::for(Tree::class)
+        // ->defaultSort('-updated_at')
+        // ->allowedSorts(['id', 'name', 'updated_at'])
+        // ->allowedFilters(['id', 'name', $globalSearch]);
     
+        // return view('admin.trees.index', [
+        //     'trees' => SpladeTable::for($trees)
+        //         ->withGlobalSearch(columns: ['id', 'name'])
+        //         ->column('id', sortable: true) 
+        //         ->column('name', sortable: true)
+        //         ->column('tree_value')
+        //         ->column('updated_at', sortable: true, as: fn($value) => \Carbon\Carbon::parse($value)->format('F j, y h:i a'))
+        //         ->column('action')
+        //         ->paginate(15)
+        //         ->perPageOptions([15, 50, 100])
+        // ]); 
+        
         return view('admin.trees.index', [
-            'trees' => SpladeTable::for($trees)
-                ->withGlobalSearch(columns: ['id', 'name'])
-                ->column('id', sortable: true) 
-                ->column('name', sortable: true)
-                ->column('tree_value')
-                ->column('updated_at', sortable: true, as: fn($value) => \Carbon\Carbon::parse($value)->format('F j, y h:i a'))
-                ->column('action')
-                ->paginate(15)
-                ->perPageOptions([15, 50, 100])
+            'trees' => Trees::class
         ]); 
     } 
 

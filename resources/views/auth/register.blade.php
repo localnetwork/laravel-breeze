@@ -70,11 +70,6 @@
                                 <x-splade-input class="mb-[15px]" id="password" type="password" name="password" :label="__('Password')" autocomplete="new-password" />
                                 <x-splade-input id="password_confirmation" type="password" name="password_confirmation" :label="__('Confirm Password')" />
                             </div>
-                    
-                                    {{-- <Link class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                                        {{ __('Already registered?') }}
-                                    </Link> --}}
-                    
                             <x-splade-submit class="w-full mt-[15px] max-w-[300px] text-center block justify-between items-center bg-[#00b14f] !rounded-[50px] font-semibold text-[20px] text-white !p-[12px] inline-block" :label="__('Register')" />
                         </x-splade-form>
                     </div>

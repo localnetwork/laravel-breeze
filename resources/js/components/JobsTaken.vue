@@ -23,7 +23,10 @@
                         <div class="text-lg font-bold dark:text-white">
                             Posted by {{ item.job.user_id.name }}
                         </div>
-                        <div class="absolute top-[15px] right-[15px]">
+                        <div
+                            class="absolute top-[15px] right-[15px]"
+                            v-if="item.status === 'accepted'"
+                        >
                             <Dropdown :id="item.id" dropdown-title="...">
                                 <DropdownItem>
                                     <button @click.emit="completeJob(item)">
@@ -91,15 +94,27 @@
             </p>
 
             <div>
-                <form onsubmit="proofSubmission()">
-                    <div class="form-item flex flex-col">
-                        <label class="mb-[5px]"> Upload files </label>
-                        <input name="files" id="files" type="file" multiple />
-                    </div>
-                    <div class="form-actions">
-                        <input type="submit" value="Submit" />
-                    </div>
-                </form>
+                <div class="form-item flex flex-col">
+                    <label class="mb-[5px]" for="files"> Upload files </label>
+                    <input
+                        name="files"
+                        id="files"
+                        type="file"
+                        multiple
+                        ref="fileInput"
+                        required
+                        @change="updateFiles"
+                    />
+                    <p
+                        class="text-[14px] mt-[5px] text-red-600"
+                        v-if="errorMsg"
+                    >
+                        Please upload a proof.
+                    </p>
+                </div>
+                <div class="form-actions mt-[30px]">
+                    <input type="submit" @click="submitFiles" value="Submit" />
+                </div>
             </div>
         </template>
         <!-- <template #footer>
@@ -110,6 +125,34 @@
             </div>
         </template> -->
     </fwb-modal>
+
+    <fwb-toast
+        v-if="successMsg"
+        class="fixed top-[15px] pr-[40px] right-[15px] shadow-md border-[1px] border-[#ddd]"
+        type="success"
+    >
+        Successfully sent a request for review.
+        <button
+            aria-label="Close"
+            class="absolute right-[15px] top-[15px] border-none ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+            type="button"
+            @click="closeToast"
+        >
+            <span class="sr-only">Close</span
+            ><svg
+                class="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    clip-rule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    fill-rule="evenodd"
+                ></path>
+            </svg>
+        </button>
+    </fwb-toast>
 </template>
 
 <script>
@@ -128,6 +171,9 @@ export default {
             transactions: [],
             currentTransaction: "",
             currentJob: "",
+            files: [],
+            errorMsg: "",
+            successMsg: "",
         };
     },
     components: {
@@ -143,8 +189,46 @@ export default {
         this.getJobsTaken();
     },
     methods: {
-        proofSubmission() {
-            console.log(this);
+        closeToast() {
+            this.clearAll();
+            this.successMsg = "";
+        },
+        clearAll() {
+            this.showModal = false;
+            this.currentTransaction = "";
+            this.files = [];
+            this.errorMsg = "";
+            this.currentJob = "";
+        },
+        submitFiles() {
+            const formData = new FormData();
+            for (let i = 0; i < this.files.length; i++) {
+                formData.append(`files[${i}]`, this.files[i]);
+            }
+            formData.append("transactionId", this.currentTransaction);
+            const res = axios
+                .post(`/api/upload/proof`, formData, {})
+                .then((response) => {
+                    console.log("rrrr", response);
+                    console.log("transaction", this.currentTransaction);
+                    if (response.status === 200) {
+                        console.log(
+                            "Files uploaded successfully:",
+                            response.data.paths
+                        );
+                        this.clearAll();
+                        this.successMsg = "Successfully updated.";
+                        this.getJobsTaken();
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error uploading files:", error);
+                    this.errorMsg = "Please upload a proof.";
+                });
+        },
+        updateFiles() {
+            this.files = this.$refs.fileInput.files;
+            console.log(this.files);
         },
         closeModal() {
             this.showModal = false;

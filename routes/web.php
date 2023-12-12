@@ -11,6 +11,8 @@ use App\Http\Controllers\PointTransactionController;
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\VolunteerJobsTakenController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\JobsTakenProofController;
 
 
 
@@ -124,6 +126,7 @@ Route::middleware('splade')->group(function () {
 
         Route::get('/admin/points-transactions', [PointTransactionController::class, 'adminPointsTransactions'])->name('admin.points-transactions.index'); 
         
+        Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index'); 
     });
 
     
@@ -146,7 +149,13 @@ Route::middleware('splade')->group(function () {
         Route::get('/jobs/{job}/edit', [JobController::class, 'edit']);
         Route::put('/jobs/{job}', [JobController::class, 'update']);
         Route::delete('/jobs/{job}', [JobController::class, 'destroy']);
+
+
+        
+        
     });
+
+    
 
 
     Route::get('/api/jobs/taken', [VolunteerJobsTakenController::class, 'apiJobsTaken']);
@@ -158,6 +167,9 @@ Route::middleware('splade')->group(function () {
        
         // Route::post('/api/job/accept', [VolunteerJobsTaken::class, 'store'])->name('jobstaken.store');
         Route::match(['post', 'get'], '/api/job/accept', [VolunteerJobsTakenController::class, 'store'])->name('jobstaken.store');
+
+
+        Route::post('/api/upload/proof', [JobsTakenProofController::class, 'store'])->name('jobs_proof.store');   
     });
     // Route::match(['get'], '/api/new-route', [VolunteerJobsTakenController::class, 'store'])->name('jobstaken.store');
 

@@ -15,7 +15,9 @@ use App\Models\Job;
 
 class VolunteerJobsTakenController extends Controller
 {
-    //
+    
+    
+
     public function apiJobsTaken(Request $request) {
         $transactions = QueryBuilder::for(VolunteerJobsTaken::class)
         ->defaultSort('-updated_at')

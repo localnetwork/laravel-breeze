@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('job_taken_proof', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('proof')->nullable(); 
+            $table->unsignedBigInteger('transaction_id')->nullable();
+            $table->timestamps(); 
+
+
+            $table->foreign('transaction_id')->references('id')->on('volunteer_jobs_takens'); 
         });
     }
 

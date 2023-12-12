@@ -31,5 +31,10 @@ class Job extends Model {
     }
     public function address() {
         return $this->belongsTo(Barangay::class, 'address'); 
-    } 
+    }
+
+    public function volunteer_jobs_takens()
+    {
+        return $this->hasMany(VolunteerJobsTaken::class);
+    }
 }

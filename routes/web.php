@@ -18,6 +18,7 @@ use App\Http\Controllers\JobsTakenProofController;
 
 // use App\Http\Middleware\DisableApiCache; 
 
+use App\Models\Job;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -85,6 +86,14 @@ Route::middleware('splade')->group(function () {
     
     // Check if the user role is admin.
     Route::get('/api/trees', [TreeController::class, 'treesApi'])->name('trees.api');
+
+    Route::get('/sample', function(){
+        $data = Job::with([
+            'volunteer_jobs_takens'
+        ])->withCount('volunteer_jobs_takens')->get();
+
+        return response()->json($data);
+    });
 
 
     Route::middleware('checkRole:1')->group(function () {

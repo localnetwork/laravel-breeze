@@ -66,7 +66,7 @@ class TreeController extends Controller
                 ->column('id', sortable: true) 
                 ->column('name', sortable: true)
                 ->column('tree_value')
-                ->column('updated_at', sortable: true)
+                ->column('updated_at', sortable: true, as: fn($value) => \Carbon\Carbon::parse($value)->format('F j, y h:i a'))
                 ->column('action')
                 ->paginate(15)
                 ->perPageOptions([15, 50, 100])

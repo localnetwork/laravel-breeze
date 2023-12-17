@@ -73,6 +73,11 @@
                         </svg>
                         {{ item.address.name }}
                     </div>
+
+                    <div class="border-t-[1px] mt-[5px] pt-[5px]">
+                        Estimated earning: {{ item.tree.tree_value }} cordo
+                        points.
+                    </div>
                 </div>
             </div>
         </div>

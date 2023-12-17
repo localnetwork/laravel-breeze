@@ -65,6 +65,31 @@ class VolunteerJobsTakenController extends Controller
                 
         ]); 
     }
+
+    public function adminIndex(Request $request) {
+        $user = $request->user(); 
+        $transactions = QueryBuilder::for(VolunteerJobsTaken::class)
+        ->defaultSort('-updated_at')
+        ->where('status', '!=', 'accepted')
+        ->allowedSorts(['id', 'updated_at'])
+        ->allowedFilters(['id']);
+    
+        return view('admin.jobs-transactions.index', [
+            'user' => $user, 
+            'transactions' => SpladeTable::for($transactions)
+                ->withGlobalSearch(columns: ['id'])
+                ->column('id', sortable: true)
+                ->column('job_id')
+                ->column('address')
+                ->column('status')
+                ->column('proof')
+                ->column('updated_at', sortable: true)
+                ->column('actions')
+                ->paginate(15)
+                ->perPageOptions([15, 50, 100])
+                
+        ]); 
+    }
     public function store(Request $request) {
         $user = $request->user(); 
         $req = $request->headers->all();

@@ -97,6 +97,7 @@
                 <div class="form-item flex flex-col">
                     <label class="mb-[5px]" for="files"> Upload files </label>
                     <input
+                        class="border-dashed border-[#ddd] border-[1px] p-[15px]"
                         name="files"
                         id="files"
                         type="file"
@@ -113,17 +114,15 @@
                     </p>
                 </div>
                 <div class="form-actions mt-[30px]">
-                    <input type="submit" @click="submitFiles" value="Submit" />
+                    <input
+                        class="border cursor-pointer rounded-md shadow-sm font-bold py-2 px-4 focus:outline-none focus:ring focus:ring-opacity-50 bg-[#00b14f] min-w-[100px] text-white"
+                        type="submit"
+                        @click="submitFiles"
+                        value="Submit"
+                    />
                 </div>
             </div>
         </template>
-        <!-- <template #footer>
-            <div class="flex justify-between">
-                <fwb-button @click="acceptJob()" color="green">
-                    Submit
-                </fwb-button>
-            </div>
-        </template> -->
     </fwb-modal>
 
     <fwb-toast

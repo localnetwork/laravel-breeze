@@ -47,8 +47,9 @@ class VolunteerJobsTakenController extends Controller
         $transactions = QueryBuilder::for(VolunteerJobsTaken::class)
         ->defaultSort('-updated_at')
         ->allowedSorts(['id', 'updated_at'])
+        ->with(['job'])
         ->allowedFilters(['id']);
-    
+        
         return view('jobs.taken', [
             'user' => $user, 
             'transactions' => SpladeTable::for($transactions)
@@ -72,8 +73,10 @@ class VolunteerJobsTakenController extends Controller
         ->defaultSort('-updated_at')
         ->where('status', '!=', 'accepted')
         ->allowedSorts(['id', 'updated_at'])
+        ->with(['job'])
+        ->with(['proofs'])
         ->allowedFilters(['id']);
-    
+
         return view('admin.jobs-transactions.index', [
             'user' => $user, 
             'transactions' => SpladeTable::for($transactions)

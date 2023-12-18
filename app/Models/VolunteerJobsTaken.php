@@ -9,12 +9,16 @@ class VolunteerJobsTaken extends Model
 {
     
     use HasFactory;
-    protected $fillable = ['job_id', 'taken_by', 'status']; 
+    protected $fillable = ['id', 'job_id', 'taken_by', 'status']; 
 
     public function job()
     {
         return $this->belongsTo(Job::class, 'job_id')->with(['user_id', 'address', 'tree']);
     }
+    public function proofs()
+    {
+        return $this->hasMany(JobsTakenProof::class, 'transaction_id', 'id');
+    } 
 
     public function tree()
     {

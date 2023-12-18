@@ -9,7 +9,7 @@ class JobsTakenProof extends Model
 {
     use HasFactory;
 
-    protected $table = 'job_taken_proof';
+    protected $table = 'jobs_taken_proof';
 
     protected $fillable = [
         'id',

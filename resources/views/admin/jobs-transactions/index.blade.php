@@ -13,17 +13,12 @@
                         <x-splade-table 
                             :for="$transactions">
                             @cell('proof', $transaction)
-                            {{  $transaction }}
-                            @php 
-                                
-                                $proofs = use App\Models\JobsTakenProof;  
-                                // $data = JobsTakenProof::with([
-                                //     'proofs'
-                                // ])->withCount('proofs')->get();
-                            @endphp
-                                @if($transaction->proof)
-                                <img width="100" height="100" src="{{ asset('storage/point-transactions/' . basename($transaction->proof)) }}">
-                                @endif 
+                            {{  $transaction->job_id }}
+
+                            @foreach($transaction->proofs as $proof)
+                                {{  $proof->proof }}
+                            @endforeach
+
                             @endcell
 
                             @cell('amount', $transaction)

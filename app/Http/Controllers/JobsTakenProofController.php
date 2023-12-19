@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\JobsTakenProof; 
 use Illuminate\Support\Facades\Storage; 
 use ProtoneMedia\Splade\FileUploads\HandleSpladeFileUploads;  
+use ProtoneMedia\Splade\FileUploads\ExistingFile; 
 
 use App\Models\VolunteerJobsTaken;   
 
@@ -43,9 +44,12 @@ class JobsTakenProofController extends Controller
         $paths = [];
 
         foreach ($request->file('files') as $file) {
-            $path = $file->store('uploads');
-            $paths[] = $path;
 
+            $path = $file->store('public/jobstakenproofs');
+
+            // $path = $file->store('uploads'); 
+            $paths[] = $path;
+            
 
             JobsTakenProof::create([
                 'transaction_id' => request('transactionId'), 

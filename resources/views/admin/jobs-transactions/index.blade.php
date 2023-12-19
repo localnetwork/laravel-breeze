@@ -12,12 +12,17 @@
                     <div class="bg-white p-6 bg-white border-b border-gray-200 overflow-hidden shadow-sm sm:rounded-lg">
                         <x-splade-table 
                             :for="$transactions">
-                            @cell('proof', $transaction)
-                            {{  $transaction->job_id }}
-
-                            @foreach($transaction->proofs as $proof)
-                                {{  $proof->proof }}
+                            @cell('proofs', $transaction)
+                            <div>
+                                @foreach($transaction->proofs as $proof)
+                                {{-- <img src="/storage/{{  $proof->proof }}"> --}}
+                                <div class="proof-item w-full mb-[15px]">
+                                    <a href="{{ asset('storage/jobstakenproofs/' . basename($proof->proof)) }}" target="_blank">
+                                        <img class="h-auto" width="150" height="150" src="{{ asset('storage/jobstakenproofs/' . basename($proof->proof)) }}">
+                                    </a>
+                                </div>
                             @endforeach
+                            </div>
 
                             @endcell
 
@@ -27,10 +32,8 @@
 
                             @cell('actions', $transaction)
 
-                            @php
-                                $transaction_user = App\Models\User::find($transaction->user_id);
-                            @endphp
                             
+                            @if($transaction->status === 'reviewing')
                             <x-dropdown class="z-[10]" placement="bottom-end">
                                 <x-slot name="trigger">
                                     <button class="flex items-center text-sm font-medium text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition duration-150 ease-in-out">
@@ -50,6 +53,7 @@
                                     <span class="hidden sr-only">Hidden</span>
                                 </x-slot>
                             </x-dropdown>
+                            @endif
                             @endcell
                             <x-slot:empty-state>
                                 <p>No recorded transactions at the moment.</p>

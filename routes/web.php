@@ -101,6 +101,9 @@ Route::middleware('splade')->group(function () {
         Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index'); 
 
         Route::get('/admin/job-transactions', [VolunteerJobsTakenController::class, 'adminIndex'])->name('admin.jobs-transactions.index'); 
+
+        Route::put('/admin/jobs-transactions/{transaction}', [VolunteerJobsTakenController::class, 'update'])->name('admin.jobs-transactions.update'); 
+        
     });
 
     

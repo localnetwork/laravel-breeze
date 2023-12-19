@@ -112,15 +112,17 @@ class PointTransactionController extends Controller
         $transaction = PointTransaction::where('id', $id)->first();
 
         if($transaction->status == 'pending') {
-            $this->userPointController->subtractPoints($transaction->amount, $transaction->user_id);
-         
-            PointTransaction::where('id', $id)->update([
-                'status' => 'approved',
-            ]);
-
-            Toast::title('Success')->message('Transaction has been approved.')->success()->rightTop()->autoDismiss(5);
-
-            return back(); 
+            $result = $this->userPointController->subtractPoints($transaction->amount, $transaction->user_id);
+            if($result === true) {
+                PointTransaction::where('id', $id)->update([
+                    'status' => 'approved',
+                ]);
+            }else {
+                PointTransaction::where('id', $id)->update([
+                    'status' => 'cancelled',
+                ]);
+            }
+            return back();  
         }else {
             Toast::title('Whooops!')->message('You are not allowed to do this function.')->warning()->rightTop()->autoDismiss(5);
 

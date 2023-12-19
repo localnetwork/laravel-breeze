@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\UserPoint;   
 use ProtoneMedia\Splade\Facades\Toast; 
 use App\Rules\EnoughPointsRule; 
+use Illuminate\Http\Response; 
 
 class UserPointController extends Controller
 {
@@ -37,14 +38,14 @@ class UserPointController extends Controller
 
         if(!$userPoint || $userPoint->points < $points) {
             Toast::title('Warning')->message("You don't have enough points to complete this transaction.")->warning()->rightTop()->autoDismiss(5);
-            return back(); 
+            return false;
         }else {
             $userPoint->update([
                 'points' => $userPoint->points - $points,
             ]);
 
             Toast::title('Success')->message('Points deducted successfully!')->success()->rightTop()->autoDismiss(5);
-            return back(); 
+            return true; 
         } 
     }
 }

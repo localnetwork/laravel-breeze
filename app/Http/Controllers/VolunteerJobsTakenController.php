@@ -10,13 +10,22 @@ use ProtoneMedia\Splade\Facades\Toast;
 use ProtoneMedia\Splade\SpladeTable; 
 use ProtoneMedia\Splade\SpladeQueryBuilder; 
 
+
 use App\Models\VolunteerJobsTaken;  
 use App\Models\Job;  
+use App\Http\Controllers\UserPointController; 
 
 class VolunteerJobsTakenController extends Controller
 {
     
-    
+    protected $userPointController;
+
+    public function __construct(UserPointController $userPointController)
+    {
+        $this->userPointController = $userPointController;
+    }
+
+
 
     public function apiJobsTaken(Request $request) {
         $transactions = QueryBuilder::for(VolunteerJobsTaken::class)
@@ -85,7 +94,7 @@ class VolunteerJobsTakenController extends Controller
                 ->column('job_id')
                 ->column('address')
                 ->column('status')
-                ->column('proof')
+                ->column('proofs')
                 ->column('updated_at', sortable: true)
                 ->column('actions')
                 ->paginate(15)
@@ -93,6 +102,8 @@ class VolunteerJobsTakenController extends Controller
                 
         ]); 
     }
+
+
     public function store(Request $request) {
         $user = $request->user(); 
         $req = $request->headers->all();

@@ -12,8 +12,12 @@ use ProtoneMedia\Splade\SpladeQueryBuilder;
 
 
 use App\Models\VolunteerJobsTaken;  
-use App\Models\Job;  
+use App\Models\PointTransaction;  
+use App\Models\Job; 
+use App\Models\Tree; 
 use App\Http\Controllers\UserPointController; 
+
+
 
 class VolunteerJobsTakenController extends Controller
 {
@@ -167,4 +171,20 @@ class VolunteerJobsTakenController extends Controller
             ], 422);  
         }
     }
+
+
+    public function update($id) {
+        $transaction = VolunteerJobsTaken::find($id);
+        $job = Job::find($transaction->job_id); 
+        $tree = Tree::find($job->tree); 
+
+        VolunteerJobsTaken::where('id', $id)->update([
+            'status' => 'completed',
+        ]);
+        $this->userPointController->addPoints($tree->tree_value, $transaction->taken_by);
+        return back(); 
+    }
+
+
+    
 }

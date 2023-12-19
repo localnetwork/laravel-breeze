@@ -122,7 +122,7 @@ class PointTransactionController extends Controller
                     'status' => 'cancelled',
                 ]);
             }
-            return back();  
+            return back();   
         }else {
             Toast::title('Whooops!')->message('You are not allowed to do this function.')->warning()->rightTop()->autoDismiss(5);
 

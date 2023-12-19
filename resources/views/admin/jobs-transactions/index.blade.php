@@ -47,7 +47,7 @@
                                 </x-slot>
                                 
                                 <x-slot name="content" class="z-[10]">
-                                    <Link confirm method="PUT" href="/admin/jobs-transactions/{{$transaction->id}}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
+                                    <Link confirm method="PUT" href="/admin/jobs-transactions/{{ $transaction->id }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
                                         Approve
                                     </Link> 
                                     <span class="hidden sr-only">Hidden</span>

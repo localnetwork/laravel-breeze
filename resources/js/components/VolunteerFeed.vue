@@ -80,7 +80,9 @@
                     </div>
 
                     <div class="mt-[10px]" v-if="item.job_takers">
-                        <span class="font-bold mb-[5px] block">Taken by:</span>
+                        <span class="font-bold mb-[5px] block text-[14px]"
+                            >Users who took the job:</span
+                        >
                         <div class="flex gap-x-[10px]">
                             <div
                                 class="relative taker"

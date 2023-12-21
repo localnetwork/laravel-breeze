@@ -47,7 +47,7 @@ class VolunteerJobsTakenController extends Controller
             ->allowedFilters(['id'])
             ->where('taken_by', $user_id)
             ->with(['job'])
-            ->paginate(3); 
+            ->paginate(90000); 
     
             return response()->json([
                 'transactions' => $transactions,

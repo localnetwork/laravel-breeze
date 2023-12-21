@@ -13,6 +13,7 @@ class Job extends Model {
 
     protected $fillable = [
         // 'title',
+        'id', 
         'user_id',
         'tree', 
         'address', 
@@ -36,5 +37,10 @@ class Job extends Model {
     public function volunteer_jobs_takens()
     {
         return $this->hasMany(VolunteerJobsTaken::class);
+    }
+
+    public function job_takers($limit = 5)
+    {
+        return $this->belongsToMany(User::class, 'volunteer_jobs_takens', 'job_id', 'taken_by')->distinct()->take($limit);
     }
 }

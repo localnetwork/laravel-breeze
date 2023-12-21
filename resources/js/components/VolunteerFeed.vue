@@ -78,6 +78,35 @@
                         Estimated earning: {{ item.tree.tree_value }} cordo
                         points.
                     </div>
+
+                    <div class="mt-[10px]" v-if="item.job_takers">
+                        <span class="font-bold mb-[5px] block">Taken by:</span>
+                        <div class="flex gap-x-[10px]">
+                            <div
+                                class="relative taker"
+                                v-for="volunteer in item.job_takers"
+                            >
+                                <img
+                                    v-if="volunteer.profile_picture"
+                                    class="w-[50px] h-[50px] rounded-full object-cover"
+                                    :src="
+                                        getProfilePictureUrl(
+                                            volunteer.profile_picture
+                                        )
+                                    "
+                                />
+                                <div
+                                    class="w-[50px] h-[50px] rounded-full bg-slate-300"
+                                    v-if="!volunteer.profile_picture"
+                                ></div>
+                                <div
+                                    class="absolute volunteer-name whitespace-nowrap bg-[#000] text-white px-[5px] rounded-[5px] left-0 bottom-[100%]"
+                                >
+                                    {{ volunteer.name }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

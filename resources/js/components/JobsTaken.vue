@@ -18,6 +18,7 @@
                         "
                     />
                 </div>
+
                 <div class="w-full">
                     <div class="flex gap-x-[15px] justify-between">
                         <div class="text-lg font-bold dark:text-white">
@@ -76,6 +77,23 @@
                             </g>
                         </svg>
                         {{ item.job.address.name }}
+                    </div>
+                    <div>
+                        Status:
+                        <span
+                            class="text-white rounded-[5px] text-[12px] px-[5px] pt-[3px] pb-[4px]"
+                            :class="
+                                item.status === 'accepted'
+                                    ? 'bg-yellow-500'
+                                    : item.status === 'reviewing'
+                                    ? 'bg-red-500'
+                                    : item.status === 'completed'
+                                    ? 'bg-green-500'
+                                    : ''
+                            "
+                        >
+                            {{ item.status }}
+                        </span>
                     </div>
                 </div>
             </div>

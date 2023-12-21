@@ -30,8 +30,8 @@ class ProfileFeedController extends Controller
             ->where('address', 'like', '%'.request()->get('address').'%') 
             ->where('address', $user->address)
             ->where('stocks', '>=', 1)  
-            ->with(['tree', 'user_id', 'address'])
-            ->paginate(10);
+            ->with(['tree', 'user_id', 'address', 'job_takers'])
+            ->paginate(9000);
 
         return response()->json([
             'feed' => $jobs,

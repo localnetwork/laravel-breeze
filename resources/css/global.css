@@ -163,6 +163,18 @@ label > span {
 .login-content form {
     width: 100%;
 }
+.taker .volunteer-name {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-15px);
+    transition: all ease 0.3s;
+}
+.taker:hover .volunteer-name {
+    opacity: 1;
+    visibility: inherit;
+    transform: translateY(0);
+    transition: all ease 0.3s;
+}
 
 @keyframes test {
     0%,

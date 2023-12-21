@@ -83,7 +83,7 @@
                         <span class="font-bold mb-[5px] block text-[14px]"
                             >Users who took the job:</span
                         >
-                        <div class="flex gap-x-[10px]">
+                        <div class="flex gap-[10px]">
                             <div
                                 class="relative taker"
                                 v-for="volunteer in item.job_takers"

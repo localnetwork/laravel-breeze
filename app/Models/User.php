@@ -18,6 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'id', 
         'name',
         'short_name', 
         'email',
@@ -48,4 +49,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    public function topVolunteers()
+    {
+        return $this->hasMany(VolunteerJobsTaken::class, 'taken_by');
+    }
+
+    
 }

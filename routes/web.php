@@ -123,7 +123,11 @@ Route::middleware('splade')->group(function () {
 
     
 
+    
 
+    Route::get('/api/top/volunteers', [VolunteerJobsTakenController::class, 'apiGetTopVolunteers']);
+
+    
     Route::get('/api/jobs/taken', [VolunteerJobsTakenController::class, 'apiJobsTaken']);
 
     Route::get('/taken/jobs', [VolunteerJobsTakenController::class, 'index'])->name('jobstaken.index');

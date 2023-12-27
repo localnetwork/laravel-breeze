@@ -24,4 +24,11 @@ class VolunteerJobsTaken extends Model
     {
         return $this->belongsTo(Tree::class, 'job_id')->with(['name', 'tree_value']);
     }
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'taken_by');
+    } 
+
 }

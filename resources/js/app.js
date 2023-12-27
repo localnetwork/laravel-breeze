@@ -10,7 +10,8 @@ import "vue-toastification/dist/index.css";
 
 import JobListComponent from "./components/JobListComponent.vue";
 import VolunteerFeed from "./components/VolunteerFeed.vue";
-import JobsTaken from "./components/JobsTaken.vue"; 
+import JobsTaken from "./components/JobsTaken.vue";
+import TopVolunteers from "./components/TopVolunteers.vue";
 import TestVue from "./components/Test.vue";
 import { renderSpladeApp, SpladePlugin } from "@protonemedia/laravel-splade";
 
@@ -28,7 +29,8 @@ createApp({
         components: {
             JobListComponent,
             VolunteerFeed,
-            JobsTaken, 
+            JobsTaken,
+            TopVolunteers,
         },
     })
     .use(Toast)

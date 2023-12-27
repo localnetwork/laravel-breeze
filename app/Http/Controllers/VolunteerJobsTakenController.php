@@ -15,6 +15,10 @@ use App\Models\VolunteerJobsTaken;
 use App\Models\PointTransaction;  
 use App\Models\Job; 
 use App\Models\Tree; 
+use App\Models\User; 
+
+use Illuminate\Support\Facades\DB; 
+
 use App\Http\Controllers\UserPointController; 
 
 
@@ -29,7 +33,25 @@ class VolunteerJobsTakenController extends Controller
         $this->userPointController = $userPointController;
     }
 
+    public function apiGetTopVolunteers() {
+        $volunteers = User::withCount(['topVolunteers as completed_jobs' => function ($query) {
+            $query->where('status', 'completed')
+            ->whereBetween('updated_at', [now()->startOfMonth(), now()]);
+        }])
+        ->having('completed_jobs', '>=', 1) 
+        ->orderByDesc('completed_jobs')
+        ->take(5)
+        ->get();
 
+        if ($volunteers->isEmpty()) {
+            return response()->json(['message' => 'No users with completed jobs found'], 404);
+        }
+
+        return response()->json([
+            'volunteers' => $volunteers,
+        ]);
+
+    }
 
     public function apiJobsTaken(Request $request) {
         $transactions = QueryBuilder::for(VolunteerJobsTaken::class)

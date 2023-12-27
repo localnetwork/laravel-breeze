@@ -48,7 +48,6 @@ class UserController extends Controller
                 ->column('email', sortable: true)
                 ->column('role_id', sortable: true)
                 ->column('updated_at', sortable: true)
-                ->column('action')
                 ->paginate(15)
                 ->perPageOptions([15, 50, 100]), 
             'user' => $user, 

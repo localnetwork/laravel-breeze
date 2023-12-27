@@ -18,7 +18,7 @@
                                 {{-- <img src="/storage/{{  $proof->proof }}"> --}}
                                 <div class="proof-item w-full mb-[15px]">
                                     <a href="{{ asset('storage/jobstakenproofs/' . basename($proof->proof)) }}" target="_blank">
-                                        <img class="h-auto" width="150" height="150" src="{{ asset('storage/jobstakenproofs/' . basename($proof->proof)) }}">
+                                        <img class="h-[100px] object-contain bg-[#f3f3f3]" width="150" height="150" src="{{ asset('storage/jobstakenproofs/' . basename($proof->proof)) }}">
                                     </a>
                                 </div>
                             @endforeach

@@ -33,6 +33,26 @@ class VolunteerJobsTakenController extends Controller
         $this->userPointController = $userPointController;
     }
 
+
+    public function apiGetTopSponsors() {
+        $sponsors = DB::table('users')
+        ->join('jobs', 'users.id', '=', 'jobs.user_id')
+        ->join('volunteer_jobs_takens', 'jobs.id', '=', 'volunteer_jobs_takens.job_id')
+        ->where('volunteer_jobs_takens.status', '=', 'completed')
+        ->select('users.id', 'users.name', 'users.short_name', 'users.profile_picture', 'users.bio')
+        ->distinct()
+        ->get(); 
+ 
+
+        if ($sponsors->isEmpty()) {
+            return response()->json(['message' => 'No users with completed jobs found'], 404);
+        }
+
+        return response()->json([
+            'sponsors' => $sponsors,
+        ]);
+    } 
+
     public function apiGetTopVolunteers() {
         $volunteers = User::withCount(['topVolunteers as completed_jobs' => function ($query) {
             $query->where('status', 'completed')

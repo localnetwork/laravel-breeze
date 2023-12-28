@@ -56,5 +56,8 @@ class User extends Authenticatable
         return $this->hasMany(VolunteerJobsTaken::class, 'taken_by');
     }
 
+    public function topSponsors() {
+        return $this->hasMany(VolunteerJobsTaken::class, 'job_id'); 
+    }
     
 }

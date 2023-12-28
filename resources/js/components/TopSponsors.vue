@@ -34,7 +34,7 @@
     </div>
 
     <div v-if="volunteers.length < 1 && isLoading == false">
-        There are no volunteers to show at the moment.
+        There are no sponsors to show at the moment.
     </div>
 
     <div v-if="isLoading == true">
@@ -57,12 +57,12 @@ export default {
     methods: {
         getTopVolunteers() {
             const res = axios
-                .get(`/api/top/volunteers`, {})
+                .get(`/api/top/sponsors`, {})
                 .then((response) => {
                     console.log(response);
                     if (response.status === 200) {
                         this.isLoading = false;
-                        this.volunteers = response.data.volunteers;
+                        this.volunteers = response.data.sponsors;
                     }
                 })
                 .catch((error) => {
